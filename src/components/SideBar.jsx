@@ -8,6 +8,8 @@ import { IoIosClose } from "react-icons/io";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {Flex, Box, Text} from "rebass";
+
+import { Link } from "react-router-dom";
 //
 //import { Outlet } from "react-router-dom";
 
@@ -45,7 +47,7 @@ export default function SideBar() {
   width: 350px;
   
   
-  background: #1D2228;
+  background: #1F3044;
   transition: all .5s ease;
   font-weight: bolder;
 
@@ -55,7 +57,7 @@ export default function SideBar() {
   `
   const sideBarElement = css`
   font-size: 20px;
-  color: #E1E2E2;
+  color: #E1F2F7;
   
   padding: 7px;
   margin: 5px 16px;
@@ -83,26 +85,31 @@ export default function SideBar() {
           <Box><Text css={header}>My APP</Text></Box>
           
         </Flex>
-        
+        <Link to={'/'}>
         <Flex flexDirection={"row"} alignItems="center" css={sideBarElement}>
+          
             <Box><StyledIcon /></Box>
             <Box>
               <Text>Home</Text>
             </Box>
           </Flex>
-        
+          </Link>
+          <Link to={'/genre'}>
         <Flex flexDirection={"row"} alignItems="center" css={sideBarElement}>
             <Box><StyledIcon2 /></Box>
             <Box>
               <Text>Genre</Text>
             </Box>
           </Flex>
+          </Link>
+          <Link to={'/Statistics'}>
           <Flex flexDirection={"row"} alignItems="center" css={sideBarElement}>
             <Box><StyledIcon3 /></Box>
             <Box>
               <Text>Statistics</Text>
             </Box>
           </Flex>
+          </Link>
         
       </Flex>
     </>

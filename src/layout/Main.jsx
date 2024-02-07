@@ -16,7 +16,7 @@ export default function Main() {
     
     color: black;
     height: 100vh;
-    padding: 10px 20px;
+    
     border-radius: 10px;
     `
     

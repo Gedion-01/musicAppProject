@@ -8,11 +8,12 @@ import { IoIosClose } from "react-icons/io";
 const MenuIcon = styled(TbMenu2)`
 cursor: pointer;
 font-size: 35px;
+color: #E1F2F7;
 `;
 
 export default function NavBar() {
     const NavStyle = css`
-    background: #1D2228;
+    background: #1F3044;
     margin: 10px 0px;
     padding: 10px 20px;
     border-radius: 10px;
@@ -21,10 +22,10 @@ export default function NavBar() {
     height: 70px;
     `
     const SearchStyleInput = styled.input`
-    background: #1D2228;
-    color: #FB8122;
+    background: #1F3044;
+    color: #FB9039;
     padding: 10px;
-    border: 3px solid #FB8122;
+    border: 3px solid #E1F2F7;
     border-radius: 10px;
     width: 300px;
     height: 50px;
