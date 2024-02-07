@@ -16,6 +16,10 @@ import { IoIosClose } from "react-icons/io";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {Flex, Box, Text} from "rebass";
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "./state/store"
+
+import { getSongs } from "./state/songs/songsSlice"
 
 const StyledIcon = styled(IoMdHome)`
   margin-right: 10px;
@@ -46,6 +50,13 @@ transition: all .5s ease;
 
 function App() {
   const [openSidebar, setOpenSidebar] = useState(false)
+  
+  // const data = useSelector((state : RootState) => state.songs.songs)
+  // const dispach = useDispatch()
+  // useEffect(() => {
+  //   dispach({ type: "songs/fetchSongs"})
+  // }, [])
+  // console.log(data)
   
   const sideBarStyle = css`
   position: fixed;

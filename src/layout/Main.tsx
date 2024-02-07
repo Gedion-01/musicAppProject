@@ -29,9 +29,9 @@ export default function Main() {
             </Box>
             <Box flex={1}>
                 <NavBar />
-                <Flex css={contentStyle}>
+                
                     <Outlet />
-                </Flex>
+                
             </Box>
             
         </Flex>

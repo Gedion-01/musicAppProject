@@ -43,7 +43,7 @@ export default function SideBar() {
     height: 100vh;
     position: sticky;
     top: 0;
-    left: 0;
+    
   width: 350px;
   
   
