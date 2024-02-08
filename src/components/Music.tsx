@@ -1,11 +1,11 @@
-import { Card, Box, Flex, Text } from "rebass";
+import {Box, Flex, Text } from "rebass";
 import { SlOptionsVertical } from "react-icons/sl";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { height } from "styled-system";
+
 import React from "react";
 
 type myComponentProp = {
@@ -75,9 +75,9 @@ const Music: React.FC<myComponentProp> = ({
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      css={spotifyStyle}
+      css={spotifyStyle.styles}
     >
-      <Flex flexDirection={"row"} alignItems={"center"} flex={1.5} css={playTitle}>
+      <Flex flexDirection={"row"} alignItems={"center"} flex={1.5} css={playTitle.styles}>
       <Box ml={2}>
         {true ? <FaPlay /> : <FaPause />}
       </Box>
@@ -89,7 +89,7 @@ const Music: React.FC<myComponentProp> = ({
           }
         />
       </Box>
-      <Flex flexDirection={"column"} justifyContent={"space-between"} css={titleStyle}>
+      <Flex flexDirection={"column"} justifyContent={"space-between"} css={titleStyle.styles}>
       <Box>
         <Text fontSize={16} fontWeight="bold">
           {title}
@@ -100,7 +100,7 @@ const Music: React.FC<myComponentProp> = ({
       </Box>
       </Flex>
       </Flex>
-      <Box css={[boxStyle, hiddenOnSmallScreen]} flex={1}>
+      <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1}>
         <Text
           fontSize={14}
           style={{
@@ -112,7 +112,7 @@ const Music: React.FC<myComponentProp> = ({
           {album}
         </Text>
       </Box>
-      <Box css={[boxStyle, hiddenOnSmallScreen]} flex={1}>
+      <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1}>
         <Text fontSize={14}>{formatDate(date)}</Text>
       </Box>
       <Box>

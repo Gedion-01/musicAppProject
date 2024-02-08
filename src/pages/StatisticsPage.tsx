@@ -14,6 +14,7 @@ import styled from "@emotion/styled";
 import AllGenresTitle from "../components/AllGenresTitle";
 import SongsAndAlbumsperArtistTitle from "../components/SongsAndAlbumsperArtistTitle";
 import AlbumStatusTitle from "../components/AlbumStatusTitle";
+
 const Datacontainer = styled.div``;
 const WrapperStyle = styled.div`
   display: flex;
