@@ -34,7 +34,7 @@ function Home() {
   
   return (
     <>
-      <Flex flexDirection={"column"} css={HomeStyle}>
+      <Flex flexDirection={"column"} css={HomeStyle.styles}>
         <Box>
           <Text fontSize={5} fontWeight="bold">
             All Songs
@@ -43,7 +43,7 @@ function Home() {
         <Box>
         {
   isLoading ? "Loading" :
-    data.map((song: any) => (
+    data.map((song : Song) => (
       <Music
         key={song._id} // Remember to provide a unique key prop when rendering a list of components
         artist={song.artist}

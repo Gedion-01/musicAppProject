@@ -9,14 +9,21 @@ import { height } from "styled-system";
 import React from "react";
 
 type myComponentProp = {
-  album : string;
-  artist : string;
-  coverImageUrl? : string;
-  date : string;
-  title : string;
-  _id?: string
-}
-const Music : React.FC<myComponentProp> = ({album, artist, coverImageUrl, date, title, _id}) => {
+  album: string;
+  artist: string;
+  coverImageUrl?: string;
+  date: string;
+  title: string;
+  _id?: string;
+};
+const Music: React.FC<myComponentProp> = ({
+  album,
+  artist,
+  coverImageUrl,
+  date,
+  title,
+  _id,
+}) => {
   const myImage = styled.image`
     width: 20px;
     height: 20px;
@@ -24,7 +31,7 @@ const Music : React.FC<myComponentProp> = ({album, artist, coverImageUrl, date, 
     border-radius: 60px;
   `;
   const spotifyStyle = css`
-    background-color: #1F3044;
+    background-color: #1f3044;
     color: #ffffff;
     padding: 5px 5px;
     border-radius: 8px;
@@ -46,9 +53,22 @@ const Music : React.FC<myComponentProp> = ({album, artist, coverImageUrl, date, 
     }
   `;
   const titleStyle = css`
-    height: 100%;
-    gap: 12px;
+    height: 40px;
   `;
+  function formatDate(date: string): string {
+    const dateObject: Date = new Date(date);
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate: string = dateObject.toLocaleDateString(
+      "en-US",
+      options
+    );
+
+    return formattedDate;
+  }
 
   return (
     <Flex
@@ -57,44 +77,43 @@ const Music : React.FC<myComponentProp> = ({album, artist, coverImageUrl, date, 
       justifyContent="space-between"
       css={spotifyStyle}
     >
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        css={playTitle}
-      >
-        <Box ml={2}>{true ? <FaPlay /> : <FaPause />}</Box>
-        <Box>
-          <img
-            style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-            src={
-              "https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
-            }
-          />
-        </Box>
-        <Box>
-          <Flex
-            flexDirection={"column"}
-            justifyContent={"space-between"}
-            css={titleStyle}
-          >
-            <Box>
-              <Text fontSize={16} fontWeight="bold">
-                {title}
-              </Text>
-            </Box>
-            <Box>
-              <Text fontSize={14}>{artist}</Text>
-            </Box>
-          </Flex>
-        </Box>
-      </Flex>
-
-      <Box css={[boxStyle, hiddenOnSmallScreen]}>
-        <Text fontSize={14}>{album}</Text>
+      <Flex flexDirection={"row"} alignItems={"center"} flex={1.5} css={playTitle}>
+      <Box ml={2}>
+        {true ? <FaPlay /> : <FaPause />}
       </Box>
-      <Box css={[boxStyle, hiddenOnSmallScreen]}>
-        <Text fontSize={14}>{date}</Text>
+      <Box>
+        <img
+          style={{ width: "50px", height: "50px", borderRadius: "5px" }}
+          src={
+            "https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
+          }
+        />
+      </Box>
+      <Flex flexDirection={"column"} justifyContent={"space-between"} css={titleStyle}>
+      <Box>
+        <Text fontSize={16} fontWeight="bold">
+          {title}
+        </Text>
+      </Box>
+      <Box>
+        <Text fontSize={14}>{artist}</Text>
+      </Box>
+      </Flex>
+      </Flex>
+      <Box css={[boxStyle, hiddenOnSmallScreen]} flex={1}>
+        <Text
+          fontSize={14}
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {album}
+        </Text>
+      </Box>
+      <Box css={[boxStyle, hiddenOnSmallScreen]} flex={1}>
+        <Text fontSize={14}>{formatDate(date)}</Text>
       </Box>
       <Box>
         <SlOptionsVertical />

@@ -1,15 +1,24 @@
 import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+
+import React from "react";
 import { Flex, Box, Text } from "rebass";
 
-export default function StatusCard() {
+type myComponentProp = {
+  title: string;
+  data: string;
+}
+
+const StatusCard : React.FC<myComponentProp> = ({title, data}) => {
+
     const cardStyle = css`
     gap: 20px;
     background-color: #1F3044;
     padding: 15px;
     color: white;
     border-radius: 10px;
-  `;
+    height: 200px;
+    width: 200px;
+  `
 
     return(
         <>
@@ -20,14 +29,16 @@ export default function StatusCard() {
           css={cardStyle}
         >
           <Box>
-            <Text fontSize={3}>Total Songs</Text>
+            <Text fontSize={3}>{title}</Text>
           </Box>
           <Box>
-            <Text fontSize={6} fontWeight="bold">
-              6
+            <Text fontSize={8} fontWeight="bold">
+              {data}
             </Text>
           </Box>
         </Flex>
         </>
     )
 }
+
+export default StatusCard
