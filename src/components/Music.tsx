@@ -31,8 +31,8 @@ const Music: React.FC<myComponentProp> = ({
     border-radius: 60px;
   `;
   const spotifyStyle = css`
-    background-color: #1f3044;
-    color: #ffffff;
+  background-color: #a8bcc3;
+    color: #1F3044;
     padding: 5px 5px;
     border-radius: 8px;
     margin: 5px;

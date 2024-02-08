@@ -10,20 +10,21 @@ type reactProps = {
 };
 
 const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
-  const overViewContainerStyle = css`
-    display: flex;
-    gap: 10px;
-
-    flex-wrap: wrap;
-  `;
+  
   const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
     padding: 12px 10px;
-    color: #e1f2f7;
-    background: #1f3044;
-    border-radius: 10px;
+    // background: #1f3044;
+    color: #1F3044;
+    &:hover {
+      background: #a8bcc3;
+      border-radius: 10px;
+    }
+    // border-radius: 10px;
+    border-bottom: 1px solid #a8bcc3;
   `;
+  
   
   return (
     <Flex flexDirection="column">
@@ -35,11 +36,11 @@ const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
         css={tabularStyle.styles}
       >
         <Box>
-          <Text fontSize={3} fontWeight="bold">
+          <Text fontSize={3}>
             {name}
           </Text>
         </Box>
-        <Box>
+        <Box mr={3}>
           <Text fontSize={3} fontWeight="regular">
             {total}
           </Text>

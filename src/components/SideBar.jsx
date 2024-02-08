@@ -47,7 +47,8 @@ export default function SideBar() {
   width: 350px;
   
   
-  background: #1F3044;
+  //  background: #a8bcc3;
+  background: #a8bcc3;
   transition: all .5s ease;
   font-weight: bolder;
 
@@ -57,7 +58,7 @@ export default function SideBar() {
   `
   const sideBarElement = css`
   font-size: 20px;
-  color: #E1F2F7;
+  color: #1F3044;
   
   padding: 7px;
   margin: 5px 16px;

@@ -10,6 +10,21 @@ import { useEffect } from "react";
 
 import { UseSelector, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
+import styled from "@emotion/styled";
+import AllGenresTitle from "../components/AllGenresTitle";
+import SongsAndAlbumsperArtistTitle from "../components/SongsAndAlbumsperArtistTitle";
+import AlbumStatusTitle from "../components/AlbumStatusTitle";
+const Datacontainer = styled.div``;
+const WrapperStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 25px;
+  background: #e1f2f7;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #a8bcc3;
+`;
 
 export default function StatisticsPage() {
   const totalNumberOfSongs = useSelector(
@@ -31,7 +46,15 @@ export default function StatisticsPage() {
   const genres = useSelector(
     (state: RootState) => state.songsDataStatistics.genreCounts
   );
-  const isDataLoading = useSelector((state: RootState) => state.songsDataStatistics.isLoading)
+  const songsAndAlbumsperArtist = useSelector(
+    (state: RootState) => state.songsDataStatistics.songsAndAlbumsperArtist
+  );
+  const albumCountsAndSongs = useSelector(
+    (state: RootState) => state.songsDataStatistics.albumCountsAndSongs
+  );
+  const isDataLoading = useSelector(
+    (state: RootState) => state.songsDataStatistics.issongDataStatistics
+  );
 
   const dispatch = useDispatch();
 
@@ -39,27 +62,23 @@ export default function StatisticsPage() {
     gap: 10px;
     flex-wrap: wrap;
   `;
-  const titleStyle = css`
-    margin-top: 15px;
-    width: 100%;
-  `;
 
   useEffect(() => {
     dispatch({ type: "songs/fetchSongsStatistics" });
     dispatch({ type: "songs/fetchSongsStatisticsData" });
   }, []);
-  console.log(totalNumberOfSongs, genres);
+  console.log(totalNumberOfSongs, genres, songsAndAlbumsperArtist);
 
   return (
     <>
       <Flex flexDirection={"column"}>
         <Box>
-          <Text fontSize={5} fontWeight="bold" mb={2}>
+          <Text fontSize={6} fontWeight="bold" mb={2}>
             Overview
           </Text>
         </Box>
         {/* over view cards */}
-        <Flex css={overViewContainerStyle.styles} flexDirection={"row"}>
+        <Flex css={overViewContainerStyle.styles} flexDirection={"row"} mb={4}>
           {/* Total songs */}
           <StatusCard title="Total Songs" data={totalNumberOfSongs} />
           {/* Total artists */}
@@ -69,32 +88,41 @@ export default function StatisticsPage() {
           {/* Total genres */}
           <StatusCard title="Total Genres" data={totalNumberOfGenres} />
         </Flex>
-        <Flex
-          flexDirection="row"
-          justifyContent="space-between"
-          css={titleStyle.styles}
-        >
-          <Box>
-            <Text fontSize={3} fontWeight="bold">
-              Genres
-            </Text>
-          </Box>
-          <Box>
-            <Text fontSize={3} fontWeight="bold">
-              Total Songs
-            </Text>
-          </Box>
-        </Flex>
-        <div>
-        {
-          isDataLoading ? "loading" :
-          genres.map((genre: any) => {
-            return <GenreStatus name={genre._id} total={genre.count} />
-          })
-        }
-        </div>
-        <ArtistsStatus />
-        <AlbumStatus />
+        <WrapperStyle>
+          <AllGenresTitle />
+          <Datacontainer>
+            {isDataLoading
+              ? "loading"
+              : genres.map((genre: any) => {
+                  return <GenreStatus name={genre._id} total={genre.count} />;
+                })}
+          </Datacontainer>
+        </WrapperStyle>
+        <WrapperStyle>
+          <SongsAndAlbumsperArtistTitle />
+          <Datacontainer>
+            {isDataLoading
+              ? "loading"
+              : songsAndAlbumsperArtist.map((data) => {
+                  return (
+                    <ArtistsStatus
+                      name={data.artist}
+                      totalAlbums={data.albums.length}
+                      totalSongs={data.totalSongs}
+                    />
+                  );
+                })}
+          </Datacontainer>
+        </WrapperStyle>
+
+        <WrapperStyle>
+          <AlbumStatusTitle />
+          <Datacontainer>
+            {albumCountsAndSongs.map((data) => {
+              return <AlbumStatus name={data.album} total={data.count} />;
+            })}
+          </Datacontainer>
+        </WrapperStyle>
       </Flex>
     </>
   );

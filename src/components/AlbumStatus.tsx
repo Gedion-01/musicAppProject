@@ -2,25 +2,26 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
 import StatusCard from "../components/StatusCard";
+import React from "react";
 
-export default function AlbumStatus() {
-    const overViewContainerStyle = css`
-    display: flex;
-    gap: 10px;
+type reactProps = {
+    name: string;
+    total: number;
+}
 
-    flex-wrap: wrap;
-  `;
-  const tabularStyle = css`
+const AlbumStatus: React.FC<reactProps> = ({ name, total }) => {
+    const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
     padding: 12px 10px;
-    color: #E1F2F7;
-    background: #1F3044;
-    border-radius: 10px;
-  `;
-  const titleStyle = css`
-    margin-top: 15px;
-    width: 100%;
+    // background: #1f3044;
+    color: #1F3044;
+    &:hover {
+      background: #a8bcc3;
+      border-radius: 10px;
+    }
+    // border-radius: 10px;
+    border-bottom: 1px solid #a8bcc3;
   `;
   return (
     
@@ -28,35 +29,21 @@ export default function AlbumStatus() {
     <Flex
         flexDirection="row"
         justifyContent="space-between"
-        css={titleStyle}
+        css={tabularStyle.styles}
     >
         <Box>
-            <Text fontSize={3} fontWeight="bold">
-                Album Name
+            <Text fontSize={3}>
+                {name}
             </Text>
         </Box>
-        <Box>
-            <Text fontSize={3} fontWeight="bold">
-                Total Songs
-            </Text>
-        </Box>
-    </Flex>
-    <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        css={tabularStyle}
-    >
-        <Box>
-            <Text fontSize={3} fontWeight="bold">
-                kajsajj
-            </Text>
-        </Box>
-        <Box>
+        <Box mr={3}>
             <Text fontSize={3} fontWeight="regular">
-                20
+                {total}
             </Text>
         </Box>
     </Flex>
 </Flex>
   )
 }
+
+export default AlbumStatus

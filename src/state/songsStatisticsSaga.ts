@@ -10,7 +10,9 @@ import {
 
 import {
   setGenres,
-  setIssongDataStatisticsLoading
+  setIssongDataStatisticsLoading,
+  setSongsAndAlbumsperArtist,
+  setAlbumCountsAndSongs
 }
 from "./songs/songsDataStatisticsSlice"
 
@@ -91,10 +93,21 @@ function* fetchSongsStatistics() {
 
 function* fetchSongsStatisticsData() {
   try {
+    // get every genre + its total songs
     const response : AxiosResponse = yield call(() =>
       axios.get(`${VITE_BASE_URL}/songsPerGenre`)
     )
     yield put(setGenres(response.data.genreCounts))
+    // get every artist name + total albums + total songs
+    const response1 : AxiosResponse = yield call(() =>
+      axios.get(`${VITE_BASE_URL}/songsAndAlbumsPerArtist`)
+    )
+    yield put(setSongsAndAlbumsperArtist(response1.data.artistCountsAndAlbums))
+    // get album name + count of album + songs in album
+    const response2 : AxiosResponse = yield call(() =>
+      axios.get(`${VITE_BASE_URL}/songsPerAlbum`)
+    )
+    yield put(setAlbumCountsAndSongs(response2.data.albumCountsAndSongs))
 
     yield put(setIssongDataStatisticsLoading(false))
   } catch (error) {

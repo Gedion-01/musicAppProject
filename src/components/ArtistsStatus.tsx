@@ -2,80 +2,58 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
 import StatusCard from "./StatusCard";
+import React from "react";
 
-function ArtistsStatus() {
-  const overViewContainerStyle = css`
-    display: flex;
-    gap: 10px;
+type reactProps = {
+  name: string;
+  totalAlbums: number;
+  totalSongs: number;
+}
 
-    flex-wrap: wrap;
-  `;
+
+const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) => {
+
   const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
     padding: 12px 10px;
-    color: #e1f2f7;
-    background: #1f3044;
-    border-radius: 10px;
+    // background: #1f3044;
+    color: #1F3044;
+    &:hover {
+      background: #a8bcc3;
+      border-radius: 10px;
+    }
+    // border-radius: 10px;
+    border-bottom: 1px solid #a8bcc3;
   `;
-  const titleStyle = css`
-    margin-top: 15px;
-    width: 100%;
-  `;
-  const textA = css`
-    textalign: right;
-  `;
+  
   return (
     <Flex flexDirection="column">
-      <Flex flexDirection="row" justifyContent="space-between" css={titleStyle}>
-        <Box flex={2}>
-          <Text fontSize={3} fontWeight="bold">
-            Artist Name
-          </Text>
-        </Box>
-        <Box flex={1}>
-        <Flex justifyContent={"center"}>
-            <Box>
-              <Text fontSize={3} fontWeight="bold">
-                Total Albums
-              </Text>
-            </Box>
-          </Flex>
-        </Box>
-        <Box flex={1}>
-          <Flex justifyContent={"end"}>
-            <Box>
-              <Text fontSize={3} fontWeight="bold">
-                Total Songs
-              </Text>
-            </Box>
-          </Flex>
-        </Box>
-      </Flex>
+      
       <Flex
         flexDirection="row"
         justifyContent="space-between"
-        css={tabularStyle}
+        css={tabularStyle.styles}
       >
         <Box flex={2}>
-          <Text fontSize={3} fontWeight="bold">
-            Abebe
+          <Text fontSize={3}>
+            {name}
           </Text>
         </Box>
         <Box flex={1}>
         <Flex justifyContent={"center"}>
             <Box>
-              <Text fontSize={3} fontWeight="bold">
-                34
+              <Text fontSize={3}>
+                {totalAlbums}
               </Text>
             </Box>
           </Flex>
         </Box>
         <Box flex={1}>
         <Flex justifyContent={"end"}>
-            <Box>
-              <Text fontSize={3} fontWeight="bold">
-                34
+            <Box mr={3}>
+              <Text fontSize={3}>
+                {totalSongs}
               </Text>
             </Box>
           </Flex>

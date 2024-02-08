@@ -12,9 +12,9 @@ const StatusCard : React.FC<myComponentProp> = ({title, data}) => {
 
     const cardStyle = css`
     gap: 20px;
-    background-color: #1F3044;
+    border: 2px solid #a8bcc3;
     padding: 15px;
-    color: white;
+    color: #1F3044;
     border-radius: 10px;
     height: 200px;
     width: 200px;
@@ -26,7 +26,7 @@ const StatusCard : React.FC<myComponentProp> = ({title, data}) => {
         <Flex
           flexDirection="column"
           justifyContent="space-between"
-          css={cardStyle}
+          css={cardStyle.styles}
         >
           <Box>
             <Text fontSize={3}>{title}</Text>

@@ -13,7 +13,8 @@ color: #E1F2F7;
 
 export default function NavBar() {
     const NavStyle = css`
-    background: #1F3044;
+    // background: #1F3044;
+    background: #a8bcc3;
     margin: 10px 0px;
     padding: 10px 20px;
     border-radius: 10px;
@@ -22,8 +23,9 @@ export default function NavBar() {
     height: 70px;
     `
     const SearchStyleInput = styled.input`
-    background: #1F3044;
-    color: #FB9039;
+    // background: #1F3044;
+    background: #a8bcc3;
+    color: #1F3044;
     padding: 10px;
     border: 3px solid #E1F2F7;
     border-radius: 10px;
