@@ -12,23 +12,44 @@ import { UseSelector, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 
 export default function StatisticsPage() {
-  const totalNumberOfSongs = useSelector((state: RootState) => state.songsStatistics.TotalNumberOfSongs)
-  const totalNumberOfArtists = useSelector((state: RootState) => state.songsStatistics.TotalNumberOfArtists)
-  const totalNumberOfAlbums = useSelector((state: RootState) => state.songsStatistics.TotalNumberOfAlbums)
-  const totalNumberOfGenres = useSelector((state: RootState) => state.songsStatistics.TotalNumberOfGenres)
-  const isLoading = useSelector((state: RootState) => state.songsStatistics.isLoading)
+  const totalNumberOfSongs = useSelector(
+    (state: RootState) => state.songsStatistics.TotalNumberOfSongs
+  );
+  const totalNumberOfArtists = useSelector(
+    (state: RootState) => state.songsStatistics.TotalNumberOfArtists
+  );
+  const totalNumberOfAlbums = useSelector(
+    (state: RootState) => state.songsStatistics.TotalNumberOfAlbums
+  );
+  const totalNumberOfGenres = useSelector(
+    (state: RootState) => state.songsStatistics.TotalNumberOfGenres
+  );
+  const isOverViewLoading = useSelector(
+    (state: RootState) => state.songsStatistics.isLoading
+  );
 
-  const dispatch = useDispatch()
+  const genres = useSelector(
+    (state: RootState) => state.songsDataStatistics.genreCounts
+  );
+  const isDataLoading = useSelector((state: RootState) => state.songsDataStatistics.isLoading)
 
-  const overViewContainerStyle= css`
+  const dispatch = useDispatch();
+
+  const overViewContainerStyle = css`
     gap: 10px;
     flex-wrap: wrap;
-  `
+  `;
+  const titleStyle = css`
+    margin-top: 15px;
+    width: 100%;
+  `;
+
   useEffect(() => {
-    dispatch({type: "songs/fetchSongsStatistics"})
-  }, [])
-  console.log(totalNumberOfSongs);
-  
+    dispatch({ type: "songs/fetchSongsStatistics" });
+    dispatch({ type: "songs/fetchSongsStatisticsData" });
+  }, []);
+  console.log(totalNumberOfSongs, genres);
+
   return (
     <>
       <Flex flexDirection={"column"}>
@@ -48,7 +69,30 @@ export default function StatisticsPage() {
           {/* Total genres */}
           <StatusCard title="Total Genres" data={totalNumberOfGenres} />
         </Flex>
-        <GenreStatus />
+        <Flex
+          flexDirection="row"
+          justifyContent="space-between"
+          css={titleStyle.styles}
+        >
+          <Box>
+            <Text fontSize={3} fontWeight="bold">
+              Genres
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize={3} fontWeight="bold">
+              Total Songs
+            </Text>
+          </Box>
+        </Flex>
+        <div>
+        {
+          isDataLoading ? "loading" :
+          genres.map((genre: any) => {
+            return <GenreStatus name={genre._id} total={genre.count} />
+          })
+        }
+        </div>
         <ArtistsStatus />
         <AlbumStatus />
       </Flex>

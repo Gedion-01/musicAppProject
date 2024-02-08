@@ -1,7 +1,7 @@
 import {all} from "redux-saga/effects"
 import {fetchSongsSaga} from "./songsSaga"
-import { fetchSongsStatisticsSaga } from "./songsStatisticsSaga"
+import { fetchSongsStatisticsSaga, fetchSongsStatisticsDataSaga } from "./songsStatisticsSaga"
 
 export default function* rootSaga() {
-    yield all([fetchSongsSaga(), fetchSongsStatisticsSaga()])
+    yield all([fetchSongsSaga(), fetchSongsStatisticsSaga(), fetchSongsStatisticsDataSaga()])
 }
