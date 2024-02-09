@@ -4,6 +4,7 @@ import { IoMdHome } from "react-icons/io";
 import { IoStatsChart } from "react-icons/io5";
 import { TbMenu2 } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
+import { IoIosAddCircleOutline } from "react-icons/io";
 // Styled component should be defined outside of the component function
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -22,6 +23,10 @@ const StyledIcon2 = styled(BiCategory)`
   font-size: 30px;
 `;
 const StyledIcon3 = styled(IoStatsChart)`
+  margin-right: 10px;
+  font-size: 30px;
+`;
+const StyledIcon4 = styled(IoIosAddCircleOutline)`
   margin-right: 10px;
   font-size: 30px;
 `;
@@ -100,6 +105,14 @@ export default function SideBar() {
             <Box><StyledIcon2 /></Box>
             <Box>
               <Text>Genre</Text>
+            </Box>
+          </Flex>
+          </Link>
+          <Link to={'/addSong'}>
+        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement}>
+            <Box><StyledIcon4 /></Box>
+            <Box>
+              <Text>Add Songs</Text>
             </Box>
           </Flex>
           </Link>

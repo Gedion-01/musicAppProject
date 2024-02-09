@@ -100,7 +100,7 @@ const Music: React.FC<myComponentProp> = ({
       </Box>
       </Flex>
       </Flex>
-      <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1}>
+      <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1} mr={2}>
         <Text
           fontSize={14}
           style={{

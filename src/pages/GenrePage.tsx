@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
 import Genre from "../components/Genre";
 
+import { Link } from "react-router-dom";
+
 type genre = {
     name: string;
     imgUrl: string
@@ -49,8 +51,8 @@ export default function GenrePage() {
       </Box>
       <Flex flexDirection={"row"} css={genreStyles.styles}>
       {
-        genres.map((data) => {
-            return <Genre name={data.name} imgUrl={data.imgUrl} />
+        genres.map((data, i) => {
+            return <Link to={data.name} key={i}><Genre name={data.name} imgUrl={data.imgUrl} /></Link>
         })
       }
       </Flex>

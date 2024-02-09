@@ -13,6 +13,8 @@ const Genre: React.FC<reactProps> = ({name, imgUrl}) => {
   const genreStylesM = css`
     width: 200px;
     gap: 4px;
+    cursor: pointer;
+    text-decoration: none;
   `;
 
   return (

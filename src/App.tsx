@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "./state/store"
 
 import { getSongs } from "./state/songs/songsSlice"
+import FilteredSongsPage from "./pages/FilteredSongsPage"
+import AddSongPage from "./pages/AddSongPage"
 
 const StyledIcon = styled(IoMdHome)`
   margin-right: 10px;
@@ -167,7 +169,9 @@ function App() {
       <Route path="/" element={<Main />}>
         <Route index element={<Home />} />
         <Route path="/genre" element={<GenrePage />} />
+        <Route path="/genre/:genre" element={<FilteredSongsPage />} />
         <Route path="/Statistics" element={<StatisticsPage />} />
+        <Route path="/addSong" element={<AddSongPage />} />
       </Route>
     </Routes>
     </>
