@@ -3,14 +3,16 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface Songs {
     songs: [];
     songsByGenre: [];
-    isLoading: boolean;
+    getSongsLoading: boolean;
+    songsByGenreLoading: boolean;
     isError: boolean;
 }
 
 const initialState : Songs = {
     songs: [],
     songsByGenre: [],
-    isLoading: true,
+    getSongsLoading: true,
+    songsByGenreLoading: true,
     isError: false
 }
 
@@ -19,11 +21,11 @@ const songsSlice = createSlice({
     initialState,
     reducers: {
         getSongs: (state, action : PayloadAction<[]>) => {
-            state.isLoading = false
+            state.getSongsLoading = false
             state.songs = action.payload
         },
         songsByGenre: (state, action : PayloadAction<[]>) => {
-            state.isLoading = false
+            state.songsByGenreLoading = false
             state.songsByGenre = action.payload
         }
     }

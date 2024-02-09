@@ -25,6 +25,7 @@ const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) =>
     }
     // border-radius: 10px;
     border-bottom: 1px solid #a8bcc3;
+    transition: .4s;
   `;
   
   return (

@@ -70,7 +70,7 @@ export default function SideBar() {
   cursor: pointer;
   border-radius: 10px;
   &:hover {
-    color: #FB8122;
+    color: #1BA098;
   }
   transition: .4s;
   `

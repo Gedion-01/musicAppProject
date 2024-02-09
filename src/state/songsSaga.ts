@@ -29,10 +29,43 @@ function* fetchSongsByGenre(action: any) {
   }
 }
 
+type Song = {
+    title: string,
+    artist: string,
+    album: string,
+    genre: string,
+    coverImageUrl: string
+}
+
+function* createSong(action: any) {
+  console.log(`${VITE_BASE_URL}/createSong`);
+
+  // Check if action.payload exists before destructuring
+  if (action.payload) {
+    const { data }: { data: Song } = action.payload;
+    console.log(data)
+    try {
+      const response: AxiosResponse = yield call(() => {
+        return axios.post(`${VITE_BASE_URL}/createSong`, data);
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    console.log('Payload is undefined');
+  }
+}
+
 export function* fetchSongsSaga() {
   yield takeEvery("songs/fetchSongs", fetchSongs);
 }
 
 export function* fetchSongsByGenreSaga() {
   yield takeEvery("songsByGenre/fetchSongs", fetchSongsByGenre)
+}
+
+// after adding a song we need to refresh the list by fetching songs again
+export function* createSongSaga() {
+  yield takeEvery("song/createSong", createSong)
 }

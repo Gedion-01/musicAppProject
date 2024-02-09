@@ -23,6 +23,7 @@ const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
     }
     // border-radius: 10px;
     border-bottom: 1px solid #a8bcc3;
+    transition: .4s;
   `;
   
   

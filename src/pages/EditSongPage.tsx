@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormEvent } from 'react';
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -100,8 +100,8 @@ interface InputChangeEvent {
         value: string;
     }
 }
-  
-function AddSongPage() {
+
+function EditSongPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
    const [formData, setFormData]  = useState({
@@ -111,7 +111,7 @@ function AddSongPage() {
     genre: "",
     coverImageUrl: ""
   })
-  console.log(formData);
+  
   
   const genreStyles = css`
     gap: 12px;
@@ -162,4 +162,4 @@ function AddSongPage() {
   );
 }
 
-export default AddSongPage;
+export default EditSongPage;

@@ -33,6 +33,10 @@ const genres : genre[] = [
     {
         name: "R&B",
         imgUrl: "https://th.bing.com/th/id/OIP.YJ0AR2SsQVtKgTftLeYxcQHaE8?rs=1&pid=ImgDetMain"
+    },
+    {
+      name: "Hip",
+      imgUrl: "https://th.bing.com/th/id/OIP.BFrCRK02np5eYRAYHnSjgAHaFw?w=1024&h=796&rs=1&pid=ImgDetMain"
     }
 ]
 

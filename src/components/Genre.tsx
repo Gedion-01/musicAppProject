@@ -15,6 +15,7 @@ const Genre: React.FC<reactProps> = ({name, imgUrl}) => {
     gap: 4px;
     cursor: pointer;
     text-decoration: none;
+    transition: .4s;
   `;
 
   return (

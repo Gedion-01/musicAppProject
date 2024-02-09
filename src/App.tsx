@@ -22,6 +22,7 @@ import { RootState } from "./state/store"
 import { getSongs } from "./state/songs/songsSlice"
 import FilteredSongsPage from "./pages/FilteredSongsPage"
 import AddSongPage from "./pages/AddSongPage"
+import EditSongPage from "./pages/EditSongPage"
 
 const StyledIcon = styled(IoMdHome)`
   margin-right: 10px;
@@ -172,6 +173,7 @@ function App() {
         <Route path="/genre/:genre" element={<FilteredSongsPage />} />
         <Route path="/Statistics" element={<StatisticsPage />} />
         <Route path="/addSong" element={<AddSongPage />} />
+        <Router path="/editSong/:id" element={<EditSongPage />} />
       </Route>
     </Routes>
     </>

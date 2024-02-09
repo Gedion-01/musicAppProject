@@ -21,7 +21,7 @@ function Home() {
 
   const data = useSelector((state : RootState) => state.songs.songs)
   
-  const isLoading = useSelector((state : RootState) => state.songs.isLoading)
+  const isLoading = useSelector((state : RootState) => state.songs.getSongsLoading)
   const dispatch = useDispatch()
   const HomeStyle = css`
   width: 100%;
