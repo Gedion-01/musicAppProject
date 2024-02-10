@@ -37,14 +37,14 @@ const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) =>
         css={tabularStyle.styles}
       >
         <Box flex={2}>
-          <Text fontSize={3}>
+          <Text fontSize={[2, 3, 4]}>
             {name}
           </Text>
         </Box>
         <Box flex={1}>
         <Flex justifyContent={"center"}>
             <Box>
-              <Text fontSize={3}>
+              <Text fontSize={[2, 3, 4]}>
                 {totalAlbums}
               </Text>
             </Box>
@@ -53,7 +53,7 @@ const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) =>
         <Box flex={1}>
         <Flex justifyContent={"end"}>
             <Box mr={3}>
-              <Text fontSize={3}>
+              <Text fontSize={[2, 3, 4]}>
                 {totalSongs}
               </Text>
             </Box>

@@ -72,7 +72,7 @@ export default function StatisticsPage() {
 
   return (
     <>
-      <Flex flexDirection={"column"}>
+      <Flex flexDirection={"column"} justifyContent={"center"} alignContent={"center"}>
         <Box>
           <Text fontSize={6} fontWeight="bold" mb={2}>
             Overview

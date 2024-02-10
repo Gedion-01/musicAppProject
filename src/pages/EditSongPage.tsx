@@ -161,9 +161,13 @@ function EditSongPage() {
   }, [searchedSong]);
 
   const genreStyles = css`
-    gap: 12px;
-    flex-wrap: wrap;
-    width: 50%;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    width: 450px; /* Adjust width for larger screens */
+  }
   `;
   const spinnerStyles = css`
     border: 3px solid rgba(0, 0, 0, 0.1);

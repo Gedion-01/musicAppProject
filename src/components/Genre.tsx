@@ -12,7 +12,7 @@ const Genre: React.FC<reactProps> = ({name, imgUrl}) => {
     
   const genreStylesM = css`
     width: 200px;
-    gap: 4px;
+    
     cursor: pointer;
     text-decoration: none;
     transition: .4s;
@@ -22,10 +22,12 @@ const Genre: React.FC<reactProps> = ({name, imgUrl}) => {
     <Flex
         flexDirection={"column"}
         css={genreStylesM.styles}
+        justifyContent={"space-between"}
+        alignContent={"space-between"}
       >
         <Flex>
         <img
-          style={{ width: "200px", height: "200px", borderRadius: "10px" }}
+          style={{ width: "100%", height: "200px", borderRadius: "10px" }}
           src={
             imgUrl
           }

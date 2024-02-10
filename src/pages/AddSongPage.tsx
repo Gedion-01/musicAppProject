@@ -18,7 +18,8 @@ const StyledInput = styled.input`
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
   transition: 0.2s ease-in-out;
   border-radius: 8px; /* Rounded corners */
-
+  
+  
   &:focus {
     box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
     border-color: #9090ff;
@@ -71,7 +72,7 @@ const StyledOption = styled.option`
 const StyledButton = styled.button`
   padding: 10px;
   /* Add playful spirit: */
-
+  
   background-color: #d0e3f0;
   border: 1px solid #c0c0ff;
   font-family: cursive;
@@ -94,7 +95,8 @@ const StyledButton = styled.button`
   transition: 0.4s;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
-const StyledForm = styled.form``;
+const StyledForm = styled.form`
+`;
 interface InputChangeEvent {
   target: {
     name: string;
@@ -126,7 +128,11 @@ function AddSongPage() {
   const genreStyles = css`
     gap: 12px;
     flex-wrap: wrap;
-    width: 50%;
+    width: 100%;
+
+    @media screen and (min-width: 768px) {
+      width: 450px; /* Adjust width for larger screens */
+    }
   `;
   const spinnerStyles = css`
     border: 3px solid rgba(0, 0, 0, 0.1);

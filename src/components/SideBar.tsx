@@ -49,8 +49,8 @@ export default function SideBar() {
     position: sticky;
     top: 0;
     
-  width: 350px;
-  
+   width: 350px;
+
   
   //  background: #a8bcc3;
   background: #a8bcc3;

@@ -14,7 +14,6 @@ const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
   const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
-    padding: 12px 10px;
     // background: #1f3044;
     color: #1F3044;
     &:hover {
@@ -35,14 +34,15 @@ const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
         flexDirection="row"
         justifyContent="space-between"
         css={tabularStyle.styles}
+        p={[2, 3, 4]}
       >
         <Box>
-          <Text fontSize={3}>
+          <Text fontSize={[2, 3, 4]}>
             {name}
           </Text>
         </Box>
         <Box mr={3}>
-          <Text fontSize={3} fontWeight="regular">
+          <Text fontSize={[2, 3, 4]} fontWeight="regular">
             {total}
           </Text>
         </Box>

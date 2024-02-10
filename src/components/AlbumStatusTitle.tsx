@@ -17,12 +17,12 @@ function AlbumStatusTitle() {
       css={titleStyle.styles}
     >
       <Box>
-        <Text fontSize={4} fontWeight="bold">
-          Artist Name
+        <Text fontSize={[2, 3, 4]} fontWeight="bold">
+          Album Name
         </Text>
       </Box>
       <Box>
-        <Text fontSize={4} fontWeight="bold">
+        <Text fontSize={[2, 3, 4]} fontWeight="bold">
           Total Songs
         </Text>
       </Box>

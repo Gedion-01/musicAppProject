@@ -26,6 +26,10 @@ interface Songs {
   EditSongButtonLoading: boolean;
   isSongtoBeDeletedMarked: boolean;
   isDeleteSongCausingError: boolean;
+  showSuccessToast: boolean;
+  showFailedToast: boolean;
+  showOpenDeleteModal: boolean;
+  markDeletedItem: boolean;
 }
 
 const initialState: Songs = {
@@ -54,7 +58,14 @@ const initialState: Songs = {
   EditSongButtonLoading: false,
   // for deleting purpose
   isSongtoBeDeletedMarked: false,
-  isDeleteSongCausingError: false
+  isDeleteSongCausingError: false,
+  markDeletedItem: false,
+  // for toast
+  showSuccessToast: false,
+  showFailedToast: false,
+  // for modal
+  showOpenDeleteModal: false,
+
 };
 
 const songsSlice = createSlice({
@@ -86,13 +97,18 @@ const songsSlice = createSlice({
     setEditSongButtonLoading: (state, action: PayloadAction<boolean>) => {
       state.EditSongButtonLoading = action.payload;
     },
-    //
-    setSongtoBeDeletedMarked: (state, action: PayloadAction<boolean>) => {
-        state.isSongtoBeDeletedMarked = action.payload
+    setShowSuccessToast: (state, action: PayloadAction<boolean>) => {
+      state.showSuccessToast = action.payload
     },
-    setDeleteSongCausingError: (state, action: PayloadAction<boolean>) => {
-        state.isDeleteSongCausingError = action.payload
-    }
+    setShowFailedToast: (state, action: PayloadAction<boolean>) => {
+      state.showFailedToast = action.payload
+    },
+    setOpenDeleteModal: (state, action: PayloadAction<boolean>) => {
+      state.showOpenDeleteModal = action.payload
+    },
+    setmarkDeletedItem: (state, action: PayloadAction<boolean>) => {
+      state.markDeletedItem = action.payload
+    },
   },
 });
 
@@ -104,8 +120,10 @@ export const {
   setAddSongButtonLoading,
   setEditSongCauseAnError,
   setEditSongButtonLoading,
-  setSongtoBeDeletedMarked,
-  setDeleteSongCausingError
+  setShowSuccessToast,
+  setShowFailedToast,
+  setOpenDeleteModal,
+  setmarkDeletedItem
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

@@ -1,6 +1,5 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import { useSelector } from "react-redux";
-import { SelectEffect, CallEffect } from 'redux-saga/effects'; 
+
 import {
   setSongs,
   setSongsByGenre,
@@ -9,8 +8,9 @@ import {
   setAddSongButtonLoading,
   setEditSongCauseAnError,
   setEditSongButtonLoading,
-  setSongtoBeDeletedMarked,
-  setDeleteSongCausingError,
+  setShowSuccessToast,
+  setShowFailedToast,
+  setOpenDeleteModal
 } from "./songs/songsSlice";
 
 import axios, { AxiosResponse } from "axios";
@@ -108,8 +108,6 @@ function* getSongById(action: any) {
 }
 
 function* deleteSongById(action: any) {
-  // Mark the song as pending deletion
-  yield put(setSongtoBeDeletedMarked(true));
 
   try {
     const { songid }: { songid: string } = action.payload;
@@ -137,21 +135,13 @@ function* deleteSongById(action: any) {
     yield put(setSongs(filteredSongs));
     yield put(setSongsByGenre(filteredSongsByGenre));
     
-    // Unset any previous error flags
-    yield put(setDeleteSongCausingError(false));
 
-    // Mark the deletion as completed
-    yield put(setSongtoBeDeletedMarked(false));
-
-    // Set notification message
-   
+    // Set delete success Toast on
+    yield put(setShowSuccessToast(true))
 
   } catch (error) {
-    // Handle deletion failure
-    // Unmark the delete progress
-    yield put(setSongtoBeDeletedMarked(false));
-    // Raise error flag
-    yield put(setDeleteSongCausingError(true));
+    yield put(setOpenDeleteModal(false))
+    yield put(setShowFailedToast(true))
     console.log(error);
   }
 }

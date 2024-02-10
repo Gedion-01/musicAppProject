@@ -16,12 +16,12 @@ const AllGenresTitle = () => {
       css={titleStyle.styles}
     >
       <Box>
-        <Text fontSize={4} fontWeight="bold">
+        <Text fontSize={[2, 3, 4]} fontWeight="bold">
           Genres
         </Text>
       </Box>
       <Box>
-        <Text fontSize={4} fontWeight="bold">
+        <Text fontSize={[2, 3, 4]} fontWeight="bold">
           Total Songs
         </Text>
       </Box>

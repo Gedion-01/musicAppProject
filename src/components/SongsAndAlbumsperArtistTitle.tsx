@@ -4,7 +4,6 @@ import { Flex, Box, Text } from "rebass";
 const SongsAndAlbumsperArtistTitle = () => {
   const titleStyle = css`
     width: 100%;
-    padding: 10px 10px;
     border-radius: 10px;
     background: #a8bcc3;
     color: #1f3044;
@@ -14,16 +13,17 @@ const SongsAndAlbumsperArtistTitle = () => {
       flexDirection="row"
       justifyContent="space-between"
       css={titleStyle.styles}
+      p={[2, 3, 4]}
     >
       <Box flex={2}>
-        <Text fontSize={4} fontWeight="bold">
+        <Text fontSize={[2, 3, 4]} fontWeight="bold">
           Artist Name
         </Text>
       </Box>
       <Box flex={1}>
         <Flex justifyContent={"center"}>
           <Box>
-            <Text fontSize={4} fontWeight="bold">
+            <Text fontSize={[2, 3, 4]} fontWeight="bold">
               Total Albums
             </Text>
           </Box>
@@ -32,7 +32,7 @@ const SongsAndAlbumsperArtistTitle = () => {
       <Box flex={1}>
         <Flex justifyContent={"end"}>
           <Box>
-            <Text fontSize={4} fontWeight="bold">
+            <Text fontSize={[2, 3, 4]} fontWeight="bold">
               Total Songs
             </Text>
           </Box>

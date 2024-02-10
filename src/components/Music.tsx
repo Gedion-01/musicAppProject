@@ -9,10 +9,13 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
+import SuccessToast from "./Toasts/SuccessToast";
+import { setOpenDeleteModal, setmarkDeletedItem } from "../state/songs/songsSlice";
+import FailedToast from "./Toasts/FailedToast";
 
 
 
@@ -51,11 +54,15 @@ const Music: React.FC<myComponentProp> = ({
   _id,
 }) => {
   const [optionIsOpened, setOptionIsOpened] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isToastopen, openToast] = useState(false)
-  const isSongtoBeDeletedIsMarked = useSelector((state: RootState) => state.songs.isSongtoBeDeletedMarked)
-  const isDeleteSongCausingAnError = useSelector((state: RootState) => state.songs.isDeleteSongCausingError)
+  const [markItem, setMarkItem] = useState(false)
+  const openSuccessToast = useSelector((state: RootState) => state.songs.showSuccessToast)
+  const showOpenDeleteModal = useSelector((state: RootState) => state.songs.showOpenDeleteModal)
+  const showFailedToast = useSelector((state: RootState) => state.songs.showFailedToast)
+  const markDeletedItem = useSelector((state: RootState) => state.songs.markDeletedItem)
 
+  const handleOptionClick = () => {
+    setOptionIsOpened((prev) => !prev);
+  };
   const dispatch = useDispatch()
 
   const deleteSong = (id: string | unknown) => {
@@ -65,12 +72,14 @@ const Music: React.FC<myComponentProp> = ({
   };
 
   const openModal = () => {
-    setIsOpen(true);
+    dispatch(setOpenDeleteModal(true))
     setOptionIsOpened(false);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setMarkItem(false)
+    dispatch(setOpenDeleteModal(false))
+    console.log('close')
   };
 
   const myImage = styled.image`
@@ -120,6 +129,7 @@ const Music: React.FC<myComponentProp> = ({
       transform: scale(1.05);
     }
   `;
+ 
 
   const StyledContent = styled.div`
     font-size: 17px;
@@ -141,7 +151,6 @@ const Music: React.FC<myComponentProp> = ({
     color: #1f3044;
     padding: 4px 4px;
     border-radius: 8px;
-
     background-color: ${optionIsOpened ? "#a8bcc3" : ""};
     max-width: 800px;
     &: hover {
@@ -184,8 +193,8 @@ to {
 }
 `;
 
-  // Define styles for the modal overlay
-  const overlayStyles = css`
+    // Define styles for the modal overlay
+    const overlayStyles = css`
     position: fixed;
     top: 0;
     left: 0;
@@ -209,40 +218,6 @@ to {
     animation: ${fadeIn} 0.3s ease; /* Apply animation to modal content */
   `;
 
- // Define keyframes for slide animation
-const slideIn = keyframes`
-from {
-  transform: translateX(100%);
-}
-to {
-  transform: translateX(0);
-}
-`;
-
-const slideOut = keyframes`
-from {
-  transform: translateX(0);
-}
-to {
-  transform: translateX(100%);
-  opacity: 0; /* Fade out the toast during slide out */
-}
-`;
-
-// Define a custom styled component with the isVisible prop
-const ToastContainer = styled.div<{ isVisible: boolean }>`
-position: fixed;
-bottom: 20px;
-right: ${({ isVisible }) => (isVisible ? '20px' : '-200px')}; /* Hide the toast by moving it off-screen */
-background: #1F3044;
-color: #fff;
-padding: 10px 20px;
-border-radius: 5px;
-animation: ${({ isVisible }) => (isVisible ? slideIn : slideOut)} 0.5s ease-in-out;
-opacity: ${({ isVisible }) => (isVisible ? '1' : '0')}; /* Hide the toast when it's not visible */
-`;
-
-
   const Overlay = styled.div`
     ${overlayStyles}
   `;
@@ -250,6 +225,7 @@ opacity: ${({ isVisible }) => (isVisible ? '1' : '0')}; /* Hide the toast when i
   const ModalContent = styled.div`
     ${modalStyles}
   `;
+
 
   function formatDate(date: string): string {
     const dateObject: Date = new Date(date);
@@ -265,37 +241,16 @@ opacity: ${({ isVisible }) => (isVisible ? '1' : '0')}; /* Hide the toast when i
 
     return formattedDate;
   }
-  const [isToastVisible, setIsToastVisible] = useState(false);
 
-  const handleShowToast = () => {
-    setIsToastVisible(true);
-    // Optionally, you can add a timeout to hide the toast after a certain duration
-    setTimeout(() => {
-      setIsToastVisible(false);
-    }, 3000); // Hides the toast after 3 seconds (adjust as needed)
-  };
-  const handleOptionClick = () => {
-    setOptionIsOpened((prev) => !prev);
-  };
+
+  
 
   return (
-    <>    
-    <div>
-      <button onClick={handleShowToast}>Show Toast</button>
-      <ToastContainer isVisible={isToastVisible}>
-        <Flex flexDirection={"row"} alignContent={"center"} justifyContent={"center"}>
-          
-            <StyledCheckMark />
-          
-          
-            <Text fontSize={3}>Song deleted successfully.</Text>
-          
-        </Flex>
-        
-      </ToastContainer>
-    </div>
-        {/* Render modal if isOpen is true */}
-        {isOpen && (
+    <>
+    
+      
+    {/* Render modal if isOpen is true */}
+    {showOpenDeleteModal && (
           <Overlay onClick={closeModal}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
               <Text fontSize={4} fontWeight={"bold"}>
