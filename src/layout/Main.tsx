@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {Flex, Box, Text} from "rebass";
 
-import NavBar from "../components/NavBar"
+import NavBar from "../components/NavBar";
 
 export default function Main() {
 

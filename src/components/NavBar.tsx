@@ -37,7 +37,7 @@ export default function NavBar() {
     return(
         <>
             {/* Nav bar */}
-            <Flex css={NavStyle} justifyContent={"space-between"}>
+            <Flex css={NavStyle.styles} justifyContent={"space-between"}>
                     <Box>
                         <SearchStyleInput type="search" placeholder="Search here..."/>
                     </Box>

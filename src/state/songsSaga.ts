@@ -1,5 +1,6 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, select, takeEvery } from "redux-saga/effects";
 import { useSelector } from "react-redux";
+import { SelectEffect, CallEffect } from 'redux-saga/effects'; 
 import {
   setSongs,
   setSongsByGenre,
@@ -105,45 +106,56 @@ function* getSongById(action: any) {
     console.log(error);
   }
 }
+
 function* deleteSongById(action: any) {
-  // lets mark the song which is in pending state
-  yield put(setSongtoBeDeletedMarked(true))
-  const songs = useSelector((state: RootState) => state.songs.songs);
+  // Mark the song as pending deletion
+  yield put(setSongtoBeDeletedMarked(true));
 
-  const songsByGenre = useSelector(
-    (state: RootState) => state.songs.songsByGenre
-  );
-
-  const { queryParams }: { queryParams: { songid: string } } = action.payload;
   try {
+    const { songid }: { songid: string } = action.payload;
+    console.log(songid, action);
+    const queryParmams = {
+      songid: songid
+    }
+    
+    // Send a request to delete the song
     const response: AxiosResponse = yield call(() => {
       return axios.delete(`${VITE_BASE_URL}/removeSong`, {
-        params: queryParams,
+        params: queryParmams,
       });
     });
+    console.log(response.data.message)
     const songToRemove = response.data.removedSong;
-    const filterdSongs = songs.filter((song) => song._id !== songToRemove._id);
-    const filterdSongsByGenre = songsByGenre.filter(
-      (song) => song._id !== songToRemove._id
-    );
-    yield put(setSongs(filterdSongs));
-    yield put(setSongsByGenre(filterdSongsByGenre));
+
+    // Update the songs list and songs by genre after deletion
+    const songs: RootState['songs']['songs'] = yield select((state: RootState) => state.songs.songs);
+    const songsByGenre: RootState['songs']['songsByGenre'] = yield select((state: RootState) => state.songs.songsByGenre);
     
-    // if previously there was an error status set to true unset it
-    yield put(setDeleteSongCausingError(false))
-    // if pending state goes to completed unmark it
-    yield put(setSongtoBeDeletedMarked(false))
-    // need get message and set it to the state
-    // then open notification
-    // then remove the deleted data from the songs list
+    const filteredSongs = songs.filter(song => song._id !== songToRemove._id);
+    const filteredSongsByGenre = songsByGenre.filter(song => song._id !== songToRemove._id);
+
+    yield put(setSongs(filteredSongs));
+    yield put(setSongsByGenre(filteredSongsByGenre));
+    
+    // Unset any previous error flags
+    yield put(setDeleteSongCausingError(false));
+
+    // Mark the deletion as completed
+    yield put(setSongtoBeDeletedMarked(false));
+
+    // Set notification message
+   
+
   } catch (error) {
-    // if pending state goes to fail unmark it
-    yield put(setSongtoBeDeletedMarked(false))
-    // if an eror occur raise a flag
-    yield put(setDeleteSongCausingError(true))
+    // Handle deletion failure
+    // Unmark the delete progress
+    yield put(setSongtoBeDeletedMarked(false));
+    // Raise error flag
+    yield put(setDeleteSongCausingError(true));
     console.log(error);
   }
 }
+
 
 export function* fetchSongsSaga() {
   yield takeEvery("songs/fetchSongs", fetchSongs);
@@ -164,5 +176,5 @@ export function* getSongByIdSaga() {
   yield takeEvery("song/getSongById", getSongById);
 }
 export function* deleteSongByIdSaga() {
-  yield takeEvery("song/deleteSongById", getSongById)
+  yield takeEvery("song/deleteSongById", deleteSongById)
 }
