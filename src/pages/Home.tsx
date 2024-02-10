@@ -49,7 +49,7 @@ function Home() {
         artist={song.artist}
         title={song.title}
         album={song.album}
-        date={song.createdAt}
+        date={song.updatedAt}
         _id={song._id}
       />
     ))

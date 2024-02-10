@@ -3,6 +3,9 @@ import {
   fetchSongsSaga,
   fetchSongsByGenreSaga,
   createSongSaga,
+  updateSongSaga,
+  getSongByIdSaga,
+  deleteSongByIdSaga
 } from "./songsSaga";
 import {
   fetchSongsStatisticsSaga,
@@ -14,7 +17,10 @@ export default function* rootSaga() {
     fetchSongsSaga(),
     fetchSongsByGenreSaga(),
     createSongSaga(),
+    updateSongSaga(),
+    getSongByIdSaga(),
     fetchSongsStatisticsSaga(),
     fetchSongsStatisticsDataSaga(),
+    deleteSongByIdSaga()
   ]);
 }

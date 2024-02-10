@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { Flex, Box, Text } from "rebass";
 
-const AlbumStatusTitle = () => {
+function AlbumStatusTitle() {
   const titleStyle = css`
     width: 100%;
     padding: 10px 10px;

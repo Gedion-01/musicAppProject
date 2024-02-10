@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { FormEvent } from 'react';
+import { FormEvent } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
-import { UseSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
-
-
+import ErrorMessage from "../components/ErrorMessage";
 const StyledInput = styled.input`
   padding: 10px;
   /* Add playful spirit: */
@@ -32,7 +31,7 @@ const Categories = [
   "Rap",
   "country/Ethiopia",
   "Pop",
-  "Hip"
+  "Hip",
 ];
 
 const StyledSelect = styled.select`
@@ -91,49 +90,97 @@ const StyledButton = styled.button`
     box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
     border-color: #9090ff;
   }
+
+  transition: 0.4s;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
-const StyledForm = styled.form`
-`
+const StyledForm = styled.form``;
 interface InputChangeEvent {
-    target: {
-        name: string;
-        value: string;
-    }
+  target: {
+    name: string;
+    value: string;
+  };
 }
-  
+
 function AddSongPage() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-   const [formData, setFormData]  = useState({
+  const [loading, setLoading] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const createSongCauseAnError = useSelector(
+    (state: RootState) => state.songs.isCreateSongCausingError
+  );
+  const buttonIsLoading = useSelector(
+    (state: RootState) => state.songs.addSongButtonLoading
+  );
+  const [formData, setFormData] = useState({
     title: "",
     artist: "",
     album: "",
     genre: "",
-    coverImageUrl: ""
-  })
+    coverImageUrl: "",
+  });
   console.log(formData);
-  
+
   const genreStyles = css`
     gap: 12px;
     flex-wrap: wrap;
     width: 50%;
   `;
+  const spinnerStyles = css`
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  `;
   function handleInputChange(e: InputChangeEvent) {
-    const {name, value} = e.target
+    const { name, value } = e.target;
     setFormData({
-        ...formData,
-        [name]: value
-    })
+      ...formData,
+      [name]: value,
+    });
   }
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    dispatch({type: "song/createSong", payload: {data: formData}})
-    
-    navigate("/")
+    e.preventDefault();
+    handleClick();
+    dispatch({ type: "song/createSong", payload: { data: formData } });
+
+    if (createSongCauseAnError === false && buttonIsLoading === false) {
+      navigate("/");
+    }
   }
+  const handleClick = () => {
+    // Simulate asynchronous operation
+    setShowErrorMessage(true);
+    setTimeout(() => {
+      setShowErrorMessage(false);
+    }, 8000);
+  };
 
   return (
     <Flex flexDirection={"column"}>
+      {createSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
+        <ErrorMessage
+          message="Error while adding the song. Please try again."
+          show={setShowErrorMessage}
+        />
+      ) : (
+        ""
+      )}
+
       <Box>
         <Text fontSize={5} fontWeight="bold" mb={2}>
           Add Song
@@ -141,21 +188,81 @@ function AddSongPage() {
       </Box>
       <StyledForm onSubmit={handleSubmit}>
         <Flex flexDirection={"column"} css={genreStyles.styles}>
-          <StyledInput required type="text" placeholder="Song Title" name="title" value={formData.title} onChange={handleInputChange} />
-          <StyledInput required type="text" placeholder="Artist Name" name="artist" value={formData.artist} onChange={handleInputChange}/>
-          <StyledInput required type="text" placeholder="Album Name" name="album" value={formData.album} onChange={handleInputChange}/>
-          <StyledInput required type="text" placeholder="Song Cover Image URL" name="coverImageUrl" value={formData.coverImageUrl} onChange={handleInputChange}/>
+          <StyledInput
+            required
+            type="text"
+            placeholder="Song Title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+          />
+          <StyledInput
+            required
+            type="text"
+            placeholder="Artist Name"
+            name="artist"
+            value={formData.artist}
+            onChange={handleInputChange}
+          />
+          <StyledInput
+            required
+            type="text"
+            placeholder="Album Name"
+            name="album"
+            value={formData.album}
+            onChange={handleInputChange}
+          />
+          <StyledInput
+            required
+            type="text"
+            placeholder="Song Cover Image URL"
+            name="coverImageUrl"
+            value={formData.coverImageUrl}
+            onChange={handleInputChange}
+          />
           <Text fontSize={2} fontWeight="bold" mb={0}>
             Select Song Genre
           </Text>
-          <StyledSelect required name="genre" onChange={handleInputChange} value={formData.genre}>
+          <StyledSelect
+            required
+            name="genre"
+            onChange={handleInputChange}
+            value={formData.genre}
+          >
             {Categories.map((category, index) => (
               <StyledOption key={index} value={category}>
                 {category}
               </StyledOption>
             ))}
           </StyledSelect>
-          <StyledButton type="submit">Add Song</StyledButton>
+          <StyledButton type="submit" disabled={buttonIsLoading}>
+            {buttonIsLoading ? (
+              <>
+                <Flex
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  css={`
+                    height: 30px;
+                  `}
+                >
+                  <Text>Add Song</Text>
+                  <Flex css={spinnerStyles.styles}></Flex>
+                </Flex>
+              </>
+            ) : (
+              <Flex
+                flexDirection={"row"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                css={`
+                  height: 30px;
+                `}
+              >
+                <Text>Add Song</Text>
+              </Flex>
+            )}
+          </StyledButton>
         </Flex>
       </StyledForm>
     </Flex>
