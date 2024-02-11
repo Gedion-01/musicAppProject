@@ -6,6 +6,7 @@ import { RootState } from "../state/store";
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import Music from "../components/Music";
+import TracksList from "../components/TracksList";
 
 interface Song {
   album: string;
@@ -38,18 +39,9 @@ function FilteredSongsPage() {
         </Text>
       </Box>
       <Box>
-        {data.map((song: Song) => {
-          return (
-            <Music
-              key={song._id} // Remember to provide a unique key prop when rendering a list of components
-              artist={song.artist}
-              title={song.title}
-              album={song.album}
-              date={song.createdAt}
-              _id={song._id}
-            />
-          );
-        })}
+        {
+          <TracksList data={data} />
+        }
       </Box>
     </Flex>
   );

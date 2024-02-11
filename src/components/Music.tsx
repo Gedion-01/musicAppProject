@@ -5,6 +5,7 @@ import { FaPause } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -14,8 +15,9 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import SuccessToast from "./Toasts/SuccessToast";
-import { setOpenDeleteModal, setmarkDeletedItem } from "../state/songs/songsSlice";
+import { setCurrentData, setCurrentTrackIndex, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
 import FailedToast from "./Toasts/FailedToast";
+import { useAudioplayer } from "../hooks/useAudioPlayer";
 
 
 
@@ -42,6 +44,11 @@ type myComponentProp = {
   date: string;
   title: string;
   _id?: string;
+  //
+  playListData: [];
+  isCurrent: boolean;
+  index: number;
+  isPlaying: boolean;
 };
 const Music: React.FC<myComponentProp> = ({
   album,
@@ -50,21 +57,43 @@ const Music: React.FC<myComponentProp> = ({
   date,
   title,
   _id,
+  playListData,
+  isCurrent,
+  index,
+  isPlaying
 }) => {
+  const dispatch = useDispatch()
   const [optionIsOpened, setOptionIsOpened] = useState(false);
   const [markedItem, setMarkedItem] = useState(false)
   const [openDeleteModal ,setOpenDeleteModal] = useState(false);
 
   const showSuccessToast = useSelector((state: RootState) => state.songs.showSuccessToast)
   const showFailedToast = useSelector((state: RootState) => state.songs.showFailedToast)
+  //
+  const currentData: any = useSelector((state: RootState) => state.playerData.currentData)
+
+  const {methods} = useAudioplayer()
+  const {handlePlayPause} = methods
   
-  
+  console.log(index, ' ', playListData.length,' ', playListData)
+  function playPause() {
+    dispatch(setCurrentTrackIndex(index))
+    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title}))
+    dispatch(setPlayerQueueLength(playListData.length))
+    dispatch(setPlayerQueue(playListData))
+    console.log('play/pause')
+    handlePlayPause()
+
+    if(currentData.title !== title) {
+      dispatch(setPlayNext(true))
+    }
+  }
   // to open option
   const handleOptionClick = (e: any) => {
     e.stopPropagation()
     setOptionIsOpened((prev) => !prev);
   };
-  const dispatch = useDispatch()
+  
 
   const deleteSong = (id: string | unknown) => {
     dispatch({ type: "song/deleteSongById", payload: { songid: id } });
@@ -154,6 +183,7 @@ const Music: React.FC<myComponentProp> = ({
     padding: 4px 4px;
     border-radius: 8px;
     background-color: ${optionIsOpened ? "#a8bcc3" : ""};
+    background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
     background-color: ${markedItem ? "#a8bcc3" : ""};
     max-width: 800px;
     &: hover {
@@ -297,7 +327,11 @@ to {
           flex={1.5}
           css={playTitle.styles}
         >
-          <Box ml={2}>{true ? <FaPlay /> : <FaPause />}</Box>
+          <Box ml={2} onClick={() => playPause()}>{isPlaying && isCurrent ? (
+                <BsPauseFill className="ml-2 h-5 w-5 cursor-pointer" />
+              ) : (
+                <BsFillPlayFill className="ml-2 h-5 w-5 cursor-pointer" />
+              )}</Box>
           <Box>
             <img
               style={{ width: "45px", height: "45px", borderRadius: "5px" }}

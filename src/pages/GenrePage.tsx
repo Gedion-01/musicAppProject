@@ -12,7 +12,7 @@ type genre = {
 };
 const genres: genre[] = [
   {
-    name: "country/Ethiopia",
+    name: "Ethiopian",
     imgUrl:
       "https://th.bing.com/th/id/OIP.gQTSRBvwGnns-qDT8v1AUgAAAA?rs=1&pid=ImgDetMain",
   },

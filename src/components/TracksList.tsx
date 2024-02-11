@@ -1,0 +1,51 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import Music from "./Music";
+
+interface Song {
+  album: string;
+  artist: string;
+  coverImageUrl: string;
+  createdAt: string;
+  genre: string;
+  title: string;
+  updatedAt: string;
+  _id: string;
+}
+interface data {
+  data: Song[];
+}
+
+const TracksList: React.FC<data> = ({ data }) => {
+  const isPlaying = useSelector(
+    (state: RootState) => state.playerData.isPlaying
+  );
+  const currentData: any = useSelector(
+    (state: RootState) => state.playerData.currentData
+  );
+
+  return (
+    <div>
+      {
+        data.map((song: Song, index) => (
+          <Music
+            key={index} // Remember to provide a unique key prop when rendering a list of components
+            artist={song.artist}
+            title={song.title}
+            album={song.album}
+            date={song.updatedAt}
+            _id={song._id}
+            playListData={data as any}
+            index={index}
+            isCurrent={song._id === currentData._id}
+            isPlaying={isPlaying}
+          />
+        ))
+        // <TracksList data={data} />
+      }
+    </div>
+  );
+};
+
+export default TracksList;
