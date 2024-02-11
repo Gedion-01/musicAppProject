@@ -31,7 +31,7 @@ const AlbumStatus: React.FC<reactProps> = ({ name, total }) => {
         flexDirection="row"
         justifyContent="space-between"
         css={tabularStyle.styles}
-        p={[2, 3, 4]}
+        p={[2]}
     >
         <Box>
             <Text fontSize={[2, 3, 4]}>

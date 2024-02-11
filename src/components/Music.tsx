@@ -20,17 +20,15 @@ import FailedToast from "./Toasts/FailedToast";
 
 
 const StyledOption = styled(SlOptionsVertical)`
+position: relative; // Set position to relative
+z-index: 1; // Set a lower z-index value
   margin-right: 10px;
   font-size: 20px;
-`;
-const StyledCheckMark= styled(FaRegCircleCheck)`
-  margin-right: 10px;
-  font-size: 25px;
-  color: green;
 `;
 const EditIcon = styled(MdOutlineEdit)`
   margin-right: 10px;
   font-size: 20px;
+  z-index: 0px;
 `;
 const StyledRemoveIcon = styled(MdDelete)`
   margin-right: 10px;
@@ -54,40 +52,42 @@ const Music: React.FC<myComponentProp> = ({
   _id,
 }) => {
   const [optionIsOpened, setOptionIsOpened] = useState(false);
-  const [markItem, setMarkItem] = useState(false)
-  const openSuccessToast = useSelector((state: RootState) => state.songs.showSuccessToast)
-  const showOpenDeleteModal = useSelector((state: RootState) => state.songs.showOpenDeleteModal)
-  const showFailedToast = useSelector((state: RootState) => state.songs.showFailedToast)
-  const markDeletedItem = useSelector((state: RootState) => state.songs.markDeletedItem)
+  const [markedItem, setMarkedItem] = useState(false)
+  const [openDeleteModal ,setOpenDeleteModal] = useState(false);
 
-  const handleOptionClick = () => {
+  const showSuccessToast = useSelector((state: RootState) => state.songs.showSuccessToast)
+  const showFailedToast = useSelector((state: RootState) => state.songs.showFailedToast)
+  
+  
+  // to open option
+  const handleOptionClick = (e: any) => {
+    e.stopPropagation()
     setOptionIsOpened((prev) => !prev);
   };
   const dispatch = useDispatch()
 
   const deleteSong = (id: string | unknown) => {
-    console.log(id);
-    
     dispatch({ type: "song/deleteSongById", payload: { songid: id } });
+    closeModal()
   };
 
   const openModal = () => {
-    dispatch(setOpenDeleteModal(true))
+    setOpenDeleteModal(true)
     setOptionIsOpened(false);
+    setMarkedItem(true)
+    // dispatch(setOpenDeleteModal(true))
+    // dispatch(setmarkDeletedItem(true))
   };
 
   const closeModal = () => {
-    setMarkItem(false)
-    dispatch(setOpenDeleteModal(false))
+    setMarkedItem(false)
+    setOpenDeleteModal(false)
+    // dispatch(setOpenDeleteModal(false))
+    // dispatch(setmarkDeletedItem(false))
     console.log('close')
   };
+  console.log(markedItem);
 
-  const myImage = styled.image`
-    width: 20px;
-    height: 20px;
-    object-fit: cover;
-    border-radius: 60px;
-  `;
   const StyledBackGround = styled.div`
     position: fixed;
     top: 0;
@@ -95,7 +95,7 @@ const Music: React.FC<myComponentProp> = ({
     display: ${optionIsOpened ? "block" : "none"};
     height: 100vh;
     width: 100%;
-    z-index: 10;
+    
   `;
   const Button = styled.button`
     padding: 15px 30px;
@@ -132,6 +132,7 @@ const Music: React.FC<myComponentProp> = ({
  
 
   const StyledContent = styled.div`
+  z-index: 10;
     font-size: 17px;
     position: absolute;
     min-width: 100px;
@@ -140,8 +141,9 @@ const Music: React.FC<myComponentProp> = ({
     border-radius: 10px;
     margin-right: 5px;
     display: ${optionIsOpened ? "block" : "none"};
-    z-index: 30;
+   
     text-decoration: none;
+    right: 0;
   `;
   const StyledButton = styled.div`
     padding: 5px 2px;
@@ -152,6 +154,7 @@ const Music: React.FC<myComponentProp> = ({
     padding: 4px 4px;
     border-radius: 8px;
     background-color: ${optionIsOpened ? "#a8bcc3" : ""};
+    background-color: ${markedItem ? "#a8bcc3" : ""};
     max-width: 800px;
     &: hover {
       background-color: #a8bcc3;
@@ -167,7 +170,7 @@ const Music: React.FC<myComponentProp> = ({
   `;
 
   const hiddenOnSmallScreen = css`
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       display: none;
     }
   `;
@@ -176,8 +179,11 @@ const Music: React.FC<myComponentProp> = ({
   `;
   const StyledOptionContainer = css`
     cursor: pointer;
+    position: relative;
+    
   `;
   const StyledlementsMenuebarContent = css`
+  
     &:hover {
       color: #1ba098;
     }
@@ -196,6 +202,7 @@ to {
     // Define styles for the modal overlay
     const overlayStyles = css`
     position: fixed;
+    z-index: 20;
     top: 0;
     left: 0;
     width: 100%;
@@ -212,10 +219,13 @@ to {
     flex-direction: column;
     background-color: #f0f8ff;
     gap: 10px;
-    width: 25%;
+    
     padding: 20px;
     border-radius: 8px;
     animation: ${fadeIn} 0.3s ease; /* Apply animation to modal content */
+    @media (max-width: 768px) {
+      
+    }
   `;
 
   const Overlay = styled.div`
@@ -243,20 +253,23 @@ to {
   }
 
 
-  
+  const StyledSpan = styled.span`
+  font-weight: bold;
+  `
 
   return (
     <>
-    
+    <SuccessToast isToastVisible={showSuccessToast} />
+    <FailedToast isToastVisible={showFailedToast} />
       
     {/* Render modal if isOpen is true */}
-    {showOpenDeleteModal && (
+    {openDeleteModal && (
           <Overlay onClick={closeModal}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
               <Text fontSize={4} fontWeight={"bold"}>
                 Delete from your Songs?
               </Text>
-              <p>This will delete Scared To Start from Your Songs.</p>
+              <Text>This will delete <StyledSpan>{title}</StyledSpan> from Your Songs.</Text>
               <Flex
                 flexDirection={"row"}
                 justifyContent={"flex-end"}
@@ -327,10 +340,10 @@ to {
         <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1}>
           <Text fontSize={14}>{formatDate(date)}</Text>
         </Box>
-        <Box css={StyledOptionContainer.styles}>
+        <Box css={StyledOptionContainer.styles} >
           <StyledOption onClick={handleOptionClick} />
-          {optionIsOpened && (
-            <StyledContent>
+          {optionIsOpened === true ? (
+            <StyledContent onClick={(e) => e.stopPropagation()}>
               <Link
                 to={`/editSong/${_id}`}
                 style={{ textDecoration: "none", color: "#1f3044" }}
@@ -355,7 +368,7 @@ to {
                 alignItems={"center"}
                 p={2}
                 css={StyledlementsMenuebarContent.styles}
-                onClick={openModal}
+                onClick={(e) => openModal(e)}
               >
                 <Box>
                   <StyledRemoveIcon />
@@ -365,7 +378,7 @@ to {
                 </Box>
               </Flex>
             </StyledContent>
-          )}
+          ): ""}
         </Box>
       </Flex>
     </>

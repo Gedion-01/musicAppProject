@@ -7,6 +7,7 @@ import { Flex, Box, Text } from "rebass";
 
 import NavBar from "../components/NavBar";
 
+
 export default function Main() {
   const MainStyle = css`
     padding: 0px 15px;
@@ -25,6 +26,7 @@ export default function Main() {
 
   return (
     <>
+      
       <Flex css={MainStyle.styles} alignItems={""}>
         <Box>
           <SideBar />

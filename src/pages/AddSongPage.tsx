@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormEvent } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -12,14 +12,13 @@ const StyledInput = styled.input`
   /* Add playful spirit: */
   background-color: #f0f8ff;
   border: 1px solid #c0c0ff;
-  font-family: cursive;
+
   font-size: 16px;
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
   transition: 0.2s ease-in-out;
   border-radius: 8px; /* Rounded corners */
-  
-  
+
   &:focus {
     box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
     border-color: #9090ff;
@@ -40,7 +39,7 @@ const StyledSelect = styled.select`
   /* Add playful spirit: */
   background-color: #f0f8ff;
   border: 1px solid #c0c0ff;
-  font-family: cursive;
+
   font-size: 16px;
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
@@ -48,7 +47,6 @@ const StyledSelect = styled.select`
   border-radius: 8px; /* Rounded corners */
 
   /* Playful font */
-  font-family: "Pacifico", cursive;
   font-size: 18px;
 
   /* Playful animations on focus */
@@ -60,7 +58,7 @@ const StyledSelect = styled.select`
 const StyledOption = styled.option`
      
       color: #333;
-      padding: 10px 20px;
+      padding: 10px;
       border-radius: 5px;
   
       &:hover {
@@ -72,10 +70,9 @@ const StyledOption = styled.option`
 const StyledButton = styled.button`
   padding: 10px;
   /* Add playful spirit: */
-  
-  background-color: #d0e3f0;
+  color: #e1f2f7;
+  background-color: #bd1e51;
   border: 1px solid #c0c0ff;
-  font-family: cursive;
   font-size: 16px;
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
@@ -84,7 +81,7 @@ const StyledButton = styled.button`
   cursor: pointer; /* Ensure cursor changes on hover */
 
   &:hover {
-    background-color: #f0f8ff;
+    background-color: #980030;
   }
 
   &:focus {
@@ -95,8 +92,7 @@ const StyledButton = styled.button`
   transition: 0.4s;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
-const StyledForm = styled.form`
-`;
+const StyledForm = styled.form``;
 interface InputChangeEvent {
   target: {
     name: string;
@@ -123,6 +119,9 @@ function AddSongPage() {
     genre: "",
     coverImageUrl: "",
   });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   console.log(formData);
 
   const genreStyles = css`

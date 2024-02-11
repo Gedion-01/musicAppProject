@@ -57,6 +57,10 @@ export default function StatisticsPage() {
     (state: RootState) => state.songsDataStatistics.issongDataStatistics
   );
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const dispatch = useDispatch();
 
   const overViewContainerStyle = css`
@@ -72,7 +76,11 @@ export default function StatisticsPage() {
 
   return (
     <>
-      <Flex flexDirection={"column"} justifyContent={"center"} alignContent={"center"}>
+      <Flex
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignContent={"center"}
+      >
         <Box>
           <Text fontSize={6} fontWeight="bold" mb={2}>
             Overview
@@ -94,8 +102,14 @@ export default function StatisticsPage() {
           <Datacontainer>
             {isDataLoading
               ? "loading"
-              : genres.map((genre: any) => {
-                  return <GenreStatus name={genre._id} total={genre.count} />;
+              : genres.map((genre, index) => {
+                  return (
+                    <GenreStatus
+                      key={index}
+                      name={genre._id}
+                      total={genre.count}
+                    />
+                  );
                 })}
           </Datacontainer>
         </WrapperStyle>
@@ -104,9 +118,10 @@ export default function StatisticsPage() {
           <Datacontainer>
             {isDataLoading
               ? "loading"
-              : songsAndAlbumsperArtist.map((data) => {
+              : songsAndAlbumsperArtist.map((data, index) => {
                   return (
                     <ArtistsStatus
+                      key={index}
                       name={data.artist}
                       totalAlbums={data.albums.length}
                       totalSongs={data.totalSongs}
@@ -119,8 +134,10 @@ export default function StatisticsPage() {
         <WrapperStyle>
           <AlbumStatusTitle />
           <Datacontainer>
-            {albumCountsAndSongs.map((data) => {
-              return <AlbumStatus name={data.album} total={data.count} />;
+            {albumCountsAndSongs.map((data, index) => {
+              return (
+                <AlbumStatus key={index} name={data.album} total={data.count} />
+              );
             })}
           </Datacontainer>
         </WrapperStyle>

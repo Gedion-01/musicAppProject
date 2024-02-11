@@ -16,7 +16,7 @@ const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) =>
   const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
-    padding: 12px 10px;
+    
     // background: #1f3044;
     color: #1F3044;
     &:hover {
@@ -35,6 +35,7 @@ const ArtistsStatus: React.FC<reactProps> = ({name, totalAlbums, totalSongs}) =>
         flexDirection="row"
         justifyContent="space-between"
         css={tabularStyle.styles}
+        p={[2]}
       >
         <Box flex={2}>
           <Text fontSize={[2, 3, 4]}>

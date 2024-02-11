@@ -5,7 +5,7 @@ import { Flex, Box, Text } from "rebass";
 function AlbumStatusTitle() {
   const titleStyle = css`
     width: 100%;
-    padding: 10px 10px;
+    
     border-radius: 10px;
     background: #a8bcc3;
     color: #1f3044;
@@ -15,6 +15,7 @@ function AlbumStatusTitle() {
       flexDirection="row"
       justifyContent="space-between"
       css={titleStyle.styles}
+      p={2}
     >
       <Box>
         <Text fontSize={[2, 3, 4]} fontWeight="bold">

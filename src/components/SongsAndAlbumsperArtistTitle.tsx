@@ -13,7 +13,7 @@ const SongsAndAlbumsperArtistTitle = () => {
       flexDirection="row"
       justifyContent="space-between"
       css={titleStyle.styles}
-      p={[2, 3, 4]}
+      p={[2]}
     >
       <Box flex={2}>
         <Text fontSize={[2, 3, 4]} fontWeight="bold">

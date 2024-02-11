@@ -42,7 +42,7 @@ to {
 
   // Define a custom styled component with the isVisible prop
   const ToastContainer = styled.div<{ isVisible: boolean }>`
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   right: 20px; /* Keep toast on-screen */
   background: #1f3044;
