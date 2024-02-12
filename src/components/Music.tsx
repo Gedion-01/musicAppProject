@@ -44,6 +44,7 @@ type myComponentProp = {
   date: string;
   title: string;
   _id?: string;
+  songDataUrl: string;
   //
   playListData: [];
   isCurrent: boolean;
@@ -60,7 +61,8 @@ const Music: React.FC<myComponentProp> = ({
   playListData,
   isCurrent,
   index,
-  isPlaying
+  isPlaying,
+  songDataUrl
 }) => {
   const dispatch = useDispatch()
   const [optionIsOpened, setOptionIsOpened] = useState(false);
@@ -78,13 +80,13 @@ const Music: React.FC<myComponentProp> = ({
   console.log(index, ' ', playListData.length,' ', playListData)
   function playPause() {
     dispatch(setCurrentTrackIndex(index))
-    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title}))
+    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
     dispatch(setPlayerQueueLength(playListData.length))
     dispatch(setPlayerQueue(playListData))
     console.log('play/pause')
     handlePlayPause()
-
-    if(currentData.title !== title) {
+    
+    if(currentData._id !== _id) {
       dispatch(setPlayNext(true))
     }
   }
@@ -159,7 +161,7 @@ const Music: React.FC<myComponentProp> = ({
     }
   `;
  
-
+  console.log(isCurrent, isPlaying)
   const StyledContent = styled.div`
   z-index: 10;
     font-size: 17px;

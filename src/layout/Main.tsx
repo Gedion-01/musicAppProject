@@ -12,14 +12,20 @@ import { useAudioplayer } from "../hooks/useAudioPlayer";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 
-
 export default function Main() {
-  const currentData: any = useSelector((state: RootState) => state.playerData.currentData)
-  const currentTrackIndex = useSelector((state: RootState) => state.playerData.currentTrackIndex)
-  const playList = useSelector((state: RootState) => state.playerData.playerQueue)
- const {methods, stateValue} =  useAudioplayer()
- const {isPlaying, playNext} = stateValue
- const {handlePlayPause} = methods
+  const currentData: any = useSelector(
+    (state: RootState) => state.playerData.currentData
+  );
+  const currentTrackIndex = useSelector(
+    (state: RootState) => state.playerData.currentTrackIndex
+  );
+  const playList = useSelector(
+    (state: RootState) => state.playerData.playerQueue
+  );
+  const { methods, stateValue, refs } = useAudioplayer();
+  const {audioRef} = refs
+  const { isPlaying, playNext } = stateValue;
+  const { handlePlayPause } = methods;
 
   const MainStyle = css`
     padding: 0px 15px;
@@ -40,7 +46,6 @@ export default function Main() {
     height: calc(100vh - 200px); /* Adjust the height as needed */
     overflow-y: auto; /* Enable scrolling if content exceeds container height */
   `;
-  
 
   return (
     <>
@@ -55,7 +60,19 @@ export default function Main() {
           </OutletContainer>
         </Box>
       </Flex>
-      <MyAudioPlayer artist={currentData.artist} title={currentData.title} imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain" currentTime={2} duration={6} currentTrackIndex={currentTrackIndex} data={playList} handlePlayPause={handlePlayPause}  />
+      <MyAudioPlayer
+        artist={currentData.artist}
+        title={currentData.title}
+        imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
+        currentTime={2}
+        duration={6}
+        currentTrackIndex={currentTrackIndex}
+        data={playList}
+        handlePlayPause={handlePlayPause}
+        songDataUrl={currentData.songDataUrl}
+        changeRange={"a"}
+        audioRef={audioRef}
+      />
     </>
   );
 }

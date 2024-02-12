@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
@@ -7,6 +7,7 @@ import { BiSkipPrevious, BiSkipNext } from "react-icons/bi";
 import { BiPlayCircle, BiPauseCircle } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
+
 
 const StyledRange = styled.input`
 input[type=range] {
@@ -132,9 +133,12 @@ interface myComponentProp {
     data: [];
     handlePlayPause: () => void;
     currentTrackIndex: number;
+    songDataUrl: any;
+    audioRef: any;
+    changeRange: any
 }
 //https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain
-const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, currentTime, duration, data, handlePlayPause, currentTrackIndex}) => {
+const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, currentTime, duration, data, handlePlayPause, currentTrackIndex, songDataUrl, changeRange, audioRef}) => {
     const isPlaying = useSelector(
         (state: RootState) => state.playerData.isPlaying
       );
@@ -144,7 +148,8 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, curr
     left: 0;
     right: 0;
     bottom: 0;
-    background: red;
+    background: #1F3044;
+    color: #a8bcc3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,6 +169,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, curr
               </Box>
         <Next />
       </Flex>
+      <audio ref={audioRef} src={songDataUrl} />
       <Flex
         flexDirection="row"
         alignItems="center"

@@ -10,6 +10,7 @@ interface Song {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  songDataUrl: string
 }
 
 interface Songs {
@@ -45,6 +46,7 @@ const initialState: Songs = {
     createdAt: "",
     updatedAt: "",
     __v: 0,
+    songDataUrl: ""
   },
   getSongsLoading: true,
   songsByGenreLoading: true,

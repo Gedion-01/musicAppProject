@@ -12,6 +12,7 @@ interface Song {
   title: string;
   updatedAt: string;
   _id: string;
+  songDataUrl: string
 }
 interface data {
   data: Song[];
@@ -24,7 +25,8 @@ const TracksList: React.FC<data> = ({ data }) => {
   const currentData: any = useSelector(
     (state: RootState) => state.playerData.currentData
   );
-
+  console.log(currentData)
+  //console.log(data[0]._id, currentData._id)
   return (
     <div>
       {
@@ -40,6 +42,7 @@ const TracksList: React.FC<data> = ({ data }) => {
             index={index}
             isCurrent={song._id === currentData._id}
             isPlaying={isPlaying}
+            songDataUrl={song.songDataUrl}
           />
         ))
         // <TracksList data={data} />
