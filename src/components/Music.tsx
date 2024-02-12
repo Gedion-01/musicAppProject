@@ -19,8 +19,6 @@ import { setCurrentData, setCurrentTrackIndex, setPlayNext, setPlayerQueue, setP
 import FailedToast from "./Toasts/FailedToast";
 import { useAudioplayer } from "../hooks/useAudioPlayer";
 
-
-
 const StyledOption = styled(SlOptionsVertical)`
 position: relative; // Set position to relative
 z-index: 1; // Set a lower z-index value
@@ -404,7 +402,7 @@ to {
                 alignItems={"center"}
                 p={2}
                 css={StyledlementsMenuebarContent.styles}
-                onClick={(e) => openModal(e)}
+                onClick={() => openModal()}
               >
                 <Box>
                   <StyledRemoveIcon />

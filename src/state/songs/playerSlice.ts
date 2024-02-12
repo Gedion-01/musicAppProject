@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createRef } from 'react';
 
+export const animationRef: any = createRef();
+export const audioRef: any = createRef();
+export const progressBarRef: any = createRef()
 interface Player {
     isPlaying: boolean;
     playNext: boolean;
@@ -7,6 +11,7 @@ interface Player {
     currentTrackIndex: number;
     playerQueue: [];
     playerQueueLength: number;
+    currentPlayerTime: any;
 }
 
 const initialState: Player = {
@@ -15,7 +20,8 @@ const initialState: Player = {
     currentData: {},
     currentTrackIndex: 0,
     playerQueue: [],
-    playerQueueLength: 0
+    playerQueueLength: 0,
+    currentPlayerTime: 0
 }
 
 const playerSlice = createSlice({
@@ -39,10 +45,14 @@ const playerSlice = createSlice({
         },
         setPlayerQueueLength: (state, action: PayloadAction<number>) => {
             state.playerQueueLength = action.payload
+        },
+        setCurrentPlayerTime: (state, action: PayloadAction<any>) => {
+            state.currentPlayerTime = action.payload
+            console.log(state.currentPlayerTime)
         }
     }
 })
 
-export const {setIsPlaying, setPlayNext, setCurrentData, setCurrentTrackIndex, setPlayerQueue, setPlayerQueueLength} = playerSlice.actions
+export const {setIsPlaying, setPlayNext, setCurrentData, setCurrentTrackIndex, setPlayerQueue, setPlayerQueueLength, setCurrentPlayerTime} = playerSlice.actions
 
 export default playerSlice.reducer

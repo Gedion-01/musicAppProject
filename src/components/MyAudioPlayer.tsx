@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
@@ -8,17 +8,16 @@ import { BiPlayCircle, BiPauseCircle } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 
-
 const StyledRange = styled.input`
-input[type=range] {
+  input[type="range"] {
     -webkit-appearance: none;
     margin: 18px 0;
     width: 100%;
   }
-  input[type=range]:focus {
+  input[type="range"]:focus {
     outline: none;
   }
-  input[type=range]::-webkit-slider-runnable-track {
+  input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 8.4px;
     cursor: pointer;
@@ -27,7 +26,7 @@ input[type=range] {
     border-radius: 1.3px;
     border: 0.2px solid #010101;
   }
-  input[type=range]::-webkit-slider-thumb {
+  input[type="range"]::-webkit-slider-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 36px;
@@ -38,10 +37,10 @@ input[type=range] {
     -webkit-appearance: none;
     margin-top: -14px;
   }
-  input[type=range]:focus::-webkit-slider-runnable-track {
+  input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #367ebd;
   }
-  input[type=range]::-moz-range-track {
+  input[type="range"]::-moz-range-track {
     width: 100%;
     height: 8.4px;
     cursor: pointer;
@@ -50,7 +49,7 @@ input[type=range] {
     border-radius: 1.3px;
     border: 0.2px solid #010101;
   }
-  input[type=range]::-moz-range-thumb {
+  input[type="range"]::-moz-range-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 36px;
@@ -59,7 +58,7 @@ input[type=range] {
     background: #ffffff;
     cursor: pointer;
   }
-  input[type=range]::-ms-track {
+  input[type="range"]::-ms-track {
     width: 100%;
     height: 8.4px;
     cursor: pointer;
@@ -68,19 +67,19 @@ input[type=range] {
     border-width: 16px 0;
     color: transparent;
   }
-  input[type=range]::-ms-fill-lower {
+  input[type="range"]::-ms-fill-lower {
     background: #2a6495;
     border: 0.2px solid #010101;
     border-radius: 2.6px;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   }
-  input[type=range]::-ms-fill-upper {
+  input[type="range"]::-ms-fill-upper {
     background: #3071a9;
     border: 0.2px solid #010101;
     border-radius: 2.6px;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   }
-  input[type=range]::-ms-thumb {
+  input[type="range"]::-ms-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 36px;
@@ -89,10 +88,10 @@ input[type=range] {
     background: #ffffff;
     cursor: pointer;
   }
-  input[type=range]:focus::-ms-fill-lower {
+  input[type="range"]:focus::-ms-fill-lower {
     background: #3071a9;
   }
-  input[type=range]:focus::-ms-fill-upper {
+  input[type="range"]:focus::-ms-fill-upper {
     background: #367ebd;
   }
 `;
@@ -125,30 +124,70 @@ const Next = styled(BiSkipNext)`
   font-size: 40px;
 `;
 interface myComponentProp {
-    title: string;
-    artist: string;
-    imageUrl: string;
-    currentTime: number;
-    duration: number;
-    data: [];
-    handlePlayPause: () => void;
-    currentTrackIndex: number;
-    songDataUrl: any;
-    audioRef: any;
-    changeRange: any
+  title: string;
+  artist: string;
+  imageUrl: string;
+  currentTime: number;
+  setCurrentTime: (arg0: any) => void;
+  data: [];
+  handlePlayPause: () => void;
+  currentTrackIndex: number;
+  songDataUrl: any;
+  audioRef: any;
+  progressBarRef: any;
+  changeRange: any;
 }
 //https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain
-const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, currentTime, duration, data, handlePlayPause, currentTrackIndex, songDataUrl, changeRange, audioRef}) => {
-    const isPlaying = useSelector(
-        (state: RootState) => state.playerData.isPlaying
-      );
+const MyAudioPlayer: React.FC<myComponentProp> = ({
+  title,
+  artist,
+  imageUrl,
+  data,
+  handlePlayPause,
+  currentTrackIndex,
+  songDataUrl,
+  changeRange,
+  audioRef,
+  currentTime,
+  setCurrentTime,
+  progressBarRef,
+}) => {
+  const isPlaying = useSelector(
+    (state: RootState) => state.playerData.isPlaying
+  );
+  const currentPlayerTime = useSelector(
+    (state: RootState) => state.playerData.currentPlayerTime
+  );
+  const [duration, setDuration] = useState(0);
+  //const [currentTime, setCurrentTime] = useState(0)
+
+  useEffect(() => {
+    console.log("yes", currentTime);
+    const seconds = Math.floor(audioRef.current.duration);
+
+    if (progressBarRef.current) {
+      progressBarRef.current.max = seconds;
+    }
+    setDuration(seconds);
+    setCurrentTime(0);
+    
+  }, [audioRef?.current?.loadedmetadata, audioRef?.current?.readyState]);
+  function calculateTime(secs: number) {
+    const minutes = Math.floor(secs / 60);
+    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const seconds = Math.floor(secs % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${returnedMinutes}:${returnedSeconds}`;
+  }
+  console.log(currentPlayerTime);
+  
   const MainDiv = styled.div`
     position: fixed;
     z-index: 10;
     left: 0;
     right: 0;
     bottom: 0;
-    background: #1F3044;
+    background: #1f3044;
     color: #a8bcc3;
     display: flex;
     justify-content: center;
@@ -160,13 +199,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, curr
     <MainDiv>
       <Flex flexDirection={"row"} alignItems={"center"}>
         <Prev />
-        <Box onClick={handlePlayPause}>
-        {isPlaying ? (
-                <Pause />
-              ) : (
-                <Play />
-              )}
-              </Box>
+        <Box onClick={handlePlayPause}>{isPlaying ? <Pause /> : <Play />}</Box>
         <Next />
       </Flex>
       <audio ref={audioRef} src={songDataUrl} />
@@ -175,14 +208,18 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, curr
         alignItems="center"
         style={{ width: "500px", gap: "10px" }}
       >
-        <Text>{currentTime}</Text>
-        <StyledRange type="range" />
-        <Text>{duration}</Text>
+        <Text>{calculateTime(currentTime)}</Text>
+        <StyledRange type="range" ref={progressBarRef} />
+        <Text>{duration > 0 ? calculateTime(duration) : "0:00"}</Text>
       </Flex>
       <Flex flexDirection={"row"} alignItems={"center"}>
         <StyledImage src={imageUrl} />
       </Flex>
-      <Flex flexDirection={"column"} alignItems={"flex-start"} css={'width: 200px;'}>
+      <Flex
+        flexDirection={"column"}
+        alignItems={"flex-start"}
+        css={"width: 200px;"}
+      >
         <Text fontSize={2} fontWeight={"bold"}>
           {title}
         </Text>
@@ -190,6 +227,6 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({title, artist, imageUrl, curr
       </Flex>
     </MainDiv>
   );
-}
+};
 
 export default MyAudioPlayer;
