@@ -15,10 +15,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import SuccessToast from "./Toasts/SuccessToast";
-import { setCurrentData, setCurrentTrackIndex, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
+import { setCurrentData, setCurrentTrackIndex, setIsPlaying, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
 import FailedToast from "./Toasts/FailedToast";
-import { useAudioplayer } from "../hooks/useAudioPlayer";
-
+import { useAudioPlayer } from "../hooks/useAudioPlayer";
+import { animationRef, audioPlayer } from "../hooks/audioPlayerRefs";
 const StyledOption = styled(SlOptionsVertical)`
 position: relative; // Set position to relative
 z-index: 1; // Set a lower z-index value
@@ -72,7 +72,7 @@ const Music: React.FC<myComponentProp> = ({
   //
   const currentData: any = useSelector((state: RootState) => state.playerData.currentData)
 
-  const {methods} = useAudioplayer()
+  const {methods} = useAudioPlayer()
   const {handlePlayPause} = methods
   
   console.log(index, ' ', playListData.length,' ', playListData)
@@ -82,11 +82,37 @@ const Music: React.FC<myComponentProp> = ({
     dispatch(setPlayerQueueLength(playListData.length))
     dispatch(setPlayerQueue(playListData))
     console.log('play/pause')
-    handlePlayPause()
+    //handlePlayPause()
     
     if(currentData._id !== _id) {
       dispatch(setPlayNext(true))
     }
+    if(currentData._id === _id) {
+      dispatch(setPlayNext(false))
+    }
+  }
+  function play() {
+    console.log('play');
+    dispatch(setCurrentTrackIndex(index))
+    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
+    dispatch(setPlayerQueueLength(playListData.length))
+    dispatch(setPlayerQueue(playListData))
+    console.log('play/pause')
+    //handlePlayPause()
+    
+    audioPlayer?.current?.play();
+    if(currentData._id !== _id) {
+      dispatch(setPlayNext(true))
+    }
+    dispatch(setIsPlaying(true));
+  }
+  function pause() {
+    console.log('pause')
+    console.log("was playing");
+    dispatch(setIsPlaying(false));
+    dispatch(setPlayNext(false));
+    audioPlayer?.current?.pause();
+    //cancelAnimationFrame(animationRef.current);
   }
   // to open option
   const handleOptionClick = (e: any) => {
@@ -327,10 +353,11 @@ to {
           flex={1.5}
           css={playTitle.styles}
         >
-          <Box ml={2} onClick={() => playPause()}>{isPlaying && isCurrent ? (
-                <BsPauseFill className="ml-2 h-5 w-5 cursor-pointer" />
+          <Box ml={2}>{isPlaying && isCurrent ? (
+                <button onClick={pause} ><BsPauseFill className="ml-2 h-5 w-5 cursor-pointer" /></button>
               ) : (
-                <BsFillPlayFill className="ml-2 h-5 w-5 cursor-pointer" />
+                <button onClick={play} ><BsFillPlayFill onClick={pause} className="ml-2 h-5 w-5 cursor-pointer" /></button>
+                
               )}</Box>
           <Box>
             <img

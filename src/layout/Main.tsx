@@ -8,7 +8,7 @@ import { Flex, Box, Text } from "rebass";
 import NavBar from "../components/NavBar";
 
 import MyAudioPlayer from "../components/MyAudioPlayer";
-import { useAudioplayer } from "../hooks/useAudioPlayer";
+import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 
@@ -22,11 +22,11 @@ export default function Main() {
   const playList = useSelector(
     (state: RootState) => state.playerData.playerQueue
   );
-  const { methods, stateValue, refs } = useAudioplayer();
-  const {audioRef, progressBarRef} = refs;
-  const { currentTime } = stateValue;
-  const { handlePlayPause, setCurrentTime } = methods;
-  console.log(currentTime)
+  // const { methods, stateValue, refs } = useAudioPlayer();
+  // const {audioRef, progressBarRef} = refs;
+  // const { currentTime } = stateValue;
+  // const { handlePlayPause, setCurrentTime } = methods;
+  // console.log(currentTime)
   const MainStyle = css`
     padding: 0px 15px;
     @media screen and (min-width: 768px) {
@@ -61,18 +61,7 @@ export default function Main() {
         </Box>
       </Flex>
       <MyAudioPlayer
-        artist={currentData.artist}
-        title={currentData.title}
         imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
-        currentTime={currentTime}
-        setCurrentTime={setCurrentTime}
-        currentTrackIndex={currentTrackIndex}
-        data={playList}
-        handlePlayPause={handlePlayPause}
-        songDataUrl={currentData.songDataUrl}
-        changeRange={"a"}
-        audioRef={audioRef}
-        progressBarRef={progressBarRef}
       />
     </>
   );
