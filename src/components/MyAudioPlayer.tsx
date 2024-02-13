@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../state/store";
 import { setIsPlaying, setPlayNext } from "../state/songs/playerSlice";
 
+import styles from '../styles/AudioPlayer.module.css'
+
 const StyledRange = styled.input`
   input[type="range"] {
     -webkit-appearance: none;
@@ -289,7 +291,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
       >
         <Text>{calculateTime(currentTime)}</Text>
         {/* <input type="range"defaultValue="0" ref={progressBar} onChange={changeRange} /> */}
-        <input type="range"defaultValue="0" ref={progressBar} max={duration} onChange={changeRange} style={{width: '100%'}}/>
+        <input type="range"defaultValue="0" className={styles.progressBar} ref={progressBar} max={duration} onChange={changeRange} style={{width: '100%'}}/>
         {/* <StyledRange type="range" ref={progressBar} defaultValue={0} onChange={changeRange}/> */}
         <Text>{duration > 0 ? calculateTime(duration) : "0:00"}</Text>
       </Flex>

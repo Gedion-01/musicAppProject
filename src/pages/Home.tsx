@@ -20,9 +20,9 @@ function Home() {
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" });
   }, []);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
   console.log(data);
 
   return (

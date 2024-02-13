@@ -35,6 +35,15 @@ const StyledRemoveIcon = styled(MdDelete)`
   font-size: 20px;
 `;
 
+const PlayIcon = styled(BsFillPlayFill)`
+font-size: 22px;
+cursor: pointer;
+`
+const PauseIcon = styled(BsPauseFill)`
+font-size: 22px;
+cursor: pointer;
+`
+
 type myComponentProp = {
   album: string;
   artist: string;
@@ -91,7 +100,8 @@ const Music: React.FC<myComponentProp> = ({
       dispatch(setPlayNext(false))
     }
   }
-  function play() {
+  function play(event: any) {
+    event.preventDefault();
     console.log('play');
     dispatch(setCurrentTrackIndex(index))
     dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
@@ -208,6 +218,7 @@ const Music: React.FC<myComponentProp> = ({
     color: #1f3044;
     padding: 4px 4px;
     border-radius: 8px;
+    margin-bottom: 10px;
     background-color: ${optionIsOpened ? "#a8bcc3" : ""};
     background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
     background-color: ${markedItem ? "#a8bcc3" : ""};
@@ -354,9 +365,12 @@ to {
           css={playTitle.styles}
         >
           <Box ml={2}>{isPlaying && isCurrent ? (
-                <button onClick={pause} ><BsPauseFill className="ml-2 h-5 w-5 cursor-pointer" /></button>
+                <PauseIcon onClick={pause} />
               ) : (
-                <button onClick={play} ><BsFillPlayFill onClick={pause} className="ml-2 h-5 w-5 cursor-pointer" /></button>
+                <PlayIcon onClick={(event) => {
+                  event.preventDefault(); // Prevent default action
+                  play(event);
+                }} />
                 
               )}</Box>
           <Box>

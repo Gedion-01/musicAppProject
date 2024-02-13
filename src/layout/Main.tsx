@@ -1,32 +1,12 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/SideBar";
-
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Flex, Box, Text } from "rebass";
-
+import { Flex, Box } from "rebass";
 import NavBar from "../components/NavBar";
-
 import MyAudioPlayer from "../components/MyAudioPlayer";
-import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import { useSelector } from "react-redux";
-import { RootState } from "../state/store";
 
 export default function Main() {
-  const currentData: any = useSelector(
-    (state: RootState) => state.playerData.currentData
-  );
-  const currentTrackIndex = useSelector(
-    (state: RootState) => state.playerData.currentTrackIndex
-  );
-  const playList = useSelector(
-    (state: RootState) => state.playerData.playerQueue
-  );
-  // const { methods, stateValue, refs } = useAudioPlayer();
-  // const {audioRef, progressBarRef} = refs;
-  // const { currentTime } = stateValue;
-  // const { handlePlayPause, setCurrentTime } = methods;
-  // console.log(currentTime)
   const MainStyle = css`
     padding: 0px 15px;
     @media screen and (min-width: 768px) {
@@ -36,15 +16,18 @@ export default function Main() {
     }
   `;
 
-  const contentStyle = css`
-    color: black;
-    height: 100vh;
-    border-radius: 10px;
-  `;
-
   const OutletContainer = styled(Box)`
     height: calc(100vh - 200px); /* Adjust the height as needed */
     overflow-y: auto; /* Enable scrolling if content exceeds container height */
+  `;
+
+  const PlayerContainer = styled.div`
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #1f3044;
   `;
 
   return (
@@ -60,9 +43,11 @@ export default function Main() {
           </OutletContainer>
         </Box>
       </Flex>
-      <MyAudioPlayer
-        imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
-      />
+      <PlayerContainer>
+        <MyAudioPlayer
+          imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
+        />
+      </PlayerContainer>
     </>
   );
 }
