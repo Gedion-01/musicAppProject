@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import { FormEvent } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -7,6 +9,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
 import ErrorMessage from "../components/ErrorMessage";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { MdOutlineAudioFile } from "react-icons/md";
+
+const UploadIcon = styled(AiOutlineCloudUpload)`
+font-size: 40px;
+cursor: pointer;
+transition: all .5s ease;
+`;
+const AudioIcon = styled(MdOutlineAudioFile)`
+font-size: 40px;
+cursor: pointer;
+transition: all .5s ease;
+`;
+
 const StyledInput = styled.input`
   padding: 10px;
   /* Add playful spirit: */
@@ -24,6 +40,7 @@ const StyledInput = styled.input`
     border-color: #9090ff;
   }
 `;
+
 const Categories = [
   "R&B",
   "Electronic",
@@ -101,7 +118,9 @@ interface InputChangeEvent {
 }
 
 function AddSongPage() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null)
+  const [audioPreviewName, setAudioPreviewName] = useState("")
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const navigate = useNavigate();
@@ -151,6 +170,52 @@ function AddSongPage() {
       }
     }
   `;
+  const fileUploaderStyle = css`
+  cursor: pointer;
+  padding: 10px;
+  /* Add playful spirit: */
+  background-color: #f0f8ff;
+  border: 3px dashed #c0c0ff;
+  
+
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+  transition: 0.2s ease-in-out;
+  border-radius: 8px; /* Rounded corners */
+
+  &:hover {
+    box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
+    border-color: #9090ff;
+  }
+  `
+  const audioPreviewStyle = css`
+  padding: 10px;
+  /* Add playful spirit: */
+  background-color: #f0f8ff;
+  border: 2px solid #c0c0ff;
+  gap: 10px;
+
+  outline: none;
+  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+  border-radius: 8px; /* Rounded corners */
+  `
+  const onImageDrop = useCallback((acceptedFiles: Array<File>) => {
+    const file = new FileReader()
+    file.onload = function() {
+      setImagePreview(file.result)
+    }
+
+    file.readAsDataURL(acceptedFiles[0])
+
+  }, []);
+  const onAudioDrop = useCallback((acceptedFiles: Array<File>) => {
+    acceptedFiles.forEach(file => {
+      setAudioPreviewName(file.name)
+    })
+  }, []);
+  const imageDropZone = useDropzone({onDrop: onImageDrop});
+  const audioDropZone = useDropzone({onDrop: onAudioDrop});
   function handleInputChange(e: InputChangeEvent) {
     const { name, value } = e.target;
     setFormData({
@@ -225,6 +290,51 @@ function AddSongPage() {
             value={formData.coverImageUrl}
             onChange={handleInputChange}
           />
+          <Text fontSize={2} fontWeight="bold" mb={0}>
+            Song Cover Image
+          </Text>
+          <Flex {...imageDropZone.getRootProps()} css={fileUploaderStyle.styles}>
+            <input {...imageDropZone.getInputProps()} />
+            {imageDropZone.isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Box><Text>Click to select Image file</Text></Box>
+              <Box><UploadIcon /></Box>
+              </Flex>
+            )}
+          </Flex>
+          {
+            imagePreview && <Text><img src={imagePreview as string} /></Text>
+          }
+          <Text fontSize={2} fontWeight="bold" mb={0}>
+            Song File
+          </Text>
+          <Flex {...audioDropZone.getRootProps()} css={fileUploaderStyle.styles}>
+            <input {...audioDropZone.getInputProps()} />
+            {audioDropZone.isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Box><Text>Click to select an Audio file, max file size 10MB</Text></Box>
+              <Box><UploadIcon /></Box>
+              </Flex>
+            )}
+          </Flex>
+          {
+            audioPreviewName &&
+            <Flex alignItems={"center"} css={audioPreviewStyle.styles}>
+              <Box>
+                <AudioIcon />
+              </Box>
+              <Box>
+                <Flex flexDirection={"column"}>
+                  <Box><Text fontSize={3} fontWeight={"bold"}>{audioPreviewName}</Text></Box>
+                  <Box>size</Box>
+                </Flex>
+              </Box>
+            </Flex>
+          }
           <Text fontSize={2} fontWeight="bold" mb={0}>
             Select Song Genre
           </Text>
