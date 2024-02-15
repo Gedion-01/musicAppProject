@@ -25,6 +25,7 @@ interface Songs {
   isError: boolean;
   isCreateSongCausingError: boolean;
   addSongButtonLoading: boolean;
+  songCreatedSuccessfully: boolean;
   isEditSongCausingError: boolean;
   EditSongButtonLoading: boolean;
   isSongtoBeDeletedMarked: boolean;
@@ -33,6 +34,10 @@ interface Songs {
   showFailedToast: boolean;
   showOpenDeleteModal: boolean;
   markDeletedItem: boolean;
+  imageProgress: number;
+  audioProgress: number;
+  imageFile: File | undefined;
+  audioFile: File | undefined;
 }
 
 const initialState: Songs = {
@@ -57,6 +62,7 @@ const initialState: Songs = {
   // for creation purpose
   isCreateSongCausingError: false,
   addSongButtonLoading: false,
+  songCreatedSuccessfully: true,
   // for editing purpose
   isEditSongCausingError: false,
   EditSongButtonLoading: false,
@@ -69,7 +75,11 @@ const initialState: Songs = {
   showFailedToast: false,
   // for modal
   showOpenDeleteModal: false,
-
+  // for uploading
+  imageProgress: 0,
+  audioProgress: 0,
+  imageFile: undefined,
+  audioFile: undefined
 };
 
 const songsSlice = createSlice({
@@ -113,6 +123,21 @@ const songsSlice = createSlice({
     setmarkDeletedItem: (state, action: PayloadAction<boolean>) => {
       state.markDeletedItem = action.payload
     },
+    setImageProgress: (state, action: PayloadAction<number>) => {
+      state.imageProgress = action.payload
+    },
+    setAudioProgress: (state, action: PayloadAction<number>) => {
+      state.audioProgress = action.payload
+    },
+    setImageFile: (state, action: PayloadAction<File>) => {
+      state.imageFile = action.payload
+    },
+    setAudioFile: (state, action: PayloadAction<File>) => {
+      state.audioFile = action.payload
+    },
+    setSongCreatedSuccessfully: (state, action: PayloadAction<boolean>) => {
+      state.songCreatedSuccessfully = action.payload
+    }
   },
 });
 
@@ -127,7 +152,12 @@ export const {
   setShowSuccessToast,
   setShowFailedToast,
   setOpenDeleteModal,
-  setmarkDeletedItem
+  setmarkDeletedItem,
+  setImageProgress,
+  setAudioProgress,
+  setImageFile,
+  setAudioFile,
+  setSongCreatedSuccessfully
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

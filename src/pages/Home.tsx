@@ -5,14 +5,22 @@ import { css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import TracksList from "../components/TracksList";
+import { setAudioProgress, setImageProgress } from "../state/songs/songsSlice";
 
 function Home() {
   const data = useSelector((state: RootState) => state.songs.songs);
-  
+
   const isLoading = useSelector(
     (state: RootState) => state.songs.getSongsLoading
   );
+
   const dispatch = useDispatch();
+  // reset upload progress bar
+  // useEffect(() => {
+  //   dispatch(setAudioProgress(0));
+  //   dispatch(setImageProgress(0));
+  // }, []);
+
   const HomeStyle = css`
     width: 100%;
   `;
@@ -33,12 +41,7 @@ function Home() {
             All Songs
           </Text>
         </Box>
-        <Box>
-          {isLoading
-            ? "Loading" :
-              <TracksList data={data} />
-          }
-        </Box>
+        {isLoading ? "Loading" : <TracksList data={data} />}
       </Flex>
     </>
   );

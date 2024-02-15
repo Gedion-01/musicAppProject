@@ -12,6 +12,9 @@ import { useState } from "react";
 const MenuIcon = styled(TbMenu2)`
   cursor: pointer;
   font-size: 40px;
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 const SearchIcon = styled(IoIosSearch)`
 cursor: pointer;
@@ -75,7 +78,7 @@ export default function NavBar() {
           </SearchContainer>
         </Box>
         <Box>
-          <MenuIcon onClick={() => setOpen(true)}/>
+          {open ? '' : <MenuIcon onClick={() => setOpen(true)}/>}
         </Box>
       </Flex>
     </>

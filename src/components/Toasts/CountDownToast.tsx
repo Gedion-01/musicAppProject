@@ -1,33 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Box, Flex, Text } from "rebass";
 
-import { IoIosCloseCircle } from "react-icons/io";
-import { setShowFailedToast } from "../../state/songs/songsSlice";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import { setShowSuccessToast } from "../../state/songs/songsSlice";
 import { useDispatch } from "react-redux";
 
 type myComponentProp = {
   isToastVisible: boolean;
-  message: string;
   light: boolean;
+  message: string;
+  duration: number;
 };
 
-const FailedToast: React.FC<myComponentProp> = ({
+const SuccessToast: React.FC<myComponentProp> = ({
   isToastVisible,
   message,
   light,
+  duration,
 }) => {
-  let mounted = true;
-  const dispach = useDispatch();
-  useEffect(() => {
-    setTimeout(() => {
-      dispach(setShowFailedToast(false));
-    }, 3000);
-    return () => {
-      mounted = false;
-    };
-  }, [isToastVisible]);
+    const [countdown, setCountdown] = useState(duration / 1000); // Convert duration from milliseconds to seconds
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000); // Update countdown every second
+  
+      // Clear timer and call onClose when countdown reaches 0
+      if (countdown === 0) {
+        clearTimeout(timer);
+      }
+  
+      return () => clearTimeout(timer);
+    }, [countdown]);
 
   // Define keyframes for slide animation
   const slideIn = keyframes`
@@ -69,10 +75,9 @@ to {
         : "none"}; /* Enable pointer events when toast is visible */
   `;
 
-  const StyledCheckMark = styled(IoIosCloseCircle)`
-    margin-right: 5px;
+  const StyledCheckMark = styled(FaRegCircleCheck)`
     font-size: 25px;
-    color: red;
+    color: green;
   `;
   return (
     <ToastContainer isVisible={isToastVisible}>
@@ -89,4 +94,4 @@ to {
   );
 };
 
-export default FailedToast;
+export default SuccessToast;

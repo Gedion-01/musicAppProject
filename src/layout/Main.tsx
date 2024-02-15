@@ -17,8 +17,9 @@ export default function Main() {
   `;
 
   const OutletContainer = styled(Box)`
-    height: calc(100vh - 200px); /* Adjust the height as needed */
+    height: calc(100vh - 190px); /* Adjust the height as needed */
     overflow-y: auto; /* Enable scrolling if content exceeds container height */
+    scrool: smooth;
   `;
 
   const PlayerContainer = styled.div`

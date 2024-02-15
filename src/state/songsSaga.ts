@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
+import { useDispatch } from 'react-redux';
 
 import {
   setSongs,
@@ -10,7 +11,9 @@ import {
   setEditSongButtonLoading,
   setShowSuccessToast,
   setShowFailedToast,
-  setOpenDeleteModal
+  setOpenDeleteModal,
+  setImageProgress,
+  setAudioProgress
 } from "./songs/songsSlice";
 
 import axios, { AxiosResponse } from "axios";
@@ -19,6 +22,7 @@ import { RootState } from "./store";
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function* fetchSongs() {
+  
   try {
     const response: AxiosResponse = yield call(() =>
       axios.get(`${VITE_BASE_URL}/listSongs`)
@@ -46,8 +50,10 @@ type formdData = {
   artist: string;
   album: string;
   genre: string;
-  coverImageUrl: string;
 };
+type imageFile = {imageFile: File}
+type audioFile = {audioFile: File}
+
 
 function* createSong(action: any) {
   yield put(setAddSongButtonLoading(true));
@@ -55,14 +61,47 @@ function* createSong(action: any) {
   // Check if action.payload exists before destructuring
   if (action.payload) {
     const { data }: { data: formdData } = action.payload;
-    console.log(data);
+    let imageProgress: number = 0
+    let audioProgress: number = 0
+    
     try {
+      const image: File = yield select((state: RootState) => state.songs.imageFile)
+      const audio: File = yield select((state: RootState) => state.songs.audioFile)
+      console.log(image, audio)
+      
+      const formData = new FormData();
+      
+      formData.append('title', data.title);
+      formData.append('artist', data.artist);
+      formData.append('album', data.album);
+      formData.append('genre', data.genre);
+      formData.append('audio', audio)
+      formData.append('image', image)
+      console.log(formData)
+      // Log FormData values
+      console.log("FormData:");
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
       const response: AxiosResponse = yield call(() => {
-        return axios.post(`${VITE_BASE_URL}/createSong`, data);
+        return axios.post(`${VITE_BASE_URL}/uploadSong`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress: progressEvent => {
+            imageProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
+            audioProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
+
+          }
+        });
       });
+      yield put(setImageProgress(imageProgress))
+      yield put(setAudioProgress(audioProgress))
+      console.log(response)
       yield put(setCreateSongCauseAnError(false));
-      console.log(response.data);
+      
       yield put(setAddSongButtonLoading(false));
+      yield put(setShowSuccessToast(true))
     } catch (error) {
       yield put(setCreateSongCauseAnError(true));
       yield put(setAddSongButtonLoading(false));
@@ -72,6 +111,7 @@ function* createSong(action: any) {
     console.log("Payload is undefined");
   }
 }
+
 function* updateSong(action: any) {
   yield put(setEditSongButtonLoading(true));
 
@@ -167,4 +207,8 @@ export function* getSongByIdSaga() {
 }
 export function* deleteSongByIdSaga() {
   yield takeEvery("song/deleteSongById", deleteSongById)
+}
+
+function setSetSongCreatedSuccessfully(arg0: boolean): any {
+  throw new Error("Function not implemented.");
 }

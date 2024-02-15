@@ -9,15 +9,24 @@ import { useDispatch } from "react-redux";
 
 type myComponentProp = {
   isToastVisible: boolean;
+  light: boolean;
+  message: string;
 };
 
-const SuccessToast: React.FC<myComponentProp> = ({ isToastVisible }) => {
-    const dispach = useDispatch()
+const SuccessToast: React.FC<myComponentProp> = ({
+  isToastVisible,
+  message,
+  light,
+}) => {
+  let mounted = true;
+  const dispach = useDispatch();
   useEffect(() => {
     setTimeout(() => {
-        dispach(setShowSuccessToast(false))
-      
+      dispach(setShowSuccessToast(false));
     }, 3000);
+    return () => {
+      mounted = false;
+    };
   }, [isToastVisible]);
 
   // Define keyframes for slide animation
@@ -42,21 +51,27 @@ to {
 
   // Define a custom styled component with the isVisible prop
   const ToastContainer = styled.div<{ isVisible: boolean }>`
-  position: fixed;
-  bottom: 20px;
-  right: 20px; /* Keep toast on-screen */
-  background: #1f3044;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  animation: ${({ isVisible }) => (isVisible ? slideIn : slideOut)} 0.5s ease-in-out;
-  opacity: ${({ isVisible }) => (isVisible ? "1" : "0")}; /* Hide the toast when it's not visible */
-  pointer-events: ${({ isVisible }) => (isVisible ? "auto" : "none")}; /* Enable pointer events when toast is visible */
-`;
-
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Keep toast on-screen */
+    
+    gap: 10px;
+    background: ${light ? "#E1F2F7" : "#1f3044"};
+    color: ${light ? "#1f3044" : "##fff"};
+    padding: 10px 20px;
+    border-radius: 5px;
+    animation: ${({ isVisible }) => (isVisible ? slideIn : slideOut)} 0.5s
+      ease-in-out;
+    opacity: ${({ isVisible }) =>
+      isVisible ? "1" : "0"}; /* Hide the toast when it's not visible */
+    pointer-events: ${({ isVisible }) =>
+      isVisible
+        ? "auto"
+        : "none"}; /* Enable pointer events when toast is visible */
+  `;
 
   const StyledCheckMark = styled(FaRegCircleCheck)`
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 25px;
     color: green;
   `;
@@ -64,12 +79,12 @@ to {
     <ToastContainer isVisible={isToastVisible}>
       <Flex
         flexDirection={"row"}
-        alignContent={"center"}
-        justifyContent={"center"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
         <StyledCheckMark />
 
-        <Text fontSize={3}>Song deleted successfully.</Text>
+        <Text fontSize={3}>{message}</Text>
       </Flex>
     </ToastContainer>
   );

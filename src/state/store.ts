@@ -16,7 +16,7 @@ export const store = configureStore({
     playerData: playerSlice
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware)
+    getDefaultMiddleware({serializableCheck: false}).concat(sagaMiddleware)
 });
 
 sagaMiddleware.run(rootSaga);

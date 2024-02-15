@@ -17,7 +17,7 @@ import { RootState } from "../state/store";
 import SuccessToast from "./Toasts/SuccessToast";
 import { setCurrentData, setCurrentTrackIndex, setIsPlaying, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
 import FailedToast from "./Toasts/FailedToast";
-import { useAudioPlayer } from "../hooks/useAudioPlayer";
+// import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { animationRef, audioPlayer } from "../hooks/audioPlayerRefs";
 const StyledOption = styled(SlOptionsVertical)`
 position: relative; // Set position to relative
@@ -81,8 +81,8 @@ const Music: React.FC<myComponentProp> = ({
   //
   const currentData: any = useSelector((state: RootState) => state.playerData.currentData)
 
-  const {methods} = useAudioPlayer()
-  const {handlePlayPause} = methods
+  // const {methods} = useAudioPlayer()
+  // const {handlePlayPause} = methods
   
   console.log(index, ' ', playListData.length,' ', playListData)
   function playPause() {
@@ -225,8 +225,8 @@ const Music: React.FC<myComponentProp> = ({
     max-width: 800px;
     &: hover {
       background-color: #a8bcc3;
-    }
-    transition: all 0.5s ease;
+      
+    } 
   `;
   const playTitle = css`
     gap: 20px;
@@ -237,10 +237,15 @@ const Music: React.FC<myComponentProp> = ({
   `;
 
   const hiddenOnSmallScreen = css`
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       display: none;
     }
   `;
+  const cmMDScreen = css`
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
   const titleStyle = css`
     height: 40px;
   `;
@@ -252,7 +257,7 @@ const Music: React.FC<myComponentProp> = ({
   const StyledlementsMenuebarContent = css`
   
     &:hover {
-      color: #1ba098;
+      color: #BD1E51;
     }
     transition: 0.4s;
   `;
@@ -326,8 +331,8 @@ to {
 
   return (
     <>
-    <SuccessToast isToastVisible={showSuccessToast} />
-    <FailedToast isToastVisible={showFailedToast} />
+    <SuccessToast isToastVisible={showSuccessToast} light={true} message="Song deleted successfully." />
+    <FailedToast isToastVisible={showFailedToast} message="Failed to remove song." light={true} />
       
     {/* Render modal if isOpen is true */}
     {openDeleteModal && (
@@ -387,17 +392,21 @@ to {
             css={titleStyle.styles}
           >
             <Box>
-              <Text fontSize={16} fontWeight="bold">
+              <Text fontSize={16} fontWeight="bold" style={{overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",}}>
                 {title}
               </Text>
             </Box>
             <Box>
-              <Text fontSize={14}>{artist}</Text>
+              <Text fontSize={14} style={{overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",}}>{artist}</Text>
             </Box>
           </Flex>
         </Flex>
         <Box
-          css={[boxStyle.styles, hiddenOnSmallScreen.styles]}
+          css={[boxStyle.styles, hiddenOnSmallScreen.styles, cmMDScreen.styles]}
           flex={1}
           mr={2}
         >

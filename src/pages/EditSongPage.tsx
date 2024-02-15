@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { useCallback } from "react";
 import { FormEvent } from "react";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { MdOutlineAudioFile } from "react-icons/md";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
@@ -8,6 +12,21 @@ import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
 import ErrorMessage from "../components/ErrorMessage";
+import FailedToast from "../components/Toasts/FailedToast";
+import { setAudioFile, setImageFile } from "../state/songs/songsSlice";
+import CircularProgressWithLabel from "../components/CircularProgressWithLabel";
+
+const UploadIcon = styled(AiOutlineCloudUpload)`
+font-size: 40px;
+cursor: pointer;
+transition: all .5s ease;
+`;
+const AudioIcon = styled(MdOutlineAudioFile)`
+font-size: 40px;
+cursor: pointer;
+transition: all .5s ease;
+`;
+
 
 const StyledInput = styled.input`
   padding: 10px;
@@ -32,7 +51,7 @@ const Categories = [
   "Electronic",
   "Rock",
   "Rap",
-  "country/Ethiopia",
+  "Ethiopian",
   "Pop",
   "Hip",
 ];
@@ -109,18 +128,21 @@ interface Song {
   artist: string;
   album: string;
   genre: string;
-  coverImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 }
 
 function EditSongPage() {
   const { id } = useParams();
+  const dispatch = useDispatch();
   
   const navigate = useNavigate();
 
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null)
+  const [audioPreviewSize, setAudioPreviewSize] = useState(0)
+  const [audioPreviewName, setAudioPreviewName] = useState("")
+
+  const imageProgress = useSelector((state: RootState) => state.songs.imageProgress)
+  const audioProgress = useSelector((state: RootState) => state.songs.audioProgress)
 
   const isLoading = useSelector(
     (state: RootState) => state.songs.searchedSongLoading
@@ -135,14 +157,13 @@ function EditSongPage() {
     (state: RootState) => state.songs.EditSongButtonLoading
   );
   console.log(searchedSong);
-  const dispatch = useDispatch();
+  
   const [formData, setFormData] = useState({
     songid: id,
     title: "",
     artist: "",
     album: "",
     genre: "",
-    coverImageUrl: "",
   });
 
   useEffect(() => {
@@ -155,9 +176,9 @@ function EditSongPage() {
       artist: searchedSong.artist,
       album: searchedSong.album,
       genre: searchedSong.genre,
-      coverImageUrl: searchedSong.coverImageUrl,
     });
   }, [searchedSong]);
+  console.log(formData)
 
   const genreStyles = css`
   gap: 12px;
@@ -186,6 +207,32 @@ function EditSongPage() {
       }
     }
   `;
+  //console.log(audioFile, imageFile)
+  const onImageDrop = useCallback((acceptedFiles: Array<File>) => {
+    const file = new FileReader()
+    file.onload = function() {
+      setImagePreview(file.result)
+    }
+
+    file.readAsDataURL(acceptedFiles[0])
+    dispatch(setImageFile(acceptedFiles[0]))
+
+  }, []);
+  const onAudioDrop = useCallback((acceptedFiles: Array<File>) => {
+    acceptedFiles.forEach(file => {
+      setAudioPreviewName(file.name)
+      setAudioPreviewSize(file.size)
+    })
+    dispatch(setAudioFile(acceptedFiles[0]))
+  }, []);
+  
+  function toMB(value: number) {
+    const ONEMB = 1024 * 1024
+    const size = value / ONEMB
+    return size.toFixed(2)
+  }
+  const imageDropZone = useDropzone({onDrop: onImageDrop});
+  const audioDropZone = useDropzone({onDrop: onAudioDrop});
   function handleInputChange(e: InputChangeEvent) {
     const { name, value } = e.target;
     setFormData({
@@ -209,88 +256,166 @@ function EditSongPage() {
       setShowErrorMessage(false);
     }, 8000);
   };
+  const fileUploaderStyle = css`
+  cursor: pointer;
+  padding: 10px;
+  /* Add playful spirit: */
+  background-color: #f0f8ff;
+  border: 3px dashed #c0c0ff;
+  
 
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+  transition: 0.2s ease-in-out;
+  border-radius: 8px; /* Rounded corners */
+
+  &:hover {
+    box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
+    border-color: #9090ff;
+  }
+  `
+  const audioPreviewStyle = css`
+  padding: 10px;
+  /* Add playful spirit: */
+  background-color: #f0f8ff;
+  border: 2px solid #c0c0ff;
+  gap: 10px;
+
+  outline: none;
+  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+  border-radius: 8px; /* Rounded corners */
+  `
   return (
     <Flex flexDirection={"column"}>
       {EditSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
-        <ErrorMessage
-          message="Error while editing the song. Please try again."
-          show={setShowErrorMessage}
-        />
+        // <ErrorMessage
+        //   message="Error while adding the song. Please try again."
+        //   show={setShowErrorMessage}
+        // />
+        <FailedToast isToastVisible={showErrorMessage} light={true} message="Error while editing the song. Please try again."/>
       ) : (
         ""
       )}
+
       <Box>
         <Text fontSize={5} fontWeight="bold" mb={2}>
           Edit Song
         </Text>
       </Box>
-      
-      {isLoading ? (
-        "Loading"
-      ) : (
-        <StyledForm onSubmit={handleSubmit}>
-          <Flex flexDirection={"column"} css={genreStyles.styles}>
-            <Text fontSize={2} fontWeight="bold" mb={0}>
-              Song Title
-            </Text>
-            <StyledInput
-              required
-              type="text"
-              placeholder="Song Title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-            />
-            <Text fontSize={2} fontWeight="bold" mb={0}>
-              Artist Name
-            </Text>
-            <StyledInput
-              required
-              type="text"
-              placeholder="Artist Name"
-              name="artist"
-              value={formData.artist}
-              onChange={handleInputChange}
-            />
-            <Text fontSize={2} fontWeight="bold" mb={0}>
-              Album Name
-            </Text>
-            <StyledInput
-              required
-              type="text"
-              placeholder="Album Name"
-              name="album"
-              value={formData.album}
-              onChange={handleInputChange}
-            />
-            <Text fontSize={2} fontWeight="bold" mb={0}>
-              Song Cover Image Url
-            </Text>
-            <StyledInput
-              required
-              type="text"
-              placeholder="Song Cover Image URL"
-              name="coverImageUrl"
-              value={formData.coverImageUrl}
-              onChange={handleInputChange}
-            />
-            <Text fontSize={2} fontWeight="bold" mb={0}>
-              Select Song Genre
-            </Text>
-            <StyledSelect
-              required
-              name="genre"
-              onChange={handleInputChange}
-              value={formData.genre}
-            >
-              {Categories.map((category, index) => (
-                <StyledOption key={index} value={category}>
-                  {category}
-                </StyledOption>
-              ))}
-            </StyledSelect>
-            <StyledButton type="submit" disabled={buttonIsLoading}>
+      <StyledForm onSubmit={handleSubmit}>
+        <Flex flexDirection={"column"} css={genreStyles.styles}>
+          <StyledInput
+            required
+            type="text"
+            placeholder="Song Title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+          />
+          <StyledInput
+            required
+            type="text"
+            placeholder="Artist Name"
+            name="artist"
+            value={formData.artist}
+            onChange={handleInputChange}
+          />
+          <StyledInput
+            required
+            type="text"
+            placeholder="Album Name"
+            name="album"
+            value={formData.album}
+            onChange={handleInputChange}
+          />
+          {/* <StyledInput
+            required
+            type="text"
+            placeholder="Song Cover Image URL"
+            name="coverImageUrl"
+            value={formData.coverImageUrl}
+            onChange={handleInputChange}
+          /> */}
+          <Text fontSize={2} fontWeight="bold" mb={0}>
+            Song Cover Image
+          </Text>
+          <Flex {...imageDropZone.getRootProps()} css={fileUploaderStyle.styles}>
+            <input name="image" {...imageDropZone.getInputProps()} />
+            {imageDropZone.isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Box><Text>Click to select new Image file</Text></Box>
+              <Box><UploadIcon /></Box>
+              </Flex>
+            )}
+          </Flex>
+          {
+          imagePreview || searchedSong.coverImageUrl ? 
+          <Flex css={audioPreviewStyle.styles} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <Box>
+          
+            <Text><img src={imagePreview as string || searchedSong.coverImageUrl as string} style={{width: '150px', height: '150px', borderRadius: '10px'}} /></Text>
+          
+          </Box>
+        
+          <Box>
+            <CircularProgressWithLabel variant="determinate" value={imageProgress} />
+          </Box>
+          </Flex>
+          : ''
+          }
+          <Text fontSize={2} fontWeight="bold" mb={0}>
+            Song File
+          </Text>
+          <Flex {...audioDropZone.getRootProps()} css={fileUploaderStyle.styles}>
+            <input {...audioDropZone.getInputProps()} />
+            {audioDropZone.isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+              <Box><Text>Click to select new Audio file, max file size 10MB</Text></Box>
+              <Box><UploadIcon /></Box>
+              </Flex>
+            )}
+          </Flex>
+          {
+            audioPreviewName ?
+            <Flex alignItems={"center"} justifyContent={'space-between'} css={audioPreviewStyle.styles}>
+              <Flex alignItems={"center"} css={`gap: 10px;`}>
+              <Box>
+                <AudioIcon />
+              </Box>
+              <Box>
+                <Flex flexDirection={"column"}>
+                  <Box><Text fontSize={2} fontWeight={"bold"}>{audioPreviewName}</Text></Box>
+                  <Box>{toMB(audioPreviewSize)} MB</Box>
+                </Flex>
+              </Box>
+              </Flex>
+              <Box>
+              <CircularProgressWithLabel variant="determinate" value={audioProgress} />
+              </Box>
+            </Flex>
+            : ""
+          }
+          <Text fontSize={2} fontWeight="bold" mb={0}>
+            Select Song Genre
+          </Text>
+          <StyledSelect
+            required
+            name="genre"
+            onChange={handleInputChange}
+            value={formData.genre}
+          >
+            {Categories.map((category, index) => (
+              <StyledOption key={index} value={category}>
+                {category}
+              </StyledOption>
+            ))}
+          </StyledSelect>
+          <StyledButton type="submit" disabled={buttonIsLoading}>
             {buttonIsLoading ? (
               <>
                 <Flex
@@ -301,7 +426,7 @@ function EditSongPage() {
                     height: 30px;
                   `}
                 >
-                  <Text>Edit Song</Text>
+                  <Text>Add Song</Text>
                   <Flex css={spinnerStyles.styles}></Flex>
                 </Flex>
               </>
@@ -314,13 +439,12 @@ function EditSongPage() {
                   height: 30px;
                 `}
               >
-                <Text>Edit Song</Text>
+                <Text>Save</Text>
               </Flex>
             )}
           </StyledButton>
-          </Flex>
-        </StyledForm>
-      )}
+        </Flex>
+      </StyledForm>
     </Flex>
   );
 }

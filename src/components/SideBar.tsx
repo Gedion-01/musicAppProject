@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { BiCategory } from "react-icons/bi";
 import { IoMdHome } from "react-icons/io";
 import { IoStatsChart } from "react-icons/io5";
@@ -29,18 +28,6 @@ const StyledIcon3 = styled(IoStatsChart)`
 const StyledIcon4 = styled(IoIosAddCircleOutline)`
   margin-right: 10px;
   font-size: 30px;
-`;
-const MenuIcon = styled(TbMenu2)`
-cursor: pointer;
-left: 40px;
-top: 25px;
-font-size: 35px;
-`;
-const CloseIcon = styled(IoIosClose)`
-
-font-size: 40px;
-cursor: pointer;
-transition: all .5s ease;
 `;
 
 export default function SideBar() {
@@ -86,13 +73,13 @@ export default function SideBar() {
   padding: 0px 10px;
   `
     return<>
-        <Flex flexDirection={"column"}  css={sideBarStyle}>
-        <Flex flexDirection={"row"} justifyContent="space-between" alignItems="center" css={menu}>
-          <Box><Text css={header}>My APP</Text></Box>
+        <Flex flexDirection={"column"}  css={sideBarStyle.styles}>
+        <Flex flexDirection={"row"} justifyContent="space-between" alignItems="center" css={menu.styles}>
+          <Box><Text css={header.styles}>My APP</Text></Box>
           
         </Flex>
         <Link to={'/'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement} style={{ color: location.pathname === '/' ? '#BD1E51' : '' }}>
+        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/' ? '#BD1E51' : '' }}>
           
             <Box><StyledIcon /></Box>
             <Box>
@@ -101,7 +88,7 @@ export default function SideBar() {
           </Flex>
           </Link>
           <Link to={'/genre'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement} style={{ color: location.pathname === '/genre' ? '#BD1E51' : '' }}>
+        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/genre' ? '#BD1E51' : '' }}>
             <Box><StyledIcon2 /></Box>
             <Box>
               <Text>Genre</Text>
@@ -109,7 +96,7 @@ export default function SideBar() {
           </Flex>
           </Link>
           <Link to={'/addSong'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement} style={{ color: location.pathname === '/addSong' ? '#BD1E51' : '' }}>
+        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/addSong' ? '#BD1E51' : '' }}>
             <Box><StyledIcon4 /></Box>
             <Box>
               <Text>Add Songs</Text>
@@ -117,7 +104,7 @@ export default function SideBar() {
           </Flex>
           </Link>
           <Link to={'/Statistics'}>
-          <Flex flexDirection={"row"} alignItems="center" css={sideBarElement} style={{ color: location.pathname === '/Statistics' ? '#BD1E51' : '' }}>
+          <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/Statistics' ? '#BD1E51' : '' }}>
             <Box><StyledIcon3 /></Box>
             <Box>
               <Text>Statistics</Text>
