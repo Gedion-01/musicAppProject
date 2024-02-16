@@ -117,15 +117,52 @@ function* updateSong(action: any) {
 
   // Check if action.payload exists before destructuring
   if (action.payload) {
-    const { data }: { data: formdData } = action.payload;
-    console.log(data);
+    const { data }: { data: formdData & {coverImageUrl: string;
+      songDataUrl: string  } } = action.payload;
+      
+    let imageProgress: number = 0
+    let audioProgress: number = 0
+    
     try {
+      const image: File = yield select((state: RootState) => state.songs.imageFile)
+      const audio: File = yield select((state: RootState) => state.songs.audioFile)
+      console.log(image, audio)
+      
+      const formData = new FormData();
+      
+      formData.append('title', data.title);
+      formData.append('artist', data.artist);
+      formData.append('album', data.album);
+      formData.append('genre', data.genre);
+      formData.append('audio', audio)
+      formData.append('image', image)
+      formData.append('coverImageUrl', data.coverImageUrl)
+      formData.append('image', image, data.songDataUrl)
+      console.log(formData)
+      // Log FormData values
+      console.log("FormData:");
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
       const response: AxiosResponse = yield call(() => {
-        return axios.put(`${VITE_BASE_URL}/updateSong`, data);
+        return axios.post(`${VITE_BASE_URL}/updateSong`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress: progressEvent => {
+            imageProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
+            audioProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
+
+          }
+        });
       });
+      yield put(setImageProgress(imageProgress))
+      yield put(setAudioProgress(audioProgress))
+      console.log(response)
       yield put(setEditSongCauseAnError(false));
-      console.log(response.data);
+      
       yield put(setEditSongButtonLoading(false));
+      yield put(setShowSuccessToast(true))
     } catch (error) {
       yield put(setEditSongCauseAnError(true));
       yield put(setEditSongButtonLoading(false));

@@ -266,11 +266,6 @@ function AddSongPage() {
     e.preventDefault();
     handleClick();
     dispatch({ type: "song/createSong", payload: { data: formData } });
-
-    if (createSongCauseAnError === false && buttonIsLoading === false) {
-      
-      
-    }
   }
   useEffect(() => {
     let mounted = true;

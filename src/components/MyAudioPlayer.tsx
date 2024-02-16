@@ -16,28 +16,37 @@ const StyledImage = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 10px;
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const Play = styled(BiPlayCircle)`
   cursor: pointer;
   font-size: 40px;
+  @media (max-width: 768px) {
+    
+  }
 `;
 
 const Pause = styled(BiPauseCircle)`
   cursor: pointer;
   font-size: 40px;
+  @media (max-width: 768px) {
+    
+  }
 `;
 
 const Prev = styled(BiSkipPrevious)`
   cursor: pointer;
   font-size: 40px;
+  @media (max-width: 768px) {
+    
+  }
 `;
 const Next = styled(BiSkipNext)`
   cursor: pointer;
   font-size: 40px;
+  @media (max-width: 768px) {
+    
+  }
 `;
 interface myComponentProp {
   imageUrl: string;
@@ -183,7 +192,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
     justify-content: center;
     align-items: center;
     height: 80px;
-    gap: 20px;
+    gap: 10px;
   `;
   return (
     <>
@@ -191,29 +200,34 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
     <audio ref={audioPlayer} src={currentData.songDataUrl} preload="metadata"/>
     <MainDiv>
       <Flex flexDirection={"row"} alignItems={"center"}>
-        <Prev />
+        <Box><Prev /></Box>
         <Box onClick={handlePlayPause}>{isPlaying ? <Pause /> : <Play />}</Box>
-        <Next />
+        <Box><Next /></Box>
       </Flex>
-      
+      <Text>{calculateTime(currentTime)}</Text>
       <Flex
         flexDirection="row"
         alignItems="center"
-        style={{ width: "500px", gap: "10px" }}
+        css={`width: 40%;`}
       >
-        <Text>{calculateTime(currentTime)}</Text>
         {/* <input type="range"defaultValue="0" ref={progressBar} onChange={changeRange} /> */}
         <input type="range"defaultValue="0" className={styles.progressBar} ref={progressBar} max={duration} onChange={changeRange} style={{width: '100%'}}/>
         {/* <StyledRange type="range" ref={progressBar} defaultValue={0} onChange={changeRange}/> */}
-        <Text>{duration > 0 ? calculateTime(duration) : "0:00"}</Text>
       </Flex>
-      <Flex flexDirection={"row"} alignItems={"center"}>
+      <Text>{duration > 0 ? calculateTime(duration) : "0:00"}</Text>
+      <Flex flexDirection={"row"} alignItems={"center"} css={`@media (max-width: 768px) {
+    display: none;
+  }`}>
         <StyledImage src={imageUrl} />
       </Flex>
       <Flex
         flexDirection={"column"}
         alignItems={"flex-start"}
-        css={"width: 200px;"}
+        css={`width: 200px;
+        @media (max-width: 768px) {
+          display: none;
+        }
+        `}
       >
         <Text fontSize={2} fontWeight={"bold"}>
           {currentData.title}
