@@ -11,20 +11,31 @@ import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
 import ErrorMessage from "../components/ErrorMessage";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { IoWarning } from "react-icons/io5";
 import { MdOutlineAudioFile } from "react-icons/md";
-import { setAudioFile, setImageFile, setShowSuccessToast } from "../state/songs/songsSlice";
+import {
+  setAudioFile,
+  setImageFile,
+  setShowSuccessToast,
+} from "../state/songs/songsSlice";
 import FailedToast from "../components/Toasts/FailedToast";
 import SuccessToast from "../components/Toasts/SuccessToast";
 
+const Warningcon = styled(IoWarning)`
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+`;
+
 const UploadIcon = styled(AiOutlineCloudUpload)`
-font-size: 40px;
-cursor: pointer;
-transition: all .5s ease;
+  font-size: 40px;
+  cursor: pointer;
+  transition: all 0.5s ease;
 `;
 const AudioIcon = styled(MdOutlineAudioFile)`
-font-size: 40px;
-cursor: pointer;
-transition: all .5s ease;
+  font-size: 40px;
+  cursor: pointer;
+  transition: all 0.5s ease;
 `;
 
 const StyledInput = styled.input`
@@ -127,13 +138,15 @@ interface FormData {
   genre: string;
 }
 
-
-
 function AddSongPage() {
-  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null)
-  const [audioPreviewSize, setAudioPreviewSize] = useState(0)
-  const [audioPreviewName, setAudioPreviewName] = useState("")
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
+    null
+  );
+  const [audioPreviewSize, setAudioPreviewSize] = useState(0);
+  const [audioPreviewName, setAudioPreviewName] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [audioFileIsMissing, setAudioFileIsMissing] = useState(false);
+  const [imageFileIsMissing, setImageFileIsMissing] = useState(false);
 
   const navigate = useNavigate();
 
@@ -147,15 +160,21 @@ function AddSongPage() {
   const buttonIsLoading = useSelector(
     (state: RootState) => state.songs.addSongButtonLoading
   );
-  const imageProgress = useSelector((state: RootState) => state.songs.imageProgress)
-  const audioProgress = useSelector((state: RootState) => state.songs.audioProgress)
+  const audioFile = useSelector((state: RootState) => state.songs.audioFile);
+  const imageFile = useSelector((state: RootState) => state.songs.imageFile);
+  const imageProgress = useSelector(
+    (state: RootState) => state.songs.imageProgress
+  );
+  const audioProgress = useSelector(
+    (state: RootState) => state.songs.audioProgress
+  );
   const initialFormData: FormData = {
     title: "",
     artist: "",
     album: "",
     genre: "",
   };
-  
+
   const [formData, setFormData] = useState(initialFormData);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -190,71 +209,73 @@ function AddSongPage() {
     }
   `;
   const fileUploaderStyle = css`
-  cursor: pointer;
-  padding: 10px;
-  /* Add playful spirit: */
-  background-color: #f0f8ff;
-  border: 3px dashed #c0c0ff;
-  
+    cursor: pointer;
+    padding: 10px;
+    /* Add playful spirit: */
+    background-color: #f0f8ff;
+    border: 3px dashed #c0c0ff;
 
-  font-size: 16px;
-  outline: none;
-  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
-  transition: 0.2s ease-in-out;
-  border-radius: 8px; /* Rounded corners */
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+    transition: 0.2s ease-in-out;
+    border-radius: 8px; /* Rounded corners */
 
-  &:hover {
-    box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
-    border-color: #9090ff;
-  }
-  `
+    &:hover {
+      box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
+      border-color: #9090ff;
+    }
+  `;
   const audioPreviewStyle = css`
-  padding: 10px;
-  /* Add playful spirit: */
-  background-color: #f0f8ff;
-  border: 2px solid #c0c0ff;
-  gap: 10px;
+    padding: 10px;
+    /* Add playful spirit: */
+    background-color: #f0f8ff;
+    border: 2px solid #c0c0ff;
+    gap: 10px;
 
-  outline: none;
-  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
-  border-radius: 8px; /* Rounded corners */
-  `
+    outline: none;
+    box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
+    border-radius: 8px; /* Rounded corners */
+  `;
   //console.log(audioFile, imageFile)
   const onImageDrop = useCallback((acceptedFiles: Array<File>) => {
-    const file = new FileReader()
-    file.onload = function() {
-      setImagePreview(file.result)
-    }
+    const file = new FileReader();
+    file.onload = function () {
+      setImagePreview(file.result);
+    };
 
-    file.readAsDataURL(acceptedFiles[0])
-    dispatch(setImageFile(acceptedFiles[0]))
-
+    file.readAsDataURL(acceptedFiles[0]);
+    dispatch(setImageFile(acceptedFiles[0]));
   }, []);
   const onAudioDrop = useCallback((acceptedFiles: Array<File>) => {
-    acceptedFiles.forEach(file => {
-      setAudioPreviewName(file.name)
-      setAudioPreviewSize(file.size)
-    })
-    dispatch(setAudioFile(acceptedFiles[0]))
+    acceptedFiles.forEach((file) => {
+      setAudioPreviewName(file.name);
+      setAudioPreviewSize(file.size);
+    });
+    dispatch(setAudioFile(acceptedFiles[0]));
   }, []);
-  
+
   function toMB(value: number) {
-    const ONEMB = 1024 * 1024
-    const size = value / ONEMB
-    return size.toFixed(2)
+    const ONEMB = 1024 * 1024;
+    const size = value / ONEMB;
+    return size.toFixed(2);
   }
-  const imageDropZone = useDropzone({onDrop: onImageDrop, accept: {
-    'image/png': ['.png'],
-    'image/jpg': ['.jpg'],
-    'image/jpeg': ['.jpeg']
-  } });
-  
-  const audioDropZone = useDropzone({onDrop: onAudioDrop, accept: {
-    'audio/mpeg': ['.mp3']
-  }});
+  const imageDropZone = useDropzone({
+    onDrop: onImageDrop,
+    accept: {
+      "image/png": [".png"],
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+    },
+  });
+
+  const audioDropZone = useDropzone({
+    onDrop: onAudioDrop,
+    accept: {
+      "audio/mpeg": [".mp3"],
+    },
+  });
   function handleInputChange(e: InputChangeEvent) {
-    
-    
     const { name, value } = e.target;
     console.log(name, value);
     setFormData({
@@ -264,75 +285,98 @@ function AddSongPage() {
   }
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // check if image file exists
+    if (imageFile == undefined) {
+      setImageFileIsMissing(true);
+      return;
+    } else {
+      setImageFileIsMissing(false);
+    }
+    // check if audio file exists
+    if (audioFile == undefined) {
+      setAudioFileIsMissing(true);
+      return;
+    } else {
+      setAudioFileIsMissing(false);
+    }
+
     handleClick();
     dispatch({ type: "song/createSong", payload: { data: formData } });
   }
-  useEffect(() => {
-    let mounted = true;
-
-    if(showSuccessToast) {
-    setTimeout(() => {
-      navigate("/");
-    }, 3000)
-    return () => {
-      mounted = false;
-    };
-  }
-  }, [showSuccessToast])
   const handleClick = () => {
-    // Simulate asynchronous operation
     setShowErrorMessage(true);
     setTimeout(() => {
       setShowErrorMessage(false);
     }, 8000);
   };
 
+  useEffect(() => {
+    let mounted = true;
+
+    if (showSuccessToast) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+      return () => {
+        mounted = false;
+      };
+    }
+  }, [showSuccessToast]);
+
   return (
     <>
-    <SuccessToast isToastVisible={showSuccessToast} light={true} message="Song uploaded successfully" />
-    <Flex flexDirection={"column"}>
-      {createSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
-        // <ErrorMessage
-        //   message="Error while adding the song. Please try again."
-        //   show={setShowErrorMessage}
-        // />
-        <FailedToast isToastVisible={showErrorMessage} light={true} message="Error while adding the song. Please try again."/>
-      ) : (
-        ""
-      )}
+      <SuccessToast
+        isToastVisible={showSuccessToast}
+        light={true}
+        message="Song uploaded successfully"
+      />
+      <Flex flexDirection={"column"}>
+        {createSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
+          // <ErrorMessage
+          //   message="Error while adding the song. Please try again."
+          //   show={setShowErrorMessage}
+          // />
+          <FailedToast
+            isToastVisible={showErrorMessage}
+            light={true}
+            message="Error while adding the song. Please try again."
+          />
+        ) : (
+          ""
+        )}
 
-      <Box>
-        <Text fontSize={5} fontWeight="bold" mb={2}>
-          Add Song
-        </Text>
-      </Box>
-      <StyledForm onSubmit={handleSubmit}>
-        <Flex flexDirection={"column"} css={genreStyles.styles}>
-          <StyledInput
-            required
-            type="text"
-            placeholder="Song Title"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-          />
-          <StyledInput
-            required
-            type="text"
-            placeholder="Artist Name"
-            name="artist"
-            value={formData.artist}
-            onChange={handleInputChange}
-          />
-          <StyledInput
-            required
-            type="text"
-            placeholder="Album Name"
-            name="album"
-            value={formData.album}
-            onChange={handleInputChange}
-          />
-          {/* <StyledInput
+        <Box>
+          <Text fontSize={5} fontWeight="bold" mb={2}>
+            Add Song
+          </Text>
+        </Box>
+        <StyledForm onSubmit={handleSubmit}>
+          <Flex flexDirection={"column"} css={genreStyles.styles}>
+            <StyledInput
+              required
+              type="text"
+              placeholder="Song Title"
+              name="title"
+              value={formData.title}
+              onChange={handleInputChange}
+            />
+            <StyledInput
+              required
+              type="text"
+              placeholder="Artist Name"
+              name="artist"
+              value={formData.artist}
+              onChange={handleInputChange}
+            />
+            <StyledInput
+              required
+              type="text"
+              placeholder="Album Name"
+              name="album"
+              value={formData.album}
+              onChange={handleInputChange}
+            />
+            {/* <StyledInput
             required
             type="text"
             placeholder="Song Cover Image URL"
@@ -340,85 +384,176 @@ function AddSongPage() {
             value={formData.coverImageUrl}
             onChange={handleInputChange}
           /> */}
-          <Text fontSize={2} fontWeight="bold" mb={0}>
-            Song Cover Image
-          </Text>
-          <Flex {...imageDropZone.getRootProps()} css={fileUploaderStyle.styles}>
-            <input required={true} {...imageDropZone.getInputProps()} />
-            {imageDropZone.isDragActive ? (
-              <p>Drop the files here ...</p>
-            ) : (
-              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-              <Box><Text>Click to select Image file</Text></Box>
-              <Box><UploadIcon /></Box>
+            <Text fontSize={2} fontWeight="bold" mb={0}>
+              Song Cover Image
+            </Text>
+            {/* warining if image file is missing */}
+            {imageFileIsMissing ? (
+              <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
+                <Text>Image file is required</Text>
+                <Warningcon />
               </Flex>
-            )}
-          </Flex>
-          {
-          imagePreview && 
-          <Flex css={audioPreviewStyle.styles} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-            <Box>
-          
-            <Text><img src={imagePreview as string} style={{width: '150px', height: '150px', borderRadius: '10px'}} /></Text>
-          
-          </Box>
-        
-          <Box>
-            <CircularProgressWithLabel variant="determinate" value={imageProgress} />
-          </Box>
-          </Flex>
-          }
-          <Text fontSize={2} fontWeight="bold" mb={0}>
-            Song File
-          </Text>
-          <Flex {...audioDropZone.getRootProps()} css={fileUploaderStyle.styles}>
-            <input required={true} {...audioDropZone.getInputProps()} />
-            {audioDropZone.isDragActive ? (
-              <p>Drop the files here ...</p>
             ) : (
-              <Flex css={`width: 100%;`} flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
-              <Box><Text>Click to select an Audio file, max file size 10MB</Text></Box>
-              <Box><UploadIcon /></Box>
-              </Flex>
+              ""
             )}
-          </Flex>
-          {
-            audioPreviewName &&
-            <Flex alignItems={"center"} justifyContent={'space-between'} css={audioPreviewStyle.styles}>
-              <Flex alignItems={"center"} css={`gap: 10px;`}>
-              <Box>
-                <AudioIcon />
-              </Box>
-              <Box>
-                <Flex flexDirection={"column"}>
-                  <Box><Text fontSize={2} fontWeight={"bold"}>{audioPreviewName}</Text></Box>
-                  <Box>{toMB(audioPreviewSize)} MB</Box>
+            <Flex
+              {...imageDropZone.getRootProps()}
+              css={fileUploaderStyle.styles}
+            >
+              <input {...imageDropZone.getInputProps()} />
+              {imageDropZone.isDragActive ? (
+                <p>Drop the files here ...</p>
+              ) : (
+                <Flex
+                  css={`
+                    width: 100%;
+                  `}
+                  flexDirection={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                >
+                  <Box>
+                    <Text>Click to select Image file, max file size 3MB</Text>
+                  </Box>
+                  <Box>
+                    <UploadIcon />
+                  </Box>
                 </Flex>
-              </Box>
-              </Flex>
-              <Box>
-              <CircularProgressWithLabel variant="determinate" value={audioProgress} />
-              </Box>
+              )}
             </Flex>
-          }
-          <Text fontSize={2} fontWeight="bold" mb={0}>
-            Select Song Genre
-          </Text>
-          <StyledSelect
-            required
-            name="genre"
-            onChange={handleInputChange}
-            value={formData.genre}
-          >
-            {Categories.map((category, index) => (
-              <StyledOption key={index} value={category}>
-                {category}
-              </StyledOption>
-            ))}
-          </StyledSelect>
-          <StyledButton type="submit" disabled={buttonIsLoading}>
-            {buttonIsLoading ? (
-              <>
+            {imagePreview && (
+              <Flex
+                css={audioPreviewStyle.styles}
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+              >
+                <Box>
+                  <Text>
+                    <img
+                      src={imagePreview as string}
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "10px",
+                      }}
+                    />
+                  </Text>
+                </Box>
+
+                <Box>
+                  <CircularProgressWithLabel
+                    variant="determinate"
+                    value={imageProgress}
+                  />
+                </Box>
+              </Flex>
+            )}
+            <Text fontSize={2} fontWeight="bold" mb={0}>
+              Song File
+            </Text>
+            {/* warining if audio file is missing */}
+            {audioFileIsMissing ? (
+              <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
+                <Text>Audio file is required</Text>
+                <Warningcon />
+              </Flex>
+            ) : (
+              ""
+            )}
+
+            <Flex
+              {...audioDropZone.getRootProps()}
+              css={fileUploaderStyle.styles}
+            >
+              <input {...audioDropZone.getInputProps()} />
+              {audioDropZone.isDragActive ? (
+                <p>Drop the files here ...</p>
+              ) : (
+                <Flex
+                  css={`
+                    width: 100%;
+                  `}
+                  flexDirection={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                >
+                  <Box>
+                    <Text>
+                      Click to select an Audio file, max file size 10MB
+                    </Text>
+                  </Box>
+                  <Box>
+                    <UploadIcon />
+                  </Box>
+                </Flex>
+              )}
+            </Flex>
+            {audioPreviewName && (
+              <Flex
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                css={audioPreviewStyle.styles}
+              >
+                <Flex
+                  alignItems={"center"}
+                  css={`
+                    gap: 10px;
+                  `}
+                >
+                  <Box>
+                    <AudioIcon />
+                  </Box>
+                  <Box>
+                    <Flex flexDirection={"column"}>
+                      <Box>
+                        <Text fontSize={2} fontWeight={"bold"}>
+                          {audioPreviewName}
+                        </Text>
+                      </Box>
+                      <Box>{toMB(audioPreviewSize)} MB</Box>
+                    </Flex>
+                  </Box>
+                </Flex>
+                <Box>
+                  <CircularProgressWithLabel
+                    variant="determinate"
+                    value={audioProgress}
+                  />
+                </Box>
+              </Flex>
+            )}
+            <Text fontSize={2} fontWeight="bold" mb={0}>
+              Select Song Genre
+            </Text>
+            <StyledSelect
+              required
+              name="genre"
+              onChange={handleInputChange}
+              value={formData.genre}
+            >
+              {Categories.map((category, index) => (
+                <StyledOption key={index} value={category}>
+                  {category}
+                </StyledOption>
+              ))}
+            </StyledSelect>
+            <StyledButton type="submit" disabled={buttonIsLoading}>
+              {buttonIsLoading ? (
+                <>
+                  <Flex
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    css={`
+                      height: 30px;
+                    `}
+                  >
+                    <Text>Add Song</Text>
+                    <Flex css={spinnerStyles.styles}></Flex>
+                  </Flex>
+                </>
+              ) : (
                 <Flex
                   flexDirection={"row"}
                   alignItems={"center"}
@@ -428,25 +563,12 @@ function AddSongPage() {
                   `}
                 >
                   <Text>Add Song</Text>
-                  <Flex css={spinnerStyles.styles}></Flex>
                 </Flex>
-              </>
-            ) : (
-              <Flex
-                flexDirection={"row"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                css={`
-                  height: 30px;
-                `}
-              >
-                <Text>Add Song</Text>
-              </Flex>
-            )}
-          </StyledButton>
-        </Flex>
-      </StyledForm>
-    </Flex>
+              )}
+            </StyledButton>
+          </Flex>
+        </StyledForm>
+      </Flex>
     </>
   );
 }

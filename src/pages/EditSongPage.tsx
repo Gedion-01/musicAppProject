@@ -14,8 +14,15 @@ import { useParams } from "react-router";
 import ErrorMessage from "../components/ErrorMessage";
 import FailedToast from "../components/Toasts/FailedToast";
 import { setAudioFile, setImageFile } from "../state/songs/songsSlice";
+import { IoWarning } from "react-icons/io5";
 import CircularProgressWithLabel from "../components/CircularProgressWithLabel";
 import SuccessToast from "../components/Toasts/SuccessToast";
+
+const Warningcon = styled(IoWarning)`
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+`;
 
 const UploadIcon = styled(AiOutlineCloudUpload)`
   font-size: 40px;
@@ -141,12 +148,20 @@ function EditSongPage() {
   );
   const [audioPreviewSize, setAudioPreviewSize] = useState(0);
   const [audioPreviewName, setAudioPreviewName] = useState("");
+  const [audioFileIsMissing, setAudioFileIsMissing] = useState(false)
+  const [imageFileIsMissing, setImageFileIsMissing] = useState(false)
 
   const imageProgress = useSelector(
     (state: RootState) => state.songs.imageProgress
   );
   const audioProgress = useSelector(
     (state: RootState) => state.songs.audioProgress
+  );
+  const audioFile = useSelector(
+    (state: RootState) => state.songs.audioFile
+  );
+  const imageFile = useSelector(
+    (state: RootState) => state.songs.imageFile
   );
 
   const showSuccessToast = useSelector(
@@ -250,12 +265,18 @@ function EditSongPage() {
   }
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+     // check if image file exists
+     if(imageFile == undefined) {
+      setImageFileIsMissing(true)
+      return
+    }else {setImageFileIsMissing(false)}
+    // check if audio file exists
+    if(audioFile == undefined) {
+      setAudioFileIsMissing(true)
+      return
+    } else {setAudioFileIsMissing(false)}
     handleClick();
     dispatch({ type: "song/updateSong", payload: { data: formData } });
-
-    // if (EditSongCauseAnError === false && buttonIsLoading === false) {
-    //   navigate("/");
-    // }
   }
   useEffect(() => {
     let mounted = true;
@@ -269,7 +290,6 @@ function EditSongPage() {
     }
   }, [showSuccessToast]);
   const handleClick = () => {
-    // Simulate asynchronous operation
     setShowErrorMessage(true);
     setTimeout(() => {
       setShowErrorMessage(false);
@@ -378,6 +398,15 @@ function EditSongPage() {
             <Text fontSize={2} fontWeight="bold" mb={0}>
               Song Cover Image
             </Text>
+            {/* warining if image file is missing */}
+            {imageFileIsMissing ? (
+              <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
+                <Text>Image file is required</Text>
+                <Warningcon />
+              </Flex>
+            ) : (
+              ""
+            )}
             <Flex
               {...imageDropZone.getRootProps()}
               css={fileUploaderStyle.styles}
@@ -439,6 +468,15 @@ function EditSongPage() {
             <Text fontSize={2} fontWeight="bold" mb={0}>
               Song File
             </Text>
+            {/* warining if audio file is missing */}
+            {audioFileIsMissing ? (
+              <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
+                <Text>Audio file is required</Text>
+                <Warningcon />
+              </Flex>
+            ) : (
+              ""
+            )}
             <Flex
               {...audioDropZone.getRootProps()}
               css={fileUploaderStyle.styles}

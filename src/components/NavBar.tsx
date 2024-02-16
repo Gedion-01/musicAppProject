@@ -5,9 +5,9 @@ import { Flex, Box, Text } from "rebass";
 import { TbMenu2 } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
-import { useLocation } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import SmallScreenSidebar from "./SmallScreen/SmallScreenSidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MenuIcon = styled(TbMenu2)`
   cursor: pointer;
@@ -31,6 +31,7 @@ align-items: center;
 `
 
 export default function NavBar() {
+  const navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const location = useLocation()
   const NavStyle = css`
@@ -65,11 +66,22 @@ export default function NavBar() {
   }
     
   `;
+  useEffect(() => {
+    setTimeout(() => {
+      navigate('/')
+    }, 500)
+  }, [open])
+
+
+  function close() {
+    setOpen(false) 
+  }
+  
 
   return (
     <>
       {/* Nav bar */}
-      <SmallScreenSidebar openMobileNav={open} onClick={() => setOpen(false)}/>
+      <SmallScreenSidebar openMobileNav={open} onClick={close}/>
       <Flex css={NavStyle.styles} justifyContent={"space-between"} alignItems={"center"}>
         <Box>
             <SearchContainer style={{display: location.pathname === '/' ? 'flex' : 'none'}}>

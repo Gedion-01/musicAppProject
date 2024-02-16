@@ -110,7 +110,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
               <CloseIcon onClick={onClick} />
             </Box>
           </Flex>
-          <Link to={"/"}>
+          
             <Flex
               flexDirection={"row"}
               alignItems="center"
@@ -125,7 +125,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
                 <Text>Home</Text>
               </Box>
             </Flex>
-          </Link>
+          
           <Link to={"/genre"}>
             <Flex
               flexDirection={"row"}

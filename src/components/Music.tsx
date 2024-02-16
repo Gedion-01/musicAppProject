@@ -1,16 +1,13 @@
 import { Box, Flex, Text } from "rebass";
 import { SlOptionsVertical } from "react-icons/sl";
-import { FaPlay } from "react-icons/fa";
-import { FaPause } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import { FaRegCircleCheck } from "react-icons/fa6";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
@@ -18,7 +15,7 @@ import SuccessToast from "./Toasts/SuccessToast";
 import { setCurrentData, setCurrentTrackIndex, setIsPlaying, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
 import FailedToast from "./Toasts/FailedToast";
 // import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import { animationRef, audioPlayer } from "../hooks/audioPlayerRefs";
+import { audioPlayer } from "../hooks/audioPlayerRefs";
 const StyledOption = styled(SlOptionsVertical)`
 position: relative; // Set position to relative
 z-index: 1; // Set a lower z-index value
@@ -85,21 +82,21 @@ const Music: React.FC<myComponentProp> = ({
   // const {handlePlayPause} = methods
   
   console.log(index, ' ', playListData.length,' ', playListData)
-  function playPause() {
-    dispatch(setCurrentTrackIndex(index))
-    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
-    dispatch(setPlayerQueueLength(playListData.length))
-    dispatch(setPlayerQueue(playListData))
-    console.log('play/pause')
-    //handlePlayPause()
+  // function playPause() {
+  //   dispatch(setCurrentTrackIndex(index))
+  //   dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
+  //   dispatch(setPlayerQueueLength(playListData.length))
+  //   dispatch(setPlayerQueue(playListData))
+  //   console.log('play/pause')
+  //   //handlePlayPause()
     
-    if(currentData._id !== _id) {
-      dispatch(setPlayNext(true))
-    }
-    if(currentData._id === _id) {
-      dispatch(setPlayNext(false))
-    }
-  }
+  //   if(currentData._id !== _id) {
+  //     dispatch(setPlayNext(true))
+  //   }
+  //   if(currentData._id === _id) {
+  //     dispatch(setPlayNext(false))
+  //   }
+  // }
   function play(event: any) {
     event.preventDefault();
     console.log('play');

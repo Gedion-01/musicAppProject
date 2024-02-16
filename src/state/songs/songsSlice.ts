@@ -129,10 +129,10 @@ const songsSlice = createSlice({
     setAudioProgress: (state, action: PayloadAction<number>) => {
       state.audioProgress = action.payload
     },
-    setImageFile: (state, action: PayloadAction<File>) => {
+    setImageFile: (state, action: PayloadAction<File | undefined>) => {
       state.imageFile = action.payload
     },
-    setAudioFile: (state, action: PayloadAction<File>) => {
+    setAudioFile: (state, action: PayloadAction<File | undefined>) => {
       state.audioFile = action.payload
     },
     setSongCreatedSuccessfully: (state, action: PayloadAction<boolean>) => {

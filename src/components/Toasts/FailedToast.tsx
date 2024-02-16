@@ -57,7 +57,7 @@ to {
     z-index: 20;
     background: ${light ? "#E1F2F7" : "#1f3044"};
     color: ${light ? "#1f3044" : "##fff"};
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 5px;
     animation: ${({ isVisible }) => (isVisible ? slideIn : slideOut)} 0.5s
       ease-in-out;
@@ -80,10 +80,11 @@ to {
         flexDirection={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
+        css={`width: 100%; gap: 10px;`}
       >
         <StyledCheckMark />
 
-        <Text fontSize={3}>{message}</Text>
+        <Text fontSize={2}>{message}</Text>
       </Flex>
     </ToastContainer>
   );

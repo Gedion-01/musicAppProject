@@ -1,5 +1,4 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import { useDispatch } from 'react-redux';
 
 import {
   setSongs,
@@ -50,9 +49,8 @@ type formdData = {
   artist: string;
   album: string;
   genre: string;
+  songid?: string
 };
-type imageFile = {imageFile: File}
-type audioFile = {audioFile: File}
 
 
 function* createSong(action: any) {
@@ -113,12 +111,14 @@ function* createSong(action: any) {
 }
 
 function* updateSong(action: any) {
+  console.log('sdsd')
   yield put(setEditSongButtonLoading(true));
 
   // Check if action.payload exists before destructuring
   if (action.payload) {
-    const { data }: { data: formdData & {coverImageUrl: string;
-      songDataUrl: string  } } = action.payload;
+    console.log(action.payload)
+    const { data }: { data: formdData & {coverImageUrl: string,
+      songDataUrl: string, songid: string  } } = action.payload;
       
     let imageProgress: number = 0
     let audioProgress: number = 0
@@ -130,14 +130,15 @@ function* updateSong(action: any) {
       
       const formData = new FormData();
       
+      formData.append('songid', data.songid)
       formData.append('title', data.title);
       formData.append('artist', data.artist);
       formData.append('album', data.album);
       formData.append('genre', data.genre);
+      formData.append('coverImageUrl', data.coverImageUrl)
+      formData.append('songDataUrl', data.songDataUrl)
       formData.append('audio', audio)
       formData.append('image', image)
-      formData.append('coverImageUrl', data.coverImageUrl)
-      formData.append('image', image, data.songDataUrl)
       console.log(formData)
       // Log FormData values
       console.log("FormData:");
@@ -145,14 +146,15 @@ function* updateSong(action: any) {
         console.log(key, value);
       }
       const response: AxiosResponse = yield call(() => {
-        return axios.post(`${VITE_BASE_URL}/updateSong`, formData, {
+        return axios.put(`http://localhost:3000/api/v1/updateSong`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
           onUploadProgress: progressEvent => {
-            imageProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
-            audioProgress = Math.round((progressEvent.loaded * 100) / progressEvent.loaded)
-
+            if (progressEvent.total) { // Check if total is defined
+              imageProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              audioProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            }
           }
         });
       });
@@ -244,8 +246,4 @@ export function* getSongByIdSaga() {
 }
 export function* deleteSongByIdSaga() {
   yield takeEvery("song/deleteSongById", deleteSongById)
-}
-
-function setSetSongCreatedSuccessfully(arg0: boolean): any {
-  throw new Error("Function not implemented.");
 }
