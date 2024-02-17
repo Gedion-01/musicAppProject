@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CircularProgressWithLabel from "../components/CircularProgressWithLabel";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -9,15 +9,10 @@ import { Flex, Box, Text } from "rebass";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
-import ErrorMessage from "../components/ErrorMessage";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { IoWarning } from "react-icons/io5";
 import { MdOutlineAudioFile } from "react-icons/md";
-import {
-  setAudioFile,
-  setImageFile,
-  setShowSuccessToast,
-} from "../state/songs/songsSlice";
+import { setAudioFile, setImageFile } from "../state/songs/songsSlice";
 import FailedToast from "../components/Toasts/FailedToast";
 import SuccessToast from "../components/Toasts/SuccessToast";
 
@@ -88,7 +83,6 @@ const StyledSelect = styled.select`
   }
 `;
 const StyledOption = styled.option`
-     
       color: #333;
       padding: 10px;
       border-radius: 5px;
@@ -142,6 +136,7 @@ function AddSongPage() {
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     null
   );
+  // states
   const [audioPreviewSize, setAudioPreviewSize] = useState(0);
   const [audioPreviewName, setAudioPreviewName] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -151,6 +146,8 @@ function AddSongPage() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  // redux states
   const showSuccessToast = useSelector(
     (state: RootState) => state.songs.showSuccessToast
   );
@@ -179,7 +176,6 @@ function AddSongPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  console.log(formData);
 
   const genreStyles = css`
     gap: 12px;
@@ -238,6 +234,7 @@ function AddSongPage() {
     border-radius: 8px; /* Rounded corners */
   `;
   //console.log(audioFile, imageFile)
+  // when image is droped
   const onImageDrop = useCallback((acceptedFiles: Array<File>) => {
     const file = new FileReader();
     file.onload = function () {
@@ -247,6 +244,8 @@ function AddSongPage() {
     file.readAsDataURL(acceptedFiles[0]);
     dispatch(setImageFile(acceptedFiles[0]));
   }, []);
+
+  // when audio is droped
   const onAudioDrop = useCallback((acceptedFiles: Array<File>) => {
     acceptedFiles.forEach((file) => {
       setAudioPreviewName(file.name);
@@ -275,14 +274,17 @@ function AddSongPage() {
       "audio/mpeg": [".mp3"],
     },
   });
+
+  // when input is changed
   function handleInputChange(e: InputChangeEvent) {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
     });
   }
+
+  // when submit
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     // check if image file exists
@@ -310,13 +312,13 @@ function AddSongPage() {
     }, 8000);
   };
 
+  // success effect to navigate to home
   useEffect(() => {
-    let mounted = true;
-
     if (showSuccessToast) {
       setTimeout(() => {
         navigate("/");
       }, 3000);
+      let mounted = true;
       return () => {
         mounted = false;
       };
@@ -332,10 +334,6 @@ function AddSongPage() {
       />
       <Flex flexDirection={"column"}>
         {createSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
-          // <ErrorMessage
-          //   message="Error while adding the song. Please try again."
-          //   show={setShowErrorMessage}
-          // />
           <FailedToast
             isToastVisible={showErrorMessage}
             light={true}

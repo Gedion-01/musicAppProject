@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Flex, Text } from "rebass";
+import { Flex, Text } from "rebass";
 
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { setAudioFile, setAudioProgress, setImageFile, setImageProgress, setShowSuccessToast } from "../../state/songs/songsSlice";

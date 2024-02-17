@@ -1,7 +1,6 @@
 import React from "react";
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Flex, Box, Text } from "rebass";
+import { Text } from "rebass";
 
 const Categories = [
   "R&B",
@@ -12,23 +11,6 @@ const Categories = [
   "Pop",
 ];
 
-const StyledInput = styled.input`
-  padding: 10px;
-  /* Add playful spirit: */
-  background-color: #f0f8ff;
-  border: 1px solid #c0c0ff;
-  font-family: cursive;
-  font-size: 16px;
-  outline: none;
-  box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
-  transition: 0.2s ease-in-out;
-  border-radius: 8px; /* Rounded corners */
-
-  &:focus {
-    box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
-    border-color: #9090ff;
-  }
-`;
 
 const StyledSelect = styled.select`
   padding: 10px;
@@ -53,7 +35,6 @@ const StyledSelect = styled.select`
   }
 `;
 const StyledOption = styled.option`
-   
     color: #333;
     padding: 10px 20px;
     border-radius: 5px;

@@ -28,7 +28,6 @@ function* fetchSongs() {
     );
     yield put(setSongs(response.data.songs));
   } catch (error) {
-    console.log(error);
   }
 }
 function* fetchSongsByGenre(action: any) {
@@ -65,7 +64,6 @@ function* createSong(action: any) {
     try {
       const image: File = yield select((state: RootState) => state.songs.imageFile)
       const audio: File = yield select((state: RootState) => state.songs.audioFile)
-      console.log(image, audio)
       
       const formData = new FormData();
       
@@ -75,12 +73,8 @@ function* createSong(action: any) {
       formData.append('genre', data.genre);
       formData.append('audio', audio)
       formData.append('image', image)
-      console.log(formData)
-      // Log FormData values
-      console.log("FormData:");
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+
+      
       const response: AxiosResponse = yield call(() => {
         return axios.post(`${VITE_BASE_URL}/uploadSong`, formData, {
           headers: {
@@ -111,12 +105,10 @@ function* createSong(action: any) {
 }
 
 function* updateSong(action: any) {
-  console.log('sdsd')
   yield put(setEditSongButtonLoading(true));
 
   // Check if action.payload exists before destructuring
   if (action.payload) {
-    console.log(action.payload)
     const { data }: { data: formdData & {coverImageUrl: string,
       songDataUrl: string, songid: string  } } = action.payload;
       
@@ -126,7 +118,6 @@ function* updateSong(action: any) {
     try {
       const image: File = yield select((state: RootState) => state.songs.imageFile)
       const audio: File = yield select((state: RootState) => state.songs.audioFile)
-      console.log(image, audio)
       
       const formData = new FormData();
       
@@ -139,12 +130,7 @@ function* updateSong(action: any) {
       formData.append('songDataUrl', data.songDataUrl)
       formData.append('audio', audio)
       formData.append('image', image)
-      console.log(formData)
-      // Log FormData values
-      console.log("FormData:");
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+      
       const response: AxiosResponse = yield call(() => {
         return axios.put(`http://localhost:3000/api/v1/updateSong`, formData, {
           headers: {
@@ -160,7 +146,7 @@ function* updateSong(action: any) {
       });
       yield put(setImageProgress(imageProgress))
       yield put(setAudioProgress(audioProgress))
-      console.log(response)
+      
       yield put(setEditSongCauseAnError(false));
       
       yield put(setEditSongButtonLoading(false));
@@ -190,7 +176,7 @@ function* deleteSongById(action: any) {
 
   try {
     const { songid }: { songid: string } = action.payload;
-    console.log(songid, action);
+
     const queryParmams = {
       songid: songid
     }

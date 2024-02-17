@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from "@emotion/react";
+import { css } from "@emotion/react";
 
 import { Flex, Box, Text } from "rebass";
 import StatusCard from "../components/StatusCard";
@@ -8,12 +8,13 @@ import AlbumStatus from "../components/AlbumStatus";
 import ArtistsStatus from "../components/ArtistsStatus";
 import { useEffect } from "react";
 
-import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import styled from "@emotion/styled";
 import AllGenresTitle from "../components/AllGenresTitle";
 import SongsAndAlbumsperArtistTitle from "../components/SongsAndAlbumsperArtistTitle";
 import AlbumStatusTitle from "../components/AlbumStatusTitle";
+import Loading from "../components/Animation/Loading";
 
 const Datacontainer = styled.div``;
 const WrapperStyle = styled.div`
@@ -40,9 +41,6 @@ export default function StatisticsPage() {
   const totalNumberOfGenres = useSelector(
     (state: RootState) => state.songsStatistics.TotalNumberOfGenres
   );
-  const isOverViewLoading = useSelector(
-    (state: RootState) => state.songsStatistics.isLoading
-  );
 
   const genres = useSelector(
     (state: RootState) => state.songsDataStatistics.genreCounts
@@ -54,7 +52,7 @@ export default function StatisticsPage() {
     (state: RootState) => state.songsDataStatistics.albumCountsAndSongs
   );
   const isDataLoading = useSelector(
-    (state: RootState) => state.songsDataStatistics.issongDataStatistics
+    (state: RootState) => state.songsDataStatistics.songDataStatisticsLoading
   );
 
   useEffect(() => {
@@ -72,10 +70,11 @@ export default function StatisticsPage() {
     dispatch({ type: "songs/fetchSongsStatistics" });
     dispatch({ type: "songs/fetchSongsStatisticsData" });
   }, []);
-  console.log(totalNumberOfSongs, genres, songsAndAlbumsperArtist);
 
   return (
     <>
+    {
+      isDataLoading ? <Loading /> :
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
@@ -142,6 +141,8 @@ export default function StatisticsPage() {
           </Datacontainer>
         </WrapperStyle>
       </Flex>
+}
     </>
+    
   );
 }

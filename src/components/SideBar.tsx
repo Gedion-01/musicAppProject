@@ -1,13 +1,11 @@
 import { BiCategory } from "react-icons/bi";
 import { IoMdHome } from "react-icons/io";
 import { IoStatsChart } from "react-icons/io5";
-import { TbMenu2 } from "react-icons/tb";
-import { IoIosClose } from "react-icons/io";
 import { IoIosAddCircleOutline } from "react-icons/io";
 // Styled component should be defined outside of the component function
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import {Flex, Box, Text} from "rebass";
+import { Flex, Box, Text } from "rebass";
 
 import { Link, useLocation } from "react-router-dom";
 //
@@ -31,87 +29,121 @@ const StyledIcon4 = styled(IoIosAddCircleOutline)`
 `;
 
 export default function SideBar() {
-  const location = useLocation()
-    const sideBarStyle = css`
+  const location = useLocation();
+  const sideBarStyle = css`
     height: 100vh;
     position: sticky;
     top: 0;
-    
-   width: 350px;
 
-  
-  //  background: #a8bcc3;
-  background: #a8bcc3;
-  transition: all .5s ease;
-  font-weight: bolder;
+    width: 350px;
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-  `
+    //  background: #a8bcc3;
+    background: #a8bcc3;
+    transition: all 0.5s ease;
+    font-weight: bolder;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  `;
   const sideBarElement = css`
-  font-size: 20px;
-  color: #1F3044;
-  padding: 7px;
-  margin: 5px 16px;
-  cursor: pointer;
-  border-radius: 10px;
-  &:hover {
-    color: #BD1E51;
-  }
-  transition: .4s;
-  `
+    font-size: 20px;
+    color: #1f3044;
+    padding: 7px;
+    margin: 5px 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    &:hover {
+      color: #bd1e51;
+    }
+    transition: 0.4s;
+  `;
 
   const header = css`
-  font-size: 22px;
-  color: #E1E2E2;
-  text-align: center;
-  
-  `
+    font-size: 22px;
+    color: #e1e2e2;
+    text-align: center;
+  `;
   const menu = css`
-  margin-top: 25px;
-  padding: 0px 10px;
-  `
-    return<>
-        <Flex flexDirection={"column"}  css={sideBarStyle.styles}>
-        <Flex flexDirection={"row"} justifyContent="space-between" alignItems="center" css={menu.styles}>
-          <Box><Text css={header.styles}>My APP</Text></Box>
-          
+    margin-top: 25px;
+    padding: 0px 10px;
+  `;
+  return (
+    <>
+      <Flex flexDirection={"column"} css={sideBarStyle.styles}>
+        <Flex
+          flexDirection={"row"}
+          justifyContent="space-between"
+          alignItems="center"
+          css={menu.styles}
+        >
+          <Box>
+            <Text css={header.styles}>My APP</Text>
+          </Box>
         </Flex>
-        <Link to={'/'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/' ? '#BD1E51' : '' }}>
-          
-            <Box><StyledIcon /></Box>
+        <Link to={"/"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            css={sideBarElement.styles}
+            style={{ color: location.pathname === "/" ? "#BD1E51" : "" }}
+          >
+            <Box>
+              <StyledIcon />
+            </Box>
             <Box>
               <Text>Home</Text>
             </Box>
           </Flex>
-          </Link>
-          <Link to={'/genre'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/genre' ? '#BD1E51' : '' }}>
-            <Box><StyledIcon2 /></Box>
+        </Link>
+        <Link to={"/genre"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            css={sideBarElement.styles}
+            style={{ color: location.pathname === "/genre" ? "#BD1E51" : "" }}
+          >
+            <Box>
+              <StyledIcon2 />
+            </Box>
             <Box>
               <Text>Genre</Text>
             </Box>
           </Flex>
-          </Link>
-          <Link to={'/addSong'}>
-        <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/addSong' ? '#BD1E51' : '' }}>
-            <Box><StyledIcon4 /></Box>
+        </Link>
+        <Link to={"/addSong"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            css={sideBarElement.styles}
+            style={{ color: location.pathname === "/addSong" ? "#BD1E51" : "" }}
+          >
+            <Box>
+              <StyledIcon4 />
+            </Box>
             <Box>
               <Text>Add Songs</Text>
             </Box>
           </Flex>
-          </Link>
-          <Link to={'/Statistics'}>
-          <Flex flexDirection={"row"} alignItems="center" css={sideBarElement.styles} style={{ color: location.pathname === '/Statistics' ? '#BD1E51' : '' }}>
-            <Box><StyledIcon3 /></Box>
+        </Link>
+        <Link to={"/Statistics"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            css={sideBarElement.styles}
+            style={{
+              color: location.pathname === "/Statistics" ? "#BD1E51" : "",
+            }}
+          >
+            <Box>
+              <StyledIcon3 />
+            </Box>
             <Box>
               <Text>Statistics</Text>
             </Box>
           </Flex>
-          </Link>
-        
+        </Link>
       </Flex>
     </>
+  );
 }

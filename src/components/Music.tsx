@@ -12,13 +12,20 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import SuccessToast from "./Toasts/SuccessToast";
-import { setCurrentData, setCurrentTrackIndex, setIsPlaying, setPlayNext, setPlayerQueue, setPlayerQueueLength } from "../state/songs/playerSlice";
+import {
+  setCurrentData,
+  setCurrentTrackIndex,
+  setIsPlaying,
+  setPlayNext,
+  setPlayerQueue,
+  setPlayerQueueLength,
+} from "../state/songs/playerSlice";
 import FailedToast from "./Toasts/FailedToast";
 // import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { audioPlayer } from "../hooks/audioPlayerRefs";
 const StyledOption = styled(SlOptionsVertical)`
-position: relative; // Set position to relative
-z-index: 1; // Set a lower z-index value
+  position: relative;
+  z-index: 1;
   margin-right: 10px;
   font-size: 20px;
 `;
@@ -33,86 +40,92 @@ const StyledRemoveIcon = styled(MdDelete)`
 `;
 
 const PlayIcon = styled(BsFillPlayFill)`
-font-size: 22px;
-cursor: pointer;
-`
+  font-size: 22px;
+  cursor: pointer;
+`;
 const PauseIcon = styled(BsPauseFill)`
-font-size: 22px;
-cursor: pointer;
-`
-
-type myComponentProp = {
-  album: string;
-  artist: string;
-  coverImageUrl?: string;
-  date: string;
+  font-size: 22px;
+  cursor: pointer;
+`;
+interface Song {
+  _id: string;
   title: string;
-  _id?: string;
+  artist: string;
+  album: string;
+  genre: string;
+  coverImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
   songDataUrl: string;
-  //
-  playListData: [];
+}
+type myComponentProp = {
+  playerQueue: Song[];
   isCurrent: boolean;
   index: number;
   isPlaying: boolean;
 };
-interface Props {
-  optionIsOpened: boolean;
-  isPlaying: boolean;
-  isCurrent: boolean;
-  markedItem: boolean;
-}
 
-
-
-const Music: React.FC<myComponentProp> = ({
-  album,
-  artist,
-  coverImageUrl,
-  date,
-  title,
+const Music: React.FC<myComponentProp & Song> = ({
   _id,
-  playListData,
+  title,
+  artist,
+  album,
+  genre,
+  coverImageUrl,
+  createdAt,
+  updatedAt,
+  __v,
+  songDataUrl,
+  playerQueue,
   isCurrent,
   index,
   isPlaying,
-  songDataUrl
 }) => {
-  
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [optionIsOpened, setOptionIsOpened] = useState(false);
-  const [markedItem, setMarkedItem] = useState(false)
-  const [openDeleteModal ,setOpenDeleteModal] = useState(false);
+  const [markedItem, setMarkedItem] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const showSuccessToast = useSelector((state: RootState) => state.songs.showSuccessToast)
-  const showFailedToast = useSelector((state: RootState) => state.songs.showFailedToast)
+  const showSuccessToast = useSelector(
+    (state: RootState) => state.songs.showSuccessToast
+  );
+  const showFailedToast = useSelector(
+    (state: RootState) => state.songs.showFailedToast
+  );
   //
-  const currentData: any = useSelector((state: RootState) => state.playerData.currentData)
-
-  // const {methods} = useAudioPlayer()
-  // const {handlePlayPause} = methods
-  
-  console.log(index, ' ', playListData.length,' ', playListData)
+  const currentData: any = useSelector(
+    (state: RootState) => state.playerData.currentData
+  );
 
   function play(event: any) {
     event.preventDefault();
-    console.log('play');
-    dispatch(setCurrentTrackIndex(index))
-    dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
-    dispatch(setPlayerQueueLength(playListData.length))
-    dispatch(setPlayerQueue(playListData))
-    console.log('play/pause')
-    //handlePlayPause()
-    
-    
-    if(currentData._id !== _id) {
-      dispatch(setPlayNext(true))
+
+    dispatch(setCurrentTrackIndex(index));
+    dispatch(
+      setCurrentData({
+        _id,
+        title,
+        artist,
+        album,
+        genre,
+        createdAt,
+        updatedAt,
+        coverImageUrl,
+        songDataUrl,
+        __v,
+      })
+    );
+    dispatch(setPlayerQueueLength(playerQueue.length));
+    dispatch(setPlayerQueue(playerQueue));
+
+    if (currentData._id !== _id) {
+      dispatch(setPlayNext(true));
     }
     dispatch(setIsPlaying(true));
     //audioPlayer?.current?.play();
   }
   function pause() {
-    console.log('pause')
-    console.log("was playing");
     dispatch(setIsPlaying(false));
     dispatch(setPlayNext(false));
     audioPlayer?.current?.pause();
@@ -120,32 +133,29 @@ const Music: React.FC<myComponentProp> = ({
   }
   // to open option
   const handleOptionClick = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setOptionIsOpened((prev) => !prev);
   };
-  
 
   const deleteSong = (id: string | unknown) => {
     dispatch({ type: "song/deleteSongById", payload: { songid: id } });
-    closeModal()
+    closeModal();
   };
 
   const openModal = () => {
-    setOpenDeleteModal(true)
+    setOpenDeleteModal(true);
     setOptionIsOpened(false);
-    setMarkedItem(true)
+    setMarkedItem(true);
     // dispatch(setOpenDeleteModal(true))
     // dispatch(setmarkDeletedItem(true))
   };
 
   const closeModal = () => {
-    setMarkedItem(false)
-    setOpenDeleteModal(false)
+    setMarkedItem(false);
+    setOpenDeleteModal(false);
     // dispatch(setOpenDeleteModal(false))
     // dispatch(setmarkDeletedItem(false))
-    console.log('close')
   };
-  console.log(markedItem);
 
   const StyledBackGround = styled.div`
     position: fixed;
@@ -154,7 +164,6 @@ const Music: React.FC<myComponentProp> = ({
     display: ${optionIsOpened ? "block" : "none"};
     height: 100vh;
     width: 100%;
-    
   `;
   const Button = styled.button`
     padding: 15px 30px;
@@ -188,10 +197,9 @@ const Music: React.FC<myComponentProp> = ({
       transform: scale(1.05);
     }
   `;
- 
-  console.log(isCurrent, isPlaying)
+
   const StyledContent = styled.div`
-  z-index: 10;
+    z-index: 10;
     font-size: 17px;
     position: absolute;
     min-width: 100px;
@@ -200,7 +208,7 @@ const Music: React.FC<myComponentProp> = ({
     border-radius: 10px;
     margin-right: 5px;
     display: ${optionIsOpened ? "block" : "none"};
-   
+
     text-decoration: none;
     right: 0;
   `;
@@ -208,34 +216,20 @@ const Music: React.FC<myComponentProp> = ({
     padding: 5px 2px;
     border: none;
   `;
-  // const spotifyStyle = css`
-  //   color: #1f3044;
-  //   padding: 4px 4px;
-  //   border-radius: 8px;
-  //   margin-bottom: 10px;
-  //   background-color: ${optionIsOpened ? "#a8bcc3" : ""};
-  //   background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
-  //   background-color: ${markedItem ? "#a8bcc3" : ""};
-  //   max-width: 800px;
-  //   &: hover {
-  //     background-color: #a8bcc3;
-      
-  //   } 
-  // `;
-  const spotifyStyle = useMemo(() => {
+
+  const musicStyle = useMemo(() => {
     return css`
-    color: #1f3044;
-    padding: 4px 4px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: ${optionIsOpened ? "#a8bcc3" : ""};
-    background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
-    background-color: ${markedItem ? "#a8bcc3" : ""};
-    max-width: 800px;
-    &: hover {
-      background-color: #a8bcc3;
-      
-    } 
+      color: #1f3044;
+      padding: 4px 4px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background-color: ${optionIsOpened ? "#a8bcc3" : ""};
+      background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
+      background-color: ${markedItem ? "#a8bcc3" : ""};
+      max-width: 800px;
+      &: hover {
+        background-color: #a8bcc3;
+      }
     `;
   }, [optionIsOpened, isPlaying, isCurrent, markedItem]);
   const playTitle = css`
@@ -252,22 +246,20 @@ const Music: React.FC<myComponentProp> = ({
     }
   `;
   const cmMDScreen = css`
-  @media (max-width: 1024px) {
-    display: none;
-  }
-`;
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  `;
   const titleStyle = css`
     height: 40px;
   `;
   const StyledOptionContainer = css`
     cursor: pointer;
     position: relative;
-    
   `;
   const StyledlementsMenuebarContent = css`
-  
     &:hover {
-      color: #BD1E51;
+      color: #bd1e51;
     }
     transition: 0.4s;
   `;
@@ -280,9 +272,8 @@ to {
   opacity: 1;
 }
 `;
-
-    // Define styles for the modal overlay
-    const overlayStyles = css`
+  // for modal overlay
+  const overlayStyles = css`
     position: fixed;
     z-index: 20;
     top: 0;
@@ -295,18 +286,16 @@ to {
     align-items: center;
   `;
 
-  // Define styles for the modal content
+  // modal content
   const modalStyles = css`
     display: flex;
     flex-direction: column;
     background-color: #f0f8ff;
     gap: 10px;
-    
     padding: 20px;
     border-radius: 8px;
     animation: ${fadeIn} 0.3s ease; /* Apply animation to modal content */
     @media (max-width: 768px) {
-      
     }
   `;
 
@@ -317,7 +306,6 @@ to {
   const ModalContent = styled.div`
     ${modalStyles}
   `;
-
 
   function formatDate(date: string): string {
     const dateObject: Date = new Date(date);
@@ -334,44 +322,54 @@ to {
     return formattedDate;
   }
 
-
   const StyledSpan = styled.span`
-  font-weight: bold;
-  `
+    font-weight: bold;
+  `;
 
   return (
     <>
-    <SuccessToast isToastVisible={showSuccessToast} light={true} message="Song deleted successfully." />
-    <FailedToast isToastVisible={showFailedToast} message="Failed to remove song." light={true} />
-      
-    {/* Render modal if isOpen is true */}
-    {openDeleteModal && (
-          <Overlay onClick={closeModal}>
-            <ModalContent onClick={(e) => e.stopPropagation()}>
-              <Text fontSize={4} fontWeight={"bold"}>
-                Delete from your Songs?
-              </Text>
-              <Text>This will delete <StyledSpan>{title}</StyledSpan> from Your Songs.</Text>
-              <Flex
-                flexDirection={"row"}
-                justifyContent={"flex-end"}
-                css={`
-                  gap: 10px;
-                  margin-top: 20px;
-                `}
-              >
-                <Button2 onClick={closeModal}>Cancel</Button2>
-                <Button onClick={() => deleteSong(_id)}>Delete</Button>
-              </Flex>
-            </ModalContent>
-          </Overlay>
-        )}
+      <SuccessToast
+        isToastVisible={showSuccessToast}
+        light={true}
+        message="Song deleted successfully."
+      />
+      <FailedToast
+        isToastVisible={showFailedToast}
+        message="Failed to remove song."
+        light={true}
+      />
+
+      {/* Render modal if isOpen is true */}
+      {openDeleteModal && (
+        <Overlay onClick={closeModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <Text fontSize={4} fontWeight={"bold"}>
+              Delete from your Songs?
+            </Text>
+            <Text>
+              This will delete <StyledSpan>{title}</StyledSpan> from Your Songs.
+            </Text>
+            <Flex
+              flexDirection={"row"}
+              justifyContent={"flex-end"}
+              css={`
+                gap: 10px;
+                margin-top: 20px;
+              `}
+            >
+              <Button2 onClick={closeModal}>Cancel</Button2>
+              <Button onClick={() => deleteSong(_id)}>Delete</Button>
+            </Flex>
+          </ModalContent>
+        </Overlay>
+      )}
+      {/* backdrop for option */}
       <StyledBackGround onClick={handleOptionClick}></StyledBackGround>
       <Flex
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        css={spotifyStyle.styles}
+        css={musicStyle.styles}
       >
         <Flex
           flexDirection={"row"}
@@ -379,21 +377,22 @@ to {
           flex={1.5}
           css={playTitle.styles}
         >
-          <Box ml={2}>{isPlaying && isCurrent ? (
-                <PauseIcon onClick={pause} />
-              ) : (
-                <PlayIcon onClick={(event) => {
+          <Box ml={2}>
+            {isPlaying && isCurrent ? (
+              <PauseIcon onClick={pause} />
+            ) : (
+              <PlayIcon
+                onClick={(event) => {
                   event.preventDefault(); // Prevent default action
                   play(event);
-                }} />
-                
-              )}</Box>
+                }}
+              />
+            )}
+          </Box>
           <Box>
             <img
               style={{ width: "45px", height: "45px", borderRadius: "5px" }}
-              src={
-                "https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain"
-              }
+              src={coverImageUrl}
             />
           </Box>
           <Flex
@@ -402,16 +401,29 @@ to {
             css={titleStyle.styles}
           >
             <Box>
-              <Text fontSize={16} fontWeight="bold" style={{overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",}}>
+              <Text
+                fontSize={16}
+                fontWeight="bold"
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 {title}
               </Text>
             </Box>
             <Box>
-              <Text fontSize={14} style={{overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",}}>{artist}</Text>
+              <Text
+                fontSize={14}
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {artist}
+              </Text>
             </Box>
           </Flex>
         </Flex>
@@ -432,9 +444,9 @@ to {
           </Text>
         </Box>
         <Box css={[boxStyle.styles, hiddenOnSmallScreen.styles]} flex={1}>
-          <Text fontSize={14}>{formatDate(date)}</Text>
+          <Text fontSize={14}>{formatDate(updatedAt)}</Text>
         </Box>
-        <Box css={StyledOptionContainer.styles} >
+        <Box css={StyledOptionContainer.styles}>
           <StyledOption onClick={handleOptionClick} />
           {optionIsOpened === true ? (
             <StyledContent onClick={(e) => e.stopPropagation()}>
@@ -472,7 +484,9 @@ to {
                 </Box>
               </Flex>
             </StyledContent>
-          ): ""}
+          ) : (
+            ""
+          )}
         </Box>
       </Flex>
     </>

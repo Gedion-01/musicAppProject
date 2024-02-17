@@ -33,7 +33,7 @@ interface songDataStatistics {
   genreCounts: genre[];
   songsAndAlbumsperArtist: songsAndAlbumsPerArtist[];
   albumCountsAndSongs: albumCountsAndSongs[];
-  issongDataStatistics: boolean;
+  songDataStatisticsLoading: boolean;
 }
 
 
@@ -41,7 +41,7 @@ const initialState: songDataStatistics = {
   genreCounts: [],
   songsAndAlbumsperArtist: [],
   albumCountsAndSongs: [],
-  issongDataStatistics: true,
+  songDataStatisticsLoading: true,
 };
 
 const songDataStatistics = createSlice({
@@ -55,7 +55,7 @@ const songDataStatistics = createSlice({
       state.songsAndAlbumsperArtist = action.payload
     },
     setIssongDataStatisticsLoading: (state, action: PayloadAction<boolean>) => {
-      state.issongDataStatistics = action.payload;
+      state.songDataStatisticsLoading = action.payload;
     },
     setAlbumCountsAndSongs: (state, action: PayloadAction<[]>) => {
       state.albumCountsAndSongs = action.payload

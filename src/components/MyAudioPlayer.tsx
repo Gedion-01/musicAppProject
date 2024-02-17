@@ -1,98 +1,104 @@
+import "../index.css";
+
 import React, { useEffect, useRef, useState } from "react";
 import { audioPlayer, animationRef } from "../hooks/audioPlayerRefs";
 
 import styled from "@emotion/styled";
-import { Flex, Box, Text } from "rebass";
 
 import { BiSkipPrevious, BiSkipNext } from "react-icons/bi";
 import { BiPlayCircle, BiPauseCircle } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../state/store";
-import { setIsPlaying, setPlayNext } from "../state/songs/playerSlice";
+import {
+  setCurrentData,
+  setCurrentTrackIndex,
+  setIsPlaying,
+  setPlayNext,
+} from "../state/songs/playerSlice";
 
-import styles from '../styles/AudioPlayer.module.css'
-
-const StyledImage = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-`;
+import styles from "../styles/AudioPlayer.module.css";
 
 const Play = styled(BiPlayCircle)`
   cursor: pointer;
   font-size: 40px;
-  @media (max-width: 768px) {
-    
+  &:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
   }
+ 
 `;
 
 const Pause = styled(BiPauseCircle)`
   cursor: pointer;
   font-size: 40px;
-  @media (max-width: 768px) {
-    
+  &:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
   }
+
 `;
 
 const Prev = styled(BiSkipPrevious)`
   cursor: pointer;
   font-size: 40px;
-  @media (max-width: 768px) {
-    
+  transition-duration: 0.4s;
+  &:hover {
+    color: white;
   }
+
 `;
 const Next = styled(BiSkipNext)`
   cursor: pointer;
   font-size: 40px;
-  @media (max-width: 768px) {
-    
+  transition-duration: 0.4s;
+  &:hover {
+    color: white;
   }
+
 `;
 interface myComponentProp {
   imageUrl: string;
 }
-//https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain
-const MyAudioPlayer: React.FC<myComponentProp> = ({
-  imageUrl,
-}) => {
-  const [counter, setCounter] = useState(0)
-  const [play, setPlay] = useState(false)
-  const dispatch = useDispatch()
-  // global state
+
+const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
+  const dispatch = useDispatch();
+  // redux states
   const isPlaying = useSelector(
     (state: RootState) => state.playerData.isPlaying
   );
   const playNext = useSelector((state: RootState) => state.playerData.playNext);
-  const currentPlayerTime = useSelector(
-    (state: RootState) => state.playerData.currentPlayerTime
-  );
+
   const currentTrackIndex = useSelector(
     (state: RootState) => state.playerData.currentTrackIndex
   );
-  const playList = useSelector(
+  const playerQueue = useSelector(
     (state: RootState) => state.playerData.playerQueue
+  );
+  const playerQueueLength = useSelector(
+    (state: RootState) => state.playerData.playerQueueLength
   );
   const currentData: any = useSelector(
     (state: RootState) => state.playerData.currentData
   );
   // state
   const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0);
   // refs
   // const audioPlayer = useRef<HTMLAudioElement>(null!)
-  const progressBar = useRef<HTMLInputElement>(null!)
+  const progressBar = useRef<any>(null!);
   // const animationRef = useRef<number>(null!)
 
   useEffect(() => {
-    console.log('here')
-    const seconds = Math.floor(audioPlayer?.current?.duration)
-    console.log(seconds);
-    
-    progressBar.current.max = String(seconds);
-    setDuration(seconds)
-  }, [audioPlayer?.current?.onloadedmetadata, audioPlayer?.current?.readyState])
+    const seconds = Math.floor(audioPlayer?.current?.duration);
 
-  
+    progressBar.current.max = String(seconds);
+
+    setDuration(seconds);
+  }, [
+    audioPlayer?.current?.onloadedmetadata,
+    audioPlayer?.current?.readyState,
+  ]);
+  // convert to min and sec format
   function calculateTime(secs: number) {
     const minutes = Math.floor(secs / 60);
     const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
@@ -101,154 +107,163 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
     return `${returnedMinutes}:${returnedSeconds}`;
   }
 
-  const handlePlayPause = () => {
-    console.log('sds');
-    
-    if (isPlaying === false) {
-      // console.log('yes');
-      // console.log("was playing");
-      // audioPlayer.current.pause();
-      dispatch(setIsPlaying(true));
-      // cancel the animation which is called while playing
-      // cancelAnimationFrame(Number(animationRef.current));
-    } else {
-      audioPlayer.current.pause();
-      dispatch(setIsPlaying(false));
-    dispatch(setPlayNext(false));
-      //audioRef?.current?.play();
-      
-      //dispatch(setPlayNext(true));
-    }
-  };
-  // function whilePlaying() {
-  //   progressBar.current.value = String(audioPlayer?.current?.currentTime);
-  //   if (audioPlayer.current) {
-  //     setCurrentTime(Number(progressBar.current.value));
-  //   }
-
-  //   animationRef.current = requestAnimationFrame(whilePlaying);
-  
-  //   if (audioPlayer?.current?.ended) {
-  //     cancelAnimationFrame(animationRef.current);
-  //   }
-  // }
+  // initiate playing animation
   function whilePlaying() {
-    const currentTime = audioPlayer.current.currentTime;
-  //const duration = audioPlayer.current.duration;
-  progressBar.current.value = currentTime;
-  setCurrentTime(currentTime);
-  
+    progressBar.current.value = audioPlayer.current.currentTime;
+
+    setCurrentTime(Number(progressBar.current.value));
+    changePlayerCurrentTime();
     animationRef.current = requestAnimationFrame(whilePlaying);
-  
-    // if (audioPlayer.current && audioPlayer.current.ended && audioPlayer.current.paused) {
-    //   cancelAnimationFrame(animationRef.current);
-    // }
+
+    if (audioPlayer.current && audioPlayer.current.ended) {
+      cancelAnimationFrame(animationRef.current);
+    }
   }
-  
-  // useEffect(() => {
-  //   if (audioPlayer.current) {
-  //     if (playNext) {
-  //       dispatch(setIsPlaying(true));
-  //       audioPlayer.current.play();
-  //       console.log("next-------------");
-  //       animationRef.current = requestAnimationFrame(whilePlaying);
-  //     } else {
-  //       //audioPlayer.current.pause()
-  //       // console.log("cancel;");
-  //       // cancelAnimationFrame(Number(animationRef?.current));
-  //     }
-  //   }
-  // }, [currentData._id, isPlaying]);
+
   useEffect(() => {
     if (audioPlayer.current) {
       if (playNext) {
         dispatch(setIsPlaying(true));
-        // Pause the current song if it's playing
-        // if (isPlaying) {
-        //   audioPlayer.current.pause();
-        // }
-        // Set the new song and play it
         audioPlayer.current.currentTime = 0;
         audioPlayer.current.play();
-        console.log("next-------------");
         animationRef.current = requestAnimationFrame(whilePlaying);
-      } 
-      if(!isPlaying){
+      }
+      if (!isPlaying) {
         // Stop playing the current song
         //dispatch(setIsPlaying(false));
         //audioPlayer.current.currentTime = 0;
-        audioPlayer.current.pause();
+        //audioPlayer.current.pause();
         //cancelAnimationFrame(animationRef.current);
       } else {
-        audioPlayer.current.play()
-      }
-      if(play) {
-        audioPlayer.current.pause();
+        audioPlayer.current.play();
       }
     }
   }, [currentData._id, isPlaying]);
-  
 
+  // play pause for the player
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      audioPlayer.current.pause();
+      dispatch(setIsPlaying(false));
+      dispatch(setPlayNext(false));
+    } else {
+      audioPlayer.current.play();
+      dispatch(setIsPlaying(true));
+      // dispatch(setPlayNext(true));
+    }
+  };
+
+  // to change the progress bar
   function changeRange() {
-    audioPlayer.current.currentTime = progressBar.current.value
+    audioPlayer.current.currentTime = progressBar.current.value;
+    changePlayerCurrentTime();
   }
-  
-  const MainDiv = styled.div`
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #1f3044;
-    color: #a8bcc3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80px;
-    gap: 10px;
-  `;
-  console.log(currentData)
+  const changePlayerCurrentTime = () => {
+    progressBar.current.style.setProperty(
+      "--seek-before-width",
+      `${(progressBar.current.value / duration) * 100}%`
+    );
+    setCurrentTime(progressBar.current.value);
+  };
+
+  // button Next
+  const next = () => {
+    if (playerQueueLength > 0) {
+      cancelAnimationFrame(animationRef);
+      if (currentTrackIndex < playerQueue.length - 1) {
+        const nextData = playerQueue[currentTrackIndex + 1];
+        dispatch(setCurrentData(nextData));
+        dispatch(setPlayNext(true));
+        dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
+      } else {
+        dispatch(setCurrentData(playerQueue[0]));
+        dispatch(setPlayNext(true));
+        dispatch(setCurrentTrackIndex(0));
+      }
+    }
+  };
+
+  // button Previous
+  const prev = () => {
+    if (playerQueueLength > 0) {
+      cancelAnimationFrame(animationRef);
+      if (currentTrackIndex > 0) {
+        const nextData = playerQueue[currentTrackIndex - 1];
+        dispatch(setCurrentData(nextData));
+        dispatch(setPlayNext(true));
+        dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
+      } else {
+        dispatch(setCurrentData(playerQueue[0]));
+        dispatch(setPlayNext(true));
+        dispatch(setCurrentTrackIndex(0));
+      }
+    }
+  };
+
   return (
     <>
-    <audio ref={audioPlayer} src={currentData.songDataUrl} preload="metadata"/>
-    <MainDiv>
-    <button onClick={() => alert('sdsds')}>pause</button>
-      <Flex flexDirection={"row"} alignItems={"center"}>
-        <Box><Prev /></Box>
-        <Box onClick={handlePlayPause}>{isPlaying ? <Pause /> : <Play />}</Box>
-        <Box><Next /></Box>
-      </Flex>
-      <Text>{calculateTime(currentTime)}</Text>
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        css={`width: 40%;`}
-      >
-        {/* <input type="range"defaultValue="0" ref={progressBar} onChange={changeRange} /> */}
-        <input type="range"defaultValue="0" className={styles.progressBar} ref={progressBar} max={duration} onChange={changeRange} style={{width: '100%'}}/>
-        {/* <StyledRange type="range" ref={progressBar} defaultValue={0} onChange={changeRange}/> */}
-      </Flex>
-      <Text>{duration > 0 ? calculateTime(duration) : "0:00"}</Text>
-      <Flex flexDirection={"row"} alignItems={"center"} css={`@media (max-width: 768px) {
-    display: none;
-  }`}>
-        <StyledImage src={imageUrl} />
-      </Flex>
-      <Flex
-        flexDirection={"column"}
-        alignItems={"flex-start"}
-        css={`width: 200px;
-        @media (max-width: 768px) {
-          display: none;
-        }
-        `}
-      >
-        <Text fontSize={2} fontWeight={"bold"}>
-          {currentData.title}
-        </Text>
-        <Text>{currentData.artist}</Text>
-      </Flex>
-    </MainDiv>
+      <audio
+        ref={audioPlayer}
+        src={currentData.songDataUrl}
+        preload="metadata"
+        onEnded={() => {
+          cancelAnimationFrame(animationRef);
+          if (currentTrackIndex < playerQueue.length - 1) {
+            const nextData = playerQueue[currentTrackIndex + 1];
+            dispatch(setCurrentData(nextData));
+            dispatch(setPlayNext(true));
+            dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
+            console.log("ended");
+          } else {
+            dispatch(setCurrentData(playerQueue[0]));
+            dispatch(setPlayNext(true));
+            dispatch(setCurrentTrackIndex(0));
+          }
+        }}
+      />
+      <div className="audio-player">
+        {/* my audio player */}
+        <div className="controls">
+          <Prev onClick={prev} />
+          <button
+            onClick={handlePlayPause}
+            style={{
+              backgroundColor: "#1f3044",
+              border: "none",
+              color: "white",
+              padding: "0px",
+            }}
+          >
+            {isPlaying ? <Pause /> : <Play />}
+          </button>
+          <Next onClick={next} />
+        </div>
+
+        
+        <div className="progress" style={{ width: "50%" }}>
+        <div className="time">{calculateTime(currentTime)}</div>
+          {/* progress bar */}
+          <input
+            ref={progressBar}
+            type="range"
+            className={styles.progressBar}
+            defaultValue="0"
+            max={duration}
+            onChange={changeRange}
+          />
+          <div className="time">
+          {duration > 0 ? calculateTime(duration) : "0:00"}
+        </div>
+        </div>
+        
+        <div className="image-container">
+          <img className="StyledImage" src={imageUrl} alt="Album Art" />
+        </div>
+        <div className="text-container">
+          <div className="title">{currentData.title}</div>
+          <div className="artist">{currentData.artist}</div>
+        </div>
+      </div>
     </>
   );
 };

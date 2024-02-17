@@ -4,12 +4,24 @@ import { createRef } from 'react';
 export const animationRef: any = createRef();
 export const audioRef: any = createRef();
 export const progressBarRef: any = createRef()
+interface Song {
+    _id: string;
+    title: string;
+    artist: string;
+    album: string;
+    genre: string;
+    coverImageUrl: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    songDataUrl: string
+  }
 interface Player {
     isPlaying: boolean;
     playNext: boolean;
-    currentData: {};
+    currentData: Song;
     currentTrackIndex: number;
-    playerQueue: [];
+    playerQueue: Song[];
     playerQueueLength: number;
     currentPlayerTime: any;
 }
@@ -17,7 +29,18 @@ interface Player {
 const initialState: Player = {
     isPlaying: false,
     playNext: false,
-    currentData: {},
+    currentData: {
+        _id: "",
+        title: "",
+        artist: "",
+        album: "",
+        genre: "",
+        coverImageUrl: "",
+        createdAt: "",
+        updatedAt: "",
+        __v: 0,
+        songDataUrl: ""
+    },
     currentTrackIndex: 0,
     playerQueue: [],
     playerQueueLength: 0,
@@ -34,25 +57,21 @@ const playerSlice = createSlice({
         setPlayNext: (state, action: PayloadAction<boolean>) => {
             state.playNext = action.payload
         },
-        setCurrentData: (state, action: PayloadAction<{}>) => {
+        setCurrentData: (state, action: PayloadAction<Song>) => {
             state.currentData = action.payload
         },
         setCurrentTrackIndex: (state, action: PayloadAction<number>) => {
             state.currentTrackIndex = action.payload
         },
-        setPlayerQueue: (state, action: PayloadAction<[]>) => {
+        setPlayerQueue: (state, action: PayloadAction<Song[]>) => {
             state.playerQueue = action.payload
         },
         setPlayerQueueLength: (state, action: PayloadAction<number>) => {
             state.playerQueueLength = action.payload
         },
-        setCurrentPlayerTime: (state, action: PayloadAction<any>) => {
-            state.currentPlayerTime = action.payload
-            console.log(state.currentPlayerTime)
-        }
     }
 })
 
-export const {setIsPlaying, setPlayNext, setCurrentData, setCurrentTrackIndex, setPlayerQueue, setPlayerQueueLength, setCurrentPlayerTime} = playerSlice.actions
+export const {setIsPlaying, setPlayNext, setCurrentData, setCurrentTrackIndex, setPlayerQueue, setPlayerQueueLength} = playerSlice.actions
 
 export default playerSlice.reducer

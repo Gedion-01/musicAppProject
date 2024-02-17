@@ -4,15 +4,16 @@ import { RootState } from "../state/store";
 import Music from "./Music";
 
 interface Song {
-  album: string;
+  _id: string;
+  title: string;
   artist: string;
+  album: string;
+  genre: string;
   coverImageUrl: string;
   createdAt: string;
-  genre: string;
-  title: string;
   updatedAt: string;
-  _id: string;
-  songDataUrl: string;
+  __v: number;
+  songDataUrl: string
 }
 interface data {
   data: Song[];
@@ -26,23 +27,26 @@ const TracksList: React.FC<data> = ({ data }) => {
     (state: RootState) => state.playerData.currentData
   );
 
-  //console.log(data[0]._id, currentData._id)
   return (
     <div>
       {
-        data.map((song: Song, index) => (
+        data.map((song, index) => (
           <Music
-            key={song._id} // Remember to provide a unique key prop when rendering a list of components
-            artist={song.artist}
-            title={song.title}
-            album={song.album}
-            date={song.updatedAt}
+            key={song._id}
             _id={song._id}
-            playListData={data as any}
+            title={song.title}
+            artist={song.artist}
+            album={song.album}
+            genre={song.genre}
+            coverImageUrl={song.coverImageUrl}
+            createdAt={song.updatedAt}
+            updatedAt={song.updatedAt}
+            __v={song.__v}
+            songDataUrl={song.songDataUrl}
+            playerQueue={data}
             index={index}
             isCurrent={song._id === currentData._id}
             isPlaying={isPlaying}
-            songDataUrl={song.songDataUrl}
           />
         ))
         // <TracksList data={data} />

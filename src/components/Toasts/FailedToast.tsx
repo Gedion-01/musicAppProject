@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Flex, Text } from "rebass";
+import { Flex, Text } from "rebass";
 
 import { IoIosCloseCircle } from "react-icons/io";
 import { setShowFailedToast } from "../../state/songs/songsSlice";
@@ -80,7 +80,10 @@ to {
         flexDirection={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
-        css={`width: 100%; gap: 10px;`}
+        css={`
+          width: 100%;
+          gap: 10px;
+        `}
       >
         <StyledCheckMark />
 

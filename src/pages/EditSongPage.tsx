@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import { FormEvent } from "react";
@@ -11,12 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
-import ErrorMessage from "../components/ErrorMessage";
 import FailedToast from "../components/Toasts/FailedToast";
 import { setAudioFile, setImageFile } from "../state/songs/songsSlice";
 import { IoWarning } from "react-icons/io5";
 import CircularProgressWithLabel from "../components/CircularProgressWithLabel";
 import SuccessToast from "../components/Toasts/SuccessToast";
+import Loading from "../components/Animation/Loading";
 
 const Warningcon = styled(IoWarning)`
   font-size: 20px;
@@ -128,13 +128,6 @@ interface InputChangeEvent {
     value: string;
   };
 }
-interface Song {
-  _id: string;
-  title: string;
-  artist: string;
-  album: string;
-  genre: string;
-}
 
 function EditSongPage() {
   const { id } = useParams();
@@ -142,6 +135,7 @@ function EditSongPage() {
 
   const navigate = useNavigate();
 
+  // states
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     null
@@ -150,6 +144,11 @@ function EditSongPage() {
   const [audioPreviewName, setAudioPreviewName] = useState("");
   const [audioFileIsMissing, setAudioFileIsMissing] = useState(false)
   const [imageFileIsMissing, setImageFileIsMissing] = useState(false)
+
+  // redux states
+  const searchedSongLoading = useSelector(
+    (state: RootState) => state.songs.searchedSongLoading
+  );
 
   const imageProgress = useSelector(
     (state: RootState) => state.songs.imageProgress
@@ -232,6 +231,7 @@ function EditSongPage() {
     }
   `;
   //console.log(audioFile, imageFile)
+  // when image is droped
   const onImageDrop = useCallback((acceptedFiles: Array<File>) => {
     const file = new FileReader();
     file.onload = function () {
@@ -241,6 +241,7 @@ function EditSongPage() {
     file.readAsDataURL(acceptedFiles[0]);
     dispatch(setImageFile(acceptedFiles[0]));
   }, []);
+  // when audio is droped
   const onAudioDrop = useCallback((acceptedFiles: Array<File>) => {
     acceptedFiles.forEach((file) => {
       setAudioPreviewName(file.name);
@@ -256,6 +257,8 @@ function EditSongPage() {
   }
   const imageDropZone = useDropzone({ onDrop: onImageDrop });
   const audioDropZone = useDropzone({ onDrop: onAudioDrop });
+
+  // when input change
   function handleInputChange(e: InputChangeEvent) {
     const { name, value } = e.target;
     setFormData({
@@ -263,6 +266,8 @@ function EditSongPage() {
       [name]: value,
     });
   }
+
+  // on submiting the form
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
      // check if image file exists
@@ -278,17 +283,20 @@ function EditSongPage() {
     handleClick();
     dispatch({ type: "song/updateSong", payload: { data: formData } });
   }
+
+  // effect when its success to navigate to home
   useEffect(() => {
-    let mounted = true;
     if (showSuccessToast) {
       setTimeout(() => {
         navigate("/");
       }, 3000);
+      let mounted = true;
       return () => {
         mounted = false;
       };
     }
   }, [showSuccessToast]);
+
   const handleClick = () => {
     setShowErrorMessage(true);
     setTimeout(() => {
@@ -333,25 +341,17 @@ function EditSongPage() {
       />
       <Flex flexDirection={"column"}>
         {EditSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
-          // <ErrorMessage
-          //   message="Error while adding the song. Please try again."
-          //   show={setShowErrorMessage}
-          // />
-          // <FailedToast
-          //   isToastVisible={showErrorMessage}
-          //   light={true}
-          //   message="Error while editing the song. Please try again."
-          // />
           <FailedToast isToastVisible={showErrorMessage} light={true} message="Error while Editing the song. Please try again."/>
         ) : (
           ""
         )}
-
+        
         <Box>
           <Text fontSize={5} fontWeight="bold" mb={2}>
             Edit Song
           </Text>
         </Box>
+        { searchedSongLoading ? <Loading /> :
         <StyledForm onSubmit={handleSubmit}>
           <Flex flexDirection={"column"} css={genreStyles.styles}>
             <Text fontSize={2} fontWeight="bold" mb={0}>
@@ -588,7 +588,9 @@ function EditSongPage() {
             </StyledButton>
           </Flex>
         </StyledForm>
+      }
       </Flex>
+              
     </>
   );
 }

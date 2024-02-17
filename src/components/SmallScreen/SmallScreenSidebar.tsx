@@ -2,13 +2,13 @@ import { BiCategory } from "react-icons/bi";
 import { IoIosClose, IoMdHome } from "react-icons/io";
 import { IoStatsChart } from "react-icons/io5";
 import { IoIosAddCircleOutline } from "react-icons/io";
-// Styled component should be defined outside of the component function
+
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
 
 import { Link, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 //
 //import { Outlet } from "react-router-dom";
 
@@ -30,16 +30,16 @@ const StyledIcon4 = styled(IoIosAddCircleOutline)`
 `;
 
 const Overlay = styled.div<{ openMobileNav: boolean }>`
-position: fixed;
-z-index: 30;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-display: ${(props) => (props.openMobileNav ? "flex" : "none")};
-justify-content: center;
-align-items: center;
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${(props) => (props.openMobileNav ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
 `;
 
 const CloseIcon = styled(IoIosClose)`
@@ -49,13 +49,13 @@ const CloseIcon = styled(IoIosClose)`
 type myComponentProp = {
   openMobileNav: boolean;
   onClick: () => void;
-  onClickHome: () => void
+  onClickHome: () => void;
 };
 
 const SmallScreenSidebar: React.FC<myComponentProp> = ({
   openMobileNav,
   onClick,
-  onClickHome
+  onClickHome,
 }) => {
   const location = useLocation();
   const sideBarStyle = css`
@@ -83,7 +83,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
     }
     transition: 0.4s;
   `;
-  
+
   const header = css`
     font-size: 22px;
     color: #e1e2e2;
@@ -96,90 +96,93 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
   return (
     <>
       <Overlay openMobileNav={openMobileNav} onClick={onClick}></Overlay>
-        <Flex onClick={(e) => e.stopPropagation()} flexDirection={"column"} css={sideBarStyle.styles}>
+      <Flex
+        onClick={(e) => e.stopPropagation()}
+        flexDirection={"column"}
+        css={sideBarStyle.styles}
+      >
+        <Flex
+          flexDirection={"row"}
+          justifyContent="space-between"
+          alignItems="center"
+          css={menu.styles}
+        >
+          <Box>
+            <Text css={header.styles}>My APP</Text>
+          </Box>
+          <Box>
+            <CloseIcon onClick={onClick} />
+          </Box>
+        </Flex>
+
+        <Flex
+          flexDirection={"row"}
+          alignItems="center"
+          onClick={onClickHome}
+          css={sideBarElement.styles}
+          style={{ color: location.pathname === "/" ? "#BD1E51" : "" }}
+        >
+          <Box>
+            <StyledIcon />
+          </Box>
+          <Box>
+            <Text>Home</Text>
+          </Box>
+        </Flex>
+
+        <Link to={"/genre"}>
           <Flex
             flexDirection={"row"}
-            justifyContent="space-between"
             alignItems="center"
-            css={menu.styles}
+            onClick={onClick}
+            css={sideBarElement.styles}
+            style={{ color: location.pathname === "/genre" ? "#BD1E51" : "" }}
           >
             <Box>
-              <Text css={header.styles}>My APP</Text>
+              <StyledIcon2 />
             </Box>
             <Box>
-              <CloseIcon onClick={onClick} />
+              <Text>Genre</Text>
             </Box>
           </Flex>
-          
-            <Flex
-            
-              flexDirection={"row"}
-              alignItems="center"
-              onClick={onClickHome}
-              css={sideBarElement.styles}
-              style={{ color: location.pathname === "/" ? "#BD1E51" : "" }}
-            >
-              <Box>
-                <StyledIcon />
-              </Box>
-              <Box>
-                <Text>Home</Text>
-              </Box>
-            </Flex>
-            
-          <Link to={"/genre"}>
-            <Flex
-              flexDirection={"row"}
-              alignItems="center"
-              onClick={onClick}
-              css={sideBarElement.styles}
-              style={{ color: location.pathname === "/genre" ? "#BD1E51" : "" }}
-            >
-              <Box>
-                <StyledIcon2 />
-              </Box>
-              <Box>
-                <Text>Genre</Text>
-              </Box>
-            </Flex>
-          </Link>
-          <Link to={"/addSong"}>
-            <Flex
-              flexDirection={"row"}
-              alignItems="center"
-              onClick={onClick}
-              css={sideBarElement.styles}
-              style={{
-                color: location.pathname === "/addSong" ? "#BD1E51" : "",
-              }}
-            >
-              <Box>
-                <StyledIcon4 />
-              </Box>
-              <Box>
-                <Text>Add Songs</Text>
-              </Box>
-            </Flex>
-          </Link>
-          <Link to={"/Statistics"}>
-            <Flex
-              flexDirection={"row"}
-              alignItems="center"
-              css={sideBarElement.styles}
-              onClick={onClick}
-              style={{
-                color: location.pathname === "/Statistics" ? "#BD1E51" : "",
-              }}
-            >
-              <Box>
-                <StyledIcon3 />
-              </Box>
-              <Box>
-                <Text>Statistics</Text>
-              </Box>
-            </Flex>
-          </Link>
-        </Flex>
+        </Link>
+        <Link to={"/addSong"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            onClick={onClick}
+            css={sideBarElement.styles}
+            style={{
+              color: location.pathname === "/addSong" ? "#BD1E51" : "",
+            }}
+          >
+            <Box>
+              <StyledIcon4 />
+            </Box>
+            <Box>
+              <Text>Add Songs</Text>
+            </Box>
+          </Flex>
+        </Link>
+        <Link to={"/Statistics"}>
+          <Flex
+            flexDirection={"row"}
+            alignItems="center"
+            css={sideBarElement.styles}
+            onClick={onClick}
+            style={{
+              color: location.pathname === "/Statistics" ? "#BD1E51" : "",
+            }}
+          >
+            <Box>
+              <StyledIcon3 />
+            </Box>
+            <Box>
+              <Text>Statistics</Text>
+            </Box>
+          </Flex>
+        </Link>
+      </Flex>
     </>
   );
 };

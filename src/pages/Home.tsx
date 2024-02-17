@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import TracksList from "../components/TracksList";
-import { setAudioProgress, setImageProgress } from "../state/songs/songsSlice";
+import Loading from "../components/Animation/Loading";
 
 function Home() {
   const data = useSelector((state: RootState) => state.songs.songs);
@@ -15,11 +15,6 @@ function Home() {
   );
 
   const dispatch = useDispatch();
-  // reset upload progress bar
-  // useEffect(() => {
-  //   dispatch(setAudioProgress(0));
-  //   dispatch(setImageProgress(0));
-  // }, []);
 
   const HomeStyle = css`
     width: 100%;
@@ -28,10 +23,9 @@ function Home() {
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" });
   }, []);
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
-  console.log(data);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -41,7 +35,7 @@ function Home() {
             All Songs
           </Text>
         </Box>
-        {isLoading ? "Loading" : <TracksList data={data} />}
+        {isLoading ? <Loading /> : <TracksList data={data} />}
       </Flex>
     </>
   );

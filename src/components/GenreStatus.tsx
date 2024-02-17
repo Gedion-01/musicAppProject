@@ -1,7 +1,5 @@
 import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import { Flex, Box, Text } from "rebass";
-import StatusCard from "../components/StatusCard";
 import React from "react";
 
 type reactProps = {
@@ -28,8 +26,6 @@ const GenreStatus : React.FC<reactProps>  = ({ name, total }) => {
   
   return (
     <Flex flexDirection="column">
-      {/* Genres */}
-      
       <Flex
         flexDirection="row"
         justifyContent="space-between"
