@@ -33,6 +33,7 @@ align-items: center;
 export default function NavBar() {
   const navigate = useNavigate()
     const [open, setOpen] = useState(false)
+    const [isHomeOpen, setHomeIsOpen] = useState(false)
     const location = useLocation()
   const NavStyle = css`
     // background: #1F3044;
@@ -68,20 +69,29 @@ export default function NavBar() {
   `;
   useEffect(() => {
     setTimeout(() => {
-      navigate('/')
-    }, 500)
-  }, [open])
+      setHomeIsOpen(false)
+      setOpen(false)
+      
+    }, 300)
+  }, [isHomeOpen])
 
 
   function close() {
     setOpen(false) 
+  }
+  function closeHome() {
+    
+    navigate('/')
+    setHomeIsOpen(true)
+   
+    
   }
   
 
   return (
     <>
       {/* Nav bar */}
-      <SmallScreenSidebar openMobileNav={open} onClick={close}/>
+      <SmallScreenSidebar openMobileNav={open} onClick={close} onClickHome={closeHome}/>
       <Flex css={NavStyle.styles} justifyContent={"space-between"} alignItems={"center"}>
         <Box>
             <SearchContainer style={{display: location.pathname === '/' ? 'flex' : 'none'}}>

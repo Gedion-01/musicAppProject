@@ -7,7 +7,7 @@ import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
@@ -55,6 +55,15 @@ type myComponentProp = {
   index: number;
   isPlaying: boolean;
 };
+interface Props {
+  optionIsOpened: boolean;
+  isPlaying: boolean;
+  isCurrent: boolean;
+  markedItem: boolean;
+}
+
+
+
 const Music: React.FC<myComponentProp> = ({
   album,
   artist,
@@ -68,6 +77,7 @@ const Music: React.FC<myComponentProp> = ({
   isPlaying,
   songDataUrl
 }) => {
+  
   const dispatch = useDispatch()
   const [optionIsOpened, setOptionIsOpened] = useState(false);
   const [markedItem, setMarkedItem] = useState(false)
@@ -82,21 +92,7 @@ const Music: React.FC<myComponentProp> = ({
   // const {handlePlayPause} = methods
   
   console.log(index, ' ', playListData.length,' ', playListData)
-  // function playPause() {
-  //   dispatch(setCurrentTrackIndex(index))
-  //   dispatch(setCurrentData({_id, artist, album, coverImageUrl, date, title, songDataUrl}))
-  //   dispatch(setPlayerQueueLength(playListData.length))
-  //   dispatch(setPlayerQueue(playListData))
-  //   console.log('play/pause')
-  //   //handlePlayPause()
-    
-  //   if(currentData._id !== _id) {
-  //     dispatch(setPlayNext(true))
-  //   }
-  //   if(currentData._id === _id) {
-  //     dispatch(setPlayNext(false))
-  //   }
-  // }
+
   function play(event: any) {
     event.preventDefault();
     console.log('play');
@@ -107,11 +103,12 @@ const Music: React.FC<myComponentProp> = ({
     console.log('play/pause')
     //handlePlayPause()
     
-    audioPlayer?.current?.play();
+    
     if(currentData._id !== _id) {
       dispatch(setPlayNext(true))
     }
     dispatch(setIsPlaying(true));
+    //audioPlayer?.current?.play();
   }
   function pause() {
     console.log('pause')
@@ -211,7 +208,22 @@ const Music: React.FC<myComponentProp> = ({
     padding: 5px 2px;
     border: none;
   `;
-  const spotifyStyle = css`
+  // const spotifyStyle = css`
+  //   color: #1f3044;
+  //   padding: 4px 4px;
+  //   border-radius: 8px;
+  //   margin-bottom: 10px;
+  //   background-color: ${optionIsOpened ? "#a8bcc3" : ""};
+  //   background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
+  //   background-color: ${markedItem ? "#a8bcc3" : ""};
+  //   max-width: 800px;
+  //   &: hover {
+  //     background-color: #a8bcc3;
+      
+  //   } 
+  // `;
+  const spotifyStyle = useMemo(() => {
+    return css`
     color: #1f3044;
     padding: 4px 4px;
     border-radius: 8px;
@@ -224,7 +236,8 @@ const Music: React.FC<myComponentProp> = ({
       background-color: #a8bcc3;
       
     } 
-  `;
+    `;
+  }, [optionIsOpened, isPlaying, isCurrent, markedItem]);
   const playTitle = css`
     gap: 20px;
   `;

@@ -29,6 +29,19 @@ const StyledIcon4 = styled(IoIosAddCircleOutline)`
   font-size: 30px;
 `;
 
+const Overlay = styled.div<{ openMobileNav: boolean }>`
+position: fixed;
+z-index: 30;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: ${(props) => (props.openMobileNav ? "flex" : "none")};
+justify-content: center;
+align-items: center;
+`;
+
 const CloseIcon = styled(IoIosClose)`
   cursor: pointer;
   font-size: 50px;
@@ -36,18 +49,20 @@ const CloseIcon = styled(IoIosClose)`
 type myComponentProp = {
   openMobileNav: boolean;
   onClick: () => void;
+  onClickHome: () => void
 };
 
 const SmallScreenSidebar: React.FC<myComponentProp> = ({
   openMobileNav,
   onClick,
+  onClickHome
 }) => {
   const location = useLocation();
   const sideBarStyle = css`
     position: fixed;
     top: 0;
     left: ${openMobileNav ? "0px" : "-350px"};
-    z-index: 30;
+    z-index: 40;
     width: 350px;
     height: 100vh;
 
@@ -68,22 +83,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
     }
     transition: 0.4s;
   `;
-  const overlayStyles = css`
-    position: fixed;
-    z-index: 30;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: ${openMobileNav === true ? "flex" : "none"};
-  `;
-  const Overlay = styled.div`
-    ${overlayStyles}
-  `;
+  
   const header = css`
     font-size: 22px;
     color: #e1e2e2;
@@ -95,7 +95,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
   `;
   return (
     <>
-      <Overlay onClick={onClick}></Overlay>
+      <Overlay openMobileNav={openMobileNav} onClick={onClick}></Overlay>
         <Flex onClick={(e) => e.stopPropagation()} flexDirection={"column"} css={sideBarStyle.styles}>
           <Flex
             flexDirection={"row"}
@@ -112,9 +112,10 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
           </Flex>
           
             <Flex
+            
               flexDirection={"row"}
               alignItems="center"
-              onClick={onClick}
+              onClick={onClickHome}
               css={sideBarElement.styles}
               style={{ color: location.pathname === "/" ? "#BD1E51" : "" }}
             >
@@ -125,7 +126,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
                 <Text>Home</Text>
               </Box>
             </Flex>
-          
+            
           <Link to={"/genre"}>
             <Flex
               flexDirection={"row"}

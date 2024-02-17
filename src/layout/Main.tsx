@@ -5,8 +5,9 @@ import styled from "@emotion/styled";
 import { Flex, Box } from "rebass";
 import NavBar from "../components/NavBar";
 import MyAudioPlayer from "../components/MyAudioPlayer";
+import React, { ReactNode } from "react";
 
-export default function Main() {
+const Main: React.FC<{children: ReactNode}> = ({children}) => {
   const MainStyle = css`
     padding: 0px 15px;
     @media screen and (min-width: 768px) {
@@ -40,7 +41,7 @@ export default function Main() {
         <Box flex={2}>
           <NavBar />
           <OutletContainer>
-            <Outlet />
+            {children}
           </OutletContainer>
         </Box>
       </Flex>
@@ -52,3 +53,5 @@ export default function Main() {
     </>
   );
 }
+
+export default Main

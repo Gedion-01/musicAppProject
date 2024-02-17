@@ -56,6 +56,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
   imageUrl,
 }) => {
   const [counter, setCounter] = useState(0)
+  const [play, setPlay] = useState(false)
   const dispatch = useDispatch()
   // global state
   const isPlaying = useSelector(
@@ -101,17 +102,22 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
   }
 
   const handlePlayPause = () => {
-    if (isPlaying) {
-      console.log("was playing");
-      audioPlayer?.current?.pause();
-      dispatch(setIsPlaying(false));
-      dispatch(setPlayNext(false));
-      // cancel the animation which is called while playing
-      cancelAnimationFrame(Number(animationRef.current));
-    } else {
-      //audioRef?.current?.play();
+    console.log('sds');
+    
+    if (isPlaying === false) {
+      // console.log('yes');
+      // console.log("was playing");
+      // audioPlayer.current.pause();
       dispatch(setIsPlaying(true));
-      dispatch(setPlayNext(true));
+      // cancel the animation which is called while playing
+      // cancelAnimationFrame(Number(animationRef.current));
+    } else {
+      audioPlayer.current.pause();
+      dispatch(setIsPlaying(false));
+    dispatch(setPlayNext(false));
+      //audioRef?.current?.play();
+      
+      //dispatch(setPlayNext(true));
     }
   };
   // function whilePlaying() {
@@ -134,9 +140,9 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
   
     animationRef.current = requestAnimationFrame(whilePlaying);
   
-    if (audioPlayer.current && audioPlayer.current.ended) {
-      cancelAnimationFrame(animationRef.current);
-    }
+    // if (audioPlayer.current && audioPlayer.current.ended && audioPlayer.current.paused) {
+    //   cancelAnimationFrame(animationRef.current);
+    // }
   }
   
   // useEffect(() => {
@@ -158,22 +164,29 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
       if (playNext) {
         dispatch(setIsPlaying(true));
         // Pause the current song if it's playing
-        if (isPlaying) {
-          audioPlayer.current.pause();
-        }
+        // if (isPlaying) {
+        //   audioPlayer.current.pause();
+        // }
         // Set the new song and play it
         audioPlayer.current.currentTime = 0;
         audioPlayer.current.play();
         console.log("next-------------");
         animationRef.current = requestAnimationFrame(whilePlaying);
-      } else {
+      } 
+      if(!isPlaying){
         // Stop playing the current song
         //dispatch(setIsPlaying(false));
-        //audioPlayer.current.pause();
+        //audioPlayer.current.currentTime = 0;
+        audioPlayer.current.pause();
         //cancelAnimationFrame(animationRef.current);
+      } else {
+        audioPlayer.current.play()
+      }
+      if(play) {
+        audioPlayer.current.pause();
       }
     }
-  }, [currentData._id, isPlaying, playNext]);
+  }, [currentData._id, isPlaying]);
   
 
   function changeRange() {
@@ -194,11 +207,12 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({
     height: 80px;
     gap: 10px;
   `;
+  console.log(currentData)
   return (
     <>
-    
     <audio ref={audioPlayer} src={currentData.songDataUrl} preload="metadata"/>
     <MainDiv>
+    <button onClick={() => alert('sdsds')}>pause</button>
       <Flex flexDirection={"row"} alignItems={"center"}>
         <Box><Prev /></Box>
         <Box onClick={handlePlayPause}>{isPlaying ? <Pause /> : <Play />}</Box>
