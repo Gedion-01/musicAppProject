@@ -49,6 +49,9 @@ export default function NavBar() {
     else if(location.pathname === '/Statistics') {
       setTitle('Overview')
     }
+    else if(location.pathname.startsWith('/editSong/')) {
+      setTitle('Edit Song')
+    }
   }, [location.pathname])
 
   const SearchContainer1 = styled.div`

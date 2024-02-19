@@ -55,10 +55,12 @@ const Categories = [
   "R&B",
   "Electronic",
   "Rock",
-  "Rap",
-  "country/Ethiopia",
+  "Ethiopian",
   "Pop",
-  "Hip",
+  "Hip-Hop",
+  "Latin",
+  "Workout",
+  "TV-&-Movies"
 ];
 
 const StyledSelect = styled.select`

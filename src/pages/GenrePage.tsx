@@ -8,42 +8,63 @@ import { useEffect } from "react";
 type genre = {
   name: string;
   imgUrl: string;
+  genre: string;
 };
 const genres: genre[] = [
   {
     name: "Ethiopian",
     imgUrl:
       "https://th.bing.com/th/id/OIP.gQTSRBvwGnns-qDT8v1AUgAAAA?rs=1&pid=ImgDetMain",
+    genre: "Ethiopian"
   },
   {
     name: "Electronic",
     imgUrl:
       "https://th.bing.com/th/id/R.b67b8ed89dcc6935fa1154af885b1ba7?rik=SWfbQ8M6IYYmPA&pid=ImgRaw&r=0",
+    genre: "Electronic"
   },
   {
-    name: "Rap",
+    name: "Hip-Hop",
     imgUrl:
-      "https://th.bing.com/th/id/OIP.UOQd78CO_FcqDqvVppOuYgHaDx?rs=1&pid=ImgDetMain",
+      "https://img.redbull.com/images/c_crop,w_4100,h_2733,x_0,y_36,f_auto,q_auto/c_scale,w_1500/redbullcom/2017/07/12/d79980b1-b91e-4910-8d00-cae194d05222/hip-hop-and-rap-legends-public-enemy",
+      genre: "Hip-Hop"
   },
   {
     name: "Pop",
     imgUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYYG7I2XLgRt4BFCHD9gyGAgJPbD3JdWRr3A&usqp=CAU",
+    genre: "Pop"
   },
   {
     name: "Rock",
     imgUrl:
       "https://th.bing.com/th/id/R.fcae5775a0bb7e5cd4aaff145ff7160e?rik=8QSI%2b61Y1zAIzA&pid=ImgRaw&r=0",
+    genre: "Rock"
+
   },
   {
     name: "R&B",
     imgUrl:
       "https://th.bing.com/th/id/OIP.YJ0AR2SsQVtKgTftLeYxcQHaE8?rs=1&pid=ImgDetMain",
+    genre: "R&B"
   },
   {
-    name: "Hip",
+    name: "Latin",
     imgUrl:
-      "https://th.bing.com/th/id/OIP.BFrCRK02np5eYRAYHnSjgAHaFw?w=1024&h=796&rs=1&pid=ImgDetMain",
+      "https://th.bing.com/th/id/OIP.h8PwowNN2QU-CdirUjoXbAHaJQ?pid=ImgDet&w=144.15669205658324&h=180&c=7&dpr=1.3",
+    genre: "Latin"
+  },
+  {
+    name: "Workout",
+    imgUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyot4VuCZXxiGKXKgys1K-Oqedl6O-DO5paw&usqp=CAU",
+    genre: "Workout"
+  },
+  {
+    name: "TV & Movies",
+    imgUrl:
+      "https://prd-rteditorial.s3.us-west-2.amazonaws.com/wp-content/uploads/2021/11/01193326/Apple_TV_Finch_key_art_700x250.jpg",
+      genre: "TV-&-Movies"
   },
 ];
 

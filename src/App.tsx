@@ -3,7 +3,8 @@ import Main from "./layout/Main";
 import { Suspense, lazy } from "react";
 import Loading from "./components/Animation/Loading";
 
-// Lazy loading dynamic components
+import { Analytics } from "@vercel/analytics/react";
+
 const Home = lazy(() => import("./pages/Home"));
 const GenrePage = lazy(() => import("./pages/GenrePage"));
 const FilteredSongsPage = lazy(() => import("./pages/FilteredSongsPage"));
@@ -26,6 +27,7 @@ function App() {
           </Routes>
         </Suspense>
       </Main>
+      <Analytics />
     </>
   );
 }

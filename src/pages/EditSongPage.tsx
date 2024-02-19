@@ -56,10 +56,12 @@ const Categories = [
   "R&B",
   "Electronic",
   "Rock",
-  "Rap",
   "Ethiopian",
   "Pop",
-  "Hip",
+  "Hip-Hop",
+  "Latin",
+  "Workout",
+  "TV-&-Movies"
 ];
 
 const StyledSelect = styled.select`
@@ -343,11 +345,6 @@ function EditSongPage() {
           ""
         )}
         
-        <Box>
-          <Text fontSize={5} fontWeight="bold" mb={2}>
-            Edit Song
-          </Text>
-        </Box>
         { searchedSongLoading ? <Loading /> :
         <StyledForm onSubmit={handleSubmit}>
           <Flex flexDirection={"column"} css={genreStyles.styles}>
