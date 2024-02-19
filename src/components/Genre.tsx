@@ -12,8 +12,8 @@ const StyledImage = styled.img`
   width: 150px;
   height: 150px;
   object-fit: cover;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   @media screen and (max-width: 350px) { /* Adjust the breakpoint as needed */
     width: 100%; /* Maximum width for two cards per row with gap */
   }
@@ -27,7 +27,7 @@ const Genre: React.FC<GenreProps> = ({ name, imgUrl }) => {
     text-decoration: none;
     transition: 0.4s;
     margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     &:hover {

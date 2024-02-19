@@ -22,9 +22,9 @@ const WrapperStyle = styled.div`
   flex-direction: column;
 
   margin-bottom: 25px;
-  background: #e1f2f7;
+  background-color: #F7F7F7;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 2px solid #a8bcc3;
 `;
 

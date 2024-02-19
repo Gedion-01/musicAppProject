@@ -179,7 +179,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     background-color: #182978;
     color: #e1f2f7;
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 16px;
 
     cursor: pointer;
@@ -195,7 +195,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     background-color: #F7F7F7;
 
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 16px;
 
     cursor: pointer;
@@ -230,7 +230,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     return css`
       color: #1f3044;
       padding: 4px 4px;
-      border-radius: 8px;
+      border-radius: 5px;
       margin-bottom: 10px;
       background-color: ${optionIsOpened ? "#7DA2A9" : ""};
       background-color: ${isPlaying && isCurrent ? "#7DA2A9" : ""};

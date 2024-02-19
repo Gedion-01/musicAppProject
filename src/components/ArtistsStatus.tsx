@@ -20,8 +20,8 @@ const ArtistsStatus: React.FC<reactProps> = ({
     // background: #1f3044;
     color: #1f3044;
     &:hover {
-      background: #a8bcc3;
-      border-radius: 10px;
+      background: #7DA2A9;
+      border-radius: 5px;
     }
     // border-radius: 10px;
     border-bottom: 1px solid #a8bcc3;

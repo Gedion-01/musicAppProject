@@ -59,7 +59,7 @@ export default function SideBar() {
     padding: 7px;
     margin: 5px 16px;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 5px;
     &:hover {
       color: #F7F7F7;
       background-color: #01345B;

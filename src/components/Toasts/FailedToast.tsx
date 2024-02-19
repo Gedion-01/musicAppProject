@@ -51,7 +51,7 @@ to {
     bottom: 20px;
     right: 20px; /* Keep toast on-screen */
     z-index: 20;
-    background: ${light ? "#E1F2F7" : "#1f3044"};
+    background: ${light ? "#F7F7F7" : "#1f3044"};
     color: ${light ? "#1f3044" : "##fff"};
     padding: 10px;
     border-radius: 5px;

@@ -4,8 +4,8 @@ import { Flex, Box, Text } from "rebass";
 const SongsAndAlbumsperArtistTitle = () => {
   const titleStyle = css`
     width: 100%;
-    border-radius: 10px;
-    background: #a8bcc3;
+    border-radius: 5px;
+    background: #7DA2A9;;
     color: #1f3044;
   `;
   return (

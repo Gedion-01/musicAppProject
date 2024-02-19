@@ -9,6 +9,8 @@ import { Flex, Box, Text } from "rebass";
 
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
+
+import MusicLogo from "../../assets/Music.svg"
 //
 //import { Outlet } from "react-router-dom";
 
@@ -67,7 +69,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
     height: 100vh;
 
     //  background: #a8bcc3;
-    background: #a8bcc3;
+    background: #7DA2A9;
     transition: all 0.5s ease;
     font-weight: bolder;
   `;
@@ -77,20 +79,20 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
     padding: 7px;
     margin: 5px 16px;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 5px;
     &:hover {
-      color: #bd1e51;
+      color: #F7F7F7;
+      background-color: #01345B;
     }
     transition: 0.4s;
   `;
 
-  const header = css`
-    font-size: 22px;
-    color: #e1e2e2;
-    text-align: center;
-  `;
+  const MusicImage = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+`
   const menu = css`
-    margin-top: 25px;
     padding: 0px 10px;
   `;
   return (
@@ -108,7 +110,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
           css={menu.styles}
         >
           <Box>
-            <Text css={header.styles}>My APP</Text>
+          <MusicImage src={MusicLogo} />
           </Box>
           <Box>
             <CloseIcon onClick={onClick} />
@@ -120,7 +122,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
           alignItems="center"
           onClick={onClickHome}
           css={sideBarElement.styles}
-          style={{ color: location.pathname === "/" ? "#BD1E51" : "" }}
+          style={{ color: location.pathname === "/" ? "#F7F7F7" : "", backgroundColor: location.pathname === "/" ? "#01345B" : "" }}
         >
           <Box>
             <StyledIcon />
@@ -136,7 +138,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
             alignItems="center"
             onClick={onClick}
             css={sideBarElement.styles}
-            style={{ color: location.pathname === "/genre" ? "#BD1E51" : "" }}
+            style={{ color: location.pathname === "/genre" ? "#F7F7F7" : "", backgroundColor: location.pathname === "/genre" ? "#01345B" : "" }}
           >
             <Box>
               <StyledIcon2 />
@@ -152,9 +154,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
             alignItems="center"
             onClick={onClick}
             css={sideBarElement.styles}
-            style={{
-              color: location.pathname === "/addSong" ? "#BD1E51" : "",
-            }}
+            style={{ color: location.pathname === "/addSong" ? "#F7F7F7" : "", backgroundColor: location.pathname === "/addSong" ? "#01345B" : "" }}
           >
             <Box>
               <StyledIcon4 />
@@ -171,7 +171,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
             css={sideBarElement.styles}
             onClick={onClick}
             style={{
-              color: location.pathname === "/Statistics" ? "#BD1E51" : "",
+              color: location.pathname === "/Statistics" ? "#F7F7F7" : "", backgroundColor: location.pathname === "/Statistics" ? "#01345B" : ""
             }}
           >
             <Box>

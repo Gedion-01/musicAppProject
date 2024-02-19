@@ -11,7 +11,7 @@ const LoaderContainer = styled.div`
 
 const Loader = styled.div`
   border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #BD1E51;
+  border-left-color: #01345B;
   border-radius: 50%;
   width: 50px;
   height: 50px;

@@ -92,7 +92,7 @@ const SearchContainersecond = styled.div`
     outline: none;
     box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
     transition: 0.2s ease-in-out;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 5px; /* Rounded corners */
     width: 200px;
 
     @media (max-width: 768px) {

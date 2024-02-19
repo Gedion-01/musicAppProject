@@ -43,7 +43,7 @@ const StyledInput = styled.input`
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
   transition: 0.2s ease-in-out;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 5px; /* Rounded corners */
 
   &:focus {
     box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
@@ -71,7 +71,7 @@ const StyledSelect = styled.select`
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
   transition: 0.2s ease-in-out;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 5px; /* Rounded corners */
 
   /* Playful font */
   font-size: 18px;
@@ -103,7 +103,7 @@ const StyledButton = styled.button`
   outline: none;
   box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
   transition: 0.2s ease-in-out;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 5px; /* Rounded corners */
   cursor: pointer; /* Ensure cursor changes on hover */
 
   &:hover {
@@ -215,7 +215,7 @@ function AddSongPage() {
     outline: none;
     box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
     transition: 0.2s ease-in-out;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 5px; /* Rounded corners */
 
     &:hover {
       box-shadow: 0 0 4px rgba(0, 0, 255, 0.2);
