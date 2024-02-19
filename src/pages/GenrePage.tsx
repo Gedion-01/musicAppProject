@@ -58,11 +58,6 @@ export default function GenrePage() {
 
   return (
     <Flex flexDirection={"column"}>
-      <Box>
-        <Text fontSize={6} fontWeight="bold" mb={2}>
-          Genre
-        </Text>
-      </Box>
       <Flex flexDirection={"row"} css={genreStyles.styles}>
         {genres.map((data, i) => {
           return (

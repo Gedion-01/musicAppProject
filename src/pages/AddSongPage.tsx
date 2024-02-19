@@ -97,7 +97,7 @@ const StyledButton = styled.button`
   padding: 10px;
   /* Add playful spirit: */
   color: #e1f2f7;
-  background-color: #bd1e51;
+  background-color: #182978;
   border: 1px solid #c0c0ff;
   font-size: 16px;
   outline: none;
@@ -107,7 +107,7 @@ const StyledButton = styled.button`
   cursor: pointer; /* Ensure cursor changes on hover */
 
   &:hover {
-    background-color: #980030;
+    background-color: #2947CF;
   }
 
   &:focus {
@@ -340,12 +340,6 @@ function AddSongPage() {
         ) : (
           ""
         )}
-
-        <Box>
-          <Text fontSize={5} fontWeight="bold" mb={2}>
-            Add Song
-          </Text>
-        </Box>
         <StyledForm onSubmit={handleSubmit}>
           <Flex flexDirection={"column"} css={genreStyles.styles}>
             <StyledInput

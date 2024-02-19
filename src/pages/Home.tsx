@@ -30,11 +30,7 @@ function Home() {
   return (
     <>
       <Flex flexDirection={"column"} css={HomeStyle.styles}>
-        <Box>
-          <Text fontSize={5} fontWeight="bold">
-            All Songs
-          </Text>
-        </Box>
+        
         {isLoading ? <Loading /> : <TracksList data={data} />}
       </Flex>
     </>

@@ -37,6 +37,9 @@ const EditIcon = styled(MdOutlineEdit)`
 const StyledRemoveIcon = styled(MdDelete)`
   margin-right: 10px;
   font-size: 20px;
+  &:hover {
+    color: red;
+  }
 `;
 
 const PlayIcon = styled(BsFillPlayFill)`
@@ -173,7 +176,7 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
   const Button = styled.button`
     padding: 15px 30px;
-    background-color: #bd1e51;
+    background-color: #182978;
     color: #e1f2f7;
     border: none;
     border-radius: 10px;
@@ -189,7 +192,7 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
   const Button2 = styled.button`
     padding: 15px 30px;
-    background-color: #f0f8ff;
+    background-color: #F7F7F7;
 
     border: none;
     border-radius: 10px;
@@ -229,12 +232,12 @@ const Music: React.FC<myComponentProp & Song> = ({
       padding: 4px 4px;
       border-radius: 8px;
       margin-bottom: 10px;
-      background-color: ${optionIsOpened ? "#a8bcc3" : ""};
-      background-color: ${isPlaying && isCurrent ? "#a8bcc3" : ""};
-      background-color: ${markedItem ? "#a8bcc3" : ""};
+      background-color: ${optionIsOpened ? "#7DA2A9" : ""};
+      background-color: ${isPlaying && isCurrent ? "#7DA2A9" : ""};
+      background-color: ${markedItem ? "#7DA2A9" : ""};
       max-width: 800px;
       &: hover {
-        background-color: #a8bcc3;
+        background-color: #7DA2A9;
         transition: all 0.2s ease-out;
       }
     `;
@@ -266,8 +269,9 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
   const StyledlementsMenuebarContent = css`
     &:hover {
-      color: #bd1e51;
+      color: #2947CF;
     }
+    font-weight: bold;
     transition: 0.4s;
   `;
   // Define animation keyframes
@@ -297,7 +301,7 @@ to {
   const modalStyles = css`
     display: flex;
     flex-direction: column;
-    background-color: #f0f8ff;
+    background-color: #F7F7F7;
     gap: 10px;
     padding: 20px;
     border-radius: 8px;
@@ -479,13 +483,20 @@ to {
                 flexDirection={"row"}
                 alignItems={"center"}
                 p={2}
-                css={StyledlementsMenuebarContent.styles}
+                css={[StyledlementsMenuebarContent.styles, `&:hover {
+                  color: red;
+                        }`]}
                 onClick={() => openModal()}
               >
-                <Box>
+                <Box css={`&:hover {
+                    color: red;
+                          }`}>
                   <StyledRemoveIcon />
                 </Box>
-                <Box>
+                <Box css={`&:hover {
+                    color: red;
+                    transition: 0.4s;
+                          }`}>
                   <StyledButton>Remove</StyledButton>
                 </Box>
               </Flex>

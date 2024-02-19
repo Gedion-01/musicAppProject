@@ -6,7 +6,7 @@
   }
 
   body {
-    background-color: #E1F2F7;
+    background-color: #F7F7F7;
     /* background-color: #a8bcc3; */
   }
   .audio-player {
@@ -15,7 +15,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #1f3044;
+    background: #01345B;
     color: #a8bcc3;
     display: flex;
     width: 100%;

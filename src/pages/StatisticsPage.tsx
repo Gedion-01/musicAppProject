@@ -80,11 +80,6 @@ export default function StatisticsPage() {
         justifyContent={"center"}
         alignContent={"center"}
       >
-        <Box>
-          <Text fontSize={6} fontWeight="bold" mb={2}>
-            Overview
-          </Text>
-        </Box>
 
         <Flex css={overViewContainerStyle.styles} flexDirection={"row"} mb={4}>
 
