@@ -18,15 +18,11 @@ const FailedToast: React.FC<myComponentProp> = ({
   message,
   light,
 }) => {
-  let mounted = true;
   const dispach = useDispatch();
   useEffect(() => {
     setTimeout(() => {
       dispach(setShowFailedToast(false));
     }, 3000);
-    return () => {
-      mounted = false;
-    };
   }, [isToastVisible]);
 
   // Define keyframes for slide animation

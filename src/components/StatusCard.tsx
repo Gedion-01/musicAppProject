@@ -10,13 +10,20 @@ type myComponentProp = {
 
 const StatusCard: React.FC<myComponentProp> = ({ title, data }) => {
   const cardStyle = css`
+  flex: 1;
+  max-width: calc(33% - 10px);
+  min-width: 150px; /* Minimum width */
+  min-height: 150px; 
     gap: 20px;
     border: 2px solid #a8bcc3;
     padding: 15px;
     color: #1f3044;
     border-radius: 10px;
-    height: 200px;
-    width: 200px;
+    @media screen and (max-width: 500px) { /* Adjust the breakpoint as needed */
+    max-width: 100%; /* Maximum width for two cards per row with gap */
+  }
+    
+  }
   `;
 
   return (

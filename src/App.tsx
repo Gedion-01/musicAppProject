@@ -1,11 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Main from "./layout/Main";
-// import Home from "./pages/Home";
-// import GenrePage from "./pages/GenrePage";
-// import StatisticsPage from "./pages/StatisticsPage";
-// import FilteredSongsPage from "./pages/FilteredSongsPage";
-// import AddSongPage from "./pages/AddSongPage";
-// import EditSongPage from "./pages/EditSongPage";
 import { Suspense, lazy } from "react";
 import Loading from "./components/Animation/Loading";
 

@@ -131,13 +131,13 @@ function* updateSong(action: any) {
       formData.append('audio', audio)
       formData.append('image', image)
       
-      const response: AxiosResponse = yield call(() => {
+      yield call(() => {
         return axios.put(`http://localhost:3000/api/v1/updateSong`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
           onUploadProgress: progressEvent => {
-            if (progressEvent.total) { // Check if total is defined
+            if (progressEvent.total) {
               imageProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               audioProgress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             }

@@ -47,6 +47,12 @@ const PauseIcon = styled(BsPauseFill)`
   font-size: 22px;
   cursor: pointer;
 `;
+const StyledImage = styled.img`
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 5px;
+`
 interface Song {
   _id: string;
   title: string;
@@ -229,6 +235,7 @@ const Music: React.FC<myComponentProp & Song> = ({
       max-width: 800px;
       &: hover {
         background-color: #a8bcc3;
+        transition: all 0.2s ease-out;
       }
     `;
   }, [optionIsOpened, isPlaying, isCurrent, markedItem]);
@@ -390,8 +397,7 @@ to {
             )}
           </Box>
           <Box>
-            <img
-              style={{ width: "45px", height: "45px", borderRadius: "5px" }}
+            <StyledImage
               src={coverImageUrl}
             />
           </Box>

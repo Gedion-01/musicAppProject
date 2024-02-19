@@ -20,7 +20,7 @@ const SuccessToast: React.FC<myComponentProp> = ({
 }) => {
   const dispach = useDispatch();
   useEffect(() => {
-    let mounted = true
+
     setTimeout(() => {
       dispach(setShowSuccessToast(false));
       dispach(setAudioProgress(0))
@@ -29,10 +29,6 @@ const SuccessToast: React.FC<myComponentProp> = ({
       dispach(setAudioFile(undefined))
       dispach(setImageFile(undefined))
     }, 3000);
-    return () => {
-      mounted = false;
-    };
-
   }, [isToastVisible]);
 
   // Define keyframes for slide animation

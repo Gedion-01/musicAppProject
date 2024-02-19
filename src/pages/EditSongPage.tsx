@@ -290,10 +290,7 @@ function EditSongPage() {
       setTimeout(() => {
         navigate("/");
       }, 3000);
-      let mounted = true;
-      return () => {
-        mounted = false;
-      };
+
     }
   }, [showSuccessToast]);
 

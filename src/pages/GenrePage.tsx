@@ -66,7 +66,7 @@ export default function GenrePage() {
       <Flex flexDirection={"row"} css={genreStyles.styles}>
         {genres.map((data, i) => {
           return (
-            <Link to={data.name} key={i}>
+            <Link to={data.name} key={i} style={{textDecoration: "none", color: "#1f3044"}}>
               <Genre name={data.name} imgUrl={data.imgUrl} />
             </Link>
           );

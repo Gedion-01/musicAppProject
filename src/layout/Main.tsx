@@ -51,7 +51,7 @@ const Main: React.FC<{ children: ReactNode }> = ({ children }) => {
         </Box>
       </Flex>
       <PlayerContainer>
-        <MyAudioPlayer imageUrl="https://th.bing.com/th/id/OIP.keIG-gLYH4XdTkLvAFqI2QHaEo?rs=1&pid=ImgDetMain" />
+        <MyAudioPlayer />
       </PlayerContainer>
     </>
   );

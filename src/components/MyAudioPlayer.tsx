@@ -1,5 +1,3 @@
-import "../index.css";
-
 import React, { useEffect, useRef, useState } from "react";
 import { audioPlayer, animationRef } from "../hooks/audioPlayerRefs";
 
@@ -56,11 +54,9 @@ const Next = styled(BiSkipNext)`
   }
 
 `;
-interface myComponentProp {
-  imageUrl: string;
-}
 
-const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
+const MyAudioPlayer: React.FC = () => {
+  
   const dispatch = useDispatch();
   // redux states
   const isPlaying = useSelector(
@@ -77,7 +73,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
   const playerQueueLength = useSelector(
     (state: RootState) => state.playerData.playerQueueLength
   );
-  const currentData: any = useSelector(
+  const currentData = useSelector(
     (state: RootState) => state.playerData.currentData
   );
   // state
@@ -87,11 +83,11 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
   // const audioPlayer = useRef<HTMLAudioElement>(null!)
   const progressBar = useRef<any>(null!);
   // const animationRef = useRef<number>(null!)
-
+    console.log(duration)
   useEffect(() => {
     const seconds = Math.floor(audioPlayer?.current?.duration);
 
-    progressBar.current.max = String(seconds);
+    progressBar.current.max = seconds;
 
     setDuration(seconds);
   }, [
@@ -106,13 +102,20 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
     const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
     return `${returnedMinutes}:${returnedSeconds}`;
   }
+  const changePlayerCurrentTime = () => {
+    progressBar.current.style.setProperty(
+      "--seek-before-width",
+      `${(Number(progressBar.current.value) / Math.floor(audioPlayer?.current?.duration)) * 100}%`
+    );
+    console.log(Number(progressBar.current.value), Math.floor(audioPlayer?.current?.duration))
+    setCurrentTime(progressBar.current.value);
+  };
 
   // initiate playing animation
   function whilePlaying() {
     progressBar.current.value = audioPlayer.current.currentTime;
 
-    setCurrentTime(Number(progressBar.current.value));
-    changePlayerCurrentTime();
+    changePlayerCurrentTime()
     animationRef.current = requestAnimationFrame(whilePlaying);
 
     if (audioPlayer.current && audioPlayer.current.ended) {
@@ -142,6 +145,7 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
 
   // play pause for the player
   const handlePlayPause = () => {
+    
     if (isPlaying) {
       audioPlayer.current.pause();
       dispatch(setIsPlaying(false));
@@ -158,13 +162,6 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
     audioPlayer.current.currentTime = progressBar.current.value;
     changePlayerCurrentTime();
   }
-  const changePlayerCurrentTime = () => {
-    progressBar.current.style.setProperty(
-      "--seek-before-width",
-      `${(progressBar.current.value / duration) * 100}%`
-    );
-    setCurrentTime(progressBar.current.value);
-  };
 
   // button Next
   const next = () => {
@@ -199,7 +196,6 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
       }
     }
   };
-
   return (
     <>
       <audio
@@ -255,10 +251,11 @@ const MyAudioPlayer: React.FC<myComponentProp> = ({ imageUrl }) => {
           {duration > 0 ? calculateTime(duration) : "0:00"}
         </div>
         </div>
-        
+        { currentData.coverImageUrl !== "" ?
         <div className="image-container">
-          <img className="StyledImage" src={imageUrl} alt="Album Art" />
-        </div>
+          <img className="StyledImage" src={currentData.coverImageUrl} alt="Album Art" />
+        </div> : ""
+        }
         <div className="text-container">
           <div className="title">{currentData.title}</div>
           <div className="artist">{currentData.artist}</div>

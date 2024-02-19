@@ -21,7 +21,7 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: 60px;
     gap: 3px;
     padding: 7px;
     @media (max-width: 768px) {
@@ -55,7 +55,7 @@
     width: 200px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 7px;
     
   }
   .progress {
@@ -76,7 +76,8 @@
   .StyledImage {
     width: 60px;
   height: 60px;
-  border-radius: 10px;
+  object-fit: cover;
+  border-radius: 5px;
   }
   
   @media (max-width: 768px) {
@@ -87,4 +88,3 @@
       display: none
     };
   }
-  

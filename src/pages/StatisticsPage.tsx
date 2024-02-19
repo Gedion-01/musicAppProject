@@ -85,15 +85,15 @@ export default function StatisticsPage() {
             Overview
           </Text>
         </Box>
-        {/* over view cards */}
+
         <Flex css={overViewContainerStyle.styles} flexDirection={"row"} mb={4}>
-          {/* Total songs */}
+
           <StatusCard title="Total Songs" data={totalNumberOfSongs} />
-          {/* Total artists */}
+
           <StatusCard title="Total Artists" data={totalNumberOfArtists} />
-          {/* Total albums */}
+
           <StatusCard title="Total Albums" data={totalNumberOfAlbums} />
-          {/* Total genres */}
+
           <StatusCard title="Total Genres" data={totalNumberOfGenres} />
         </Flex>
         <WrapperStyle>
