@@ -42,7 +42,7 @@ const Main: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <Flex css={MainStyle.styles} alignItems={""}>
+      <Flex css={MainStyle.styles}>
         <Box>
           <SideBar />
         </Box>
