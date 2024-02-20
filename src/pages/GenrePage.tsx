@@ -60,6 +60,12 @@ const genres: genre[] = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyot4VuCZXxiGKXKgys1K-Oqedl6O-DO5paw&usqp=CAU",
     genre: "Workout"
   },
+  {
+    name: "Workout",
+    imgUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyot4VuCZXxiGKXKgys1K-Oqedl6O-DO5paw&usqp=CAU",
+    genre: "kora"
+  },
 ];
 
 export default function GenrePage() {

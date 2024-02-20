@@ -55,7 +55,7 @@ export default function NavBar() {
         onClick={close}
         onClickHome={closeHome}
       />
-      <div className="container"> {/* Apply CSS class */}
+      <div className="container">
         <div className="nav-bar">
           <span className="title">{title}</span>
           <div className="search-container">
@@ -70,7 +70,6 @@ export default function NavBar() {
               onChange={(e) => dispach(setSearch(e.target.value))}
               style={{
                 display: location.pathname === "/" ? "block" : "none",
-                // Apply additional styles as needed
               }}
             />
           </div>
@@ -91,7 +90,6 @@ export default function NavBar() {
             onChange={(e) => dispach(setSearch(e.target.value))}
             style={{
               display: location.pathname === "/" ? "block" : "none",
-              // Apply additional styles as needed
             }}
           />
         </div>

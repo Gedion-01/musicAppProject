@@ -19,6 +19,7 @@ const Main: React.FC<{ children: ReactNode }> = ({ children }) => {
   const OutletContainer = styled(Box)`
   height: calc(100vh - 190px); /* Adjust the height as needed */
   overflow-y: auto; /* Enable scrolling if content exceeds container height */
+  overflow-x: hidden;
   scroll-behavior: smooth; /* Add smooth scrolling behavior */
 
   @media (max-width: 768px) {

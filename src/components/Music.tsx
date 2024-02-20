@@ -258,9 +258,7 @@ const Music: React.FC<myComponentProp & Song> = ({
       display: none;
     }
   `;
-  const titleStyle = css`
-    height: 40px;
-  `;
+
   const StyledOptionContainer = css`
     cursor: pointer;
     position: relative;
@@ -307,6 +305,19 @@ to {
     @media (max-width: 768px) {
     }
   `;
+  const textContainer = css`
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+      max-width: 200px;
+    }
+    @media (max-width: 300px) {
+      max-width: 100px;
+    }
+  `
 
   const Overlay = styled.div`
     ${overlayStyles}
@@ -410,34 +421,25 @@ to {
           <Flex
             flexDirection={"column"}
             justifyContent={"space-between"}
-            css={titleStyle.styles}
+            css={textContainer.styles}
           >
-            <Box>
+            
               <Text
                 fontSize={16}
                 fontWeight="bold"
-                style={{
-                  maxWidth: "200px", 
-                  overflow: "hidden]",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
+                css={textContainer.styles}
               >
                 {title}
               </Text>
-            </Box>
-            <Box>
+            
+            
               <Text
                 fontSize={14}
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
+                css={textContainer.styles}
               >
                 {artist}
               </Text>
-            </Box>
+            
           </Flex>
         </Flex>
         <Box

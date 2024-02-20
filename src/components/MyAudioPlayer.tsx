@@ -174,11 +174,15 @@ const MyAudioPlayer: React.FC = () => {
       if (currentTrackIndex < playerQueue.length - 1) {
         const nextData = playerQueue[currentTrackIndex + 1];
         dispatch(setCurrentData(nextData));
-        dispatch(setPlayNext(true));
+        if(isPlaying) {
+          dispatch(setPlayNext(true));
+        }
         dispatch(setCurrentTrackIndex(currentTrackIndex + 1));
       } else {
         dispatch(setCurrentData(playerQueue[0]));
-        dispatch(setPlayNext(true));
+        if(isPlaying) {
+          dispatch(setPlayNext(true));
+        }
         dispatch(setCurrentTrackIndex(0));
       }
     }
@@ -191,11 +195,15 @@ const MyAudioPlayer: React.FC = () => {
       if (currentTrackIndex > 0) {
         const nextData = playerQueue[currentTrackIndex - 1];
         dispatch(setCurrentData(nextData));
-        dispatch(setPlayNext(true));
+        if(isPlaying) {
+          dispatch(setPlayNext(true));
+        }
         dispatch(setCurrentTrackIndex(currentTrackIndex - 1));
       } else {
         dispatch(setCurrentData(playerQueue[0]));
-        dispatch(setPlayNext(true));
+        if(isPlaying) {
+          dispatch(setPlayNext(true));
+        }
         dispatch(setCurrentTrackIndex(0));
       }
     }

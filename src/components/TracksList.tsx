@@ -31,12 +31,21 @@ const TracksList: React.FC<data> = ({ data }) => {
     (state: RootState) => state.playerData.currentData
   );
 
+  const filteredArray = data.filter((song) => {
+    const titleMatch = song.title.toLowerCase().includes(search.toLowerCase());
+    const artistMatch = song.artist.toLowerCase().includes(search.toLowerCase());
+    return search === '' ? song : titleMatch || artistMatch;
+  });
+  
   return (
     <div>
       {
+        
         data.filter((song) => {
-          return search === '' ? song :
-          song.title.toLowerCase().includes(search.toLowerCase())
+          const titleMatch = song.title.toLowerCase().includes(search.toLowerCase())
+          const artistMatch = song.artist.toLowerCase().includes(search.toLowerCase())
+          return search === '' ? song : titleMatch || artistMatch
+          
         }).map((song, index) => (
           <Music
             key={song._id}
@@ -50,7 +59,7 @@ const TracksList: React.FC<data> = ({ data }) => {
             updatedAt={song.updatedAt}
             __v={song.__v}
             songDataUrl={song.songDataUrl}
-            playerQueue={data}
+            playerQueue={filteredArray}
             index={index}
             isCurrent={song._id === currentData._id}
             isPlaying={isPlaying}

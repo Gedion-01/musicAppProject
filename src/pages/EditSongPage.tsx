@@ -136,6 +136,9 @@ function EditSongPage() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // states
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -191,7 +194,7 @@ function EditSongPage() {
 
   useEffect(() => {
     dispatch({ type: "song/getSongById", payload: { id: id } });
-  }, [id]);
+  }, []);// may be i will add id
   useEffect(() => {
     setFormData({
       songid: id,
@@ -203,7 +206,7 @@ function EditSongPage() {
       songDataUrl: searchedSong.songDataUrl,
     });
   }, [searchedSong]);
-  console.log(formData);
+  // console.log(formData);
 
   const genreStyles = css`
     gap: 12px;

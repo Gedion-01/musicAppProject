@@ -70,7 +70,7 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
 
     //  background: #a8bcc3;
     background: #7DA2A9;
-    transition: all 0.5s ease;
+    transition: all 0.2s ease;
     font-weight: bolder;
   `;
   const sideBarElement = css`
