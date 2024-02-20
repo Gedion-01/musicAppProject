@@ -66,7 +66,7 @@ export default function NavBar() {
               value={search}
               type="text"
               className="search-input"
-              placeholder="Search your Songs here..."
+              placeholder="Search Songs & artists here..."
               onChange={(e) => dispach(setSearch(e.target.value))}
               style={{
                 display: location.pathname === "/" ? "block" : "none",
@@ -86,7 +86,7 @@ export default function NavBar() {
             value={search}
             type="text"
             className="search-input"
-            placeholder="Search your Songs here..."
+            placeholder="Search Songs & artists here..."
             onChange={(e) => dispach(setSearch(e.target.value))}
             style={{
               display: location.pathname === "/" ? "block" : "none",
