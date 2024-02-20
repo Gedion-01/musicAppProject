@@ -25,7 +25,7 @@ const FailedToast: React.FC<myComponentProp> = ({
     }, 3000);
   }, [isToastVisible]);
 
-  // Define keyframes for slide animation
+  
   const slideIn = keyframes`
 from {
   transform: translateX(100%);
@@ -45,7 +45,6 @@ to {
 }
 `;
 
-  // Define a custom styled component with the isVisible prop
   const ToastContainer = styled.div<{ isVisible: boolean }>`
     position: fixed;
     bottom: 20px;

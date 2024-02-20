@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-// Styled components
 const LoaderContainer = styled.div`
   display: flex;
   flex-direction: column;
