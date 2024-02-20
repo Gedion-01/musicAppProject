@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 
 const LoaderContainer = styled.div`
   display: flex;
@@ -29,6 +30,9 @@ const LoadingText = styled.p`
 
 
 const Loading = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <LoaderContainer>
       <Loader />
