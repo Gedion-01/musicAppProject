@@ -63,14 +63,14 @@ const SmallScreenSidebar: React.FC<myComponentProp> = ({
   const sideBarStyle = css`
     position: fixed;
     top: 0;
-    left: ${openMobileNav ? "0px" : "-350px"};
+    left: ${openMobileNav ? "0px" : "-250px"};
     z-index: 40;
-    width: 350px;
+    width: 250px;
     height: 100vh;
 
     //  background: #a8bcc3;
     background: #7DA2A9;
-    transition: all 0.2s ease;
+    transition: all 0.1;
     font-weight: bolder;
   `;
   const sideBarElement = css`
