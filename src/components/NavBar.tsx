@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router";
 
 import SmallScreenSidebar from "./SmallScreen/SmallScreenSidebar";
 
-import "./NavBar.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { setSearch } from '../state/songs/songsSlice';
