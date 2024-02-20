@@ -96,10 +96,6 @@
 }
 
 .nav-bar {
-  background: rgb(247, 247, 247, 0.1);
-  
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   margin-top: 10px;
   
   border-radius: 10px;

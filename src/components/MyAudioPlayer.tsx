@@ -236,7 +236,7 @@ const MyAudioPlayer: React.FC = () => {
           <button
             onClick={handlePlayPause}
             style={{
-              backgroundColor: "#1f3044",
+              backgroundColor: "#01345B",
               border: "none",
               color: "white",
               padding: "0px",
