@@ -233,7 +233,7 @@ const Music: React.FC<myComponentProp & Song> = ({
       background-color: ${optionIsOpened ? "#7DA2A9" : ""};
       background-color: ${isPlaying && isCurrent ? "#7DA2A9" : ""};
       background-color: ${markedItem ? "#7DA2A9" : ""};
-      max-width: 800px;
+      max-width: 850px;
       &: hover {
         background-color: #7DA2A9;
         transition: all 0.2s ease-out;
