@@ -12,7 +12,8 @@ import {
   setShowFailedToast,
   setOpenDeleteModal,
   setImageProgress,
-  setAudioProgress
+  setAudioProgress,
+  setRemoveSuccessFull,
 } from "./songs/songsSlice";
 
 import axios, { AxiosResponse } from "axios";
@@ -60,6 +61,7 @@ function* createSong(action: any) {
     const { data }: { data: formdData } = action.payload;
     let imageProgress: number = 0
     let audioProgress: number = 0
+    console.log(data);
     
     try {
       const image: File = yield select((state: RootState) => state.songs.imageFile)
@@ -74,7 +76,7 @@ function* createSong(action: any) {
       formData.append('audio', audio)
       formData.append('image', image)
 
-      
+      console.log(formData)
       const response: AxiosResponse = yield call(() => {
         return axios.post(`${VITE_BASE_URL}/uploadSong`, formData, {
           headers: {
@@ -132,7 +134,7 @@ function* updateSong(action: any) {
       formData.append('image', image)
       
       yield call(() => {
-        return axios.put(`http://localhost:3000/api/v1/updateSong`, formData, {
+        return axios.put(`${VITE_BASE_URL}/updateSong`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
@@ -202,7 +204,7 @@ function* deleteSongById(action: any) {
     
 
     // Set delete success Toast on
-    yield put(setShowSuccessToast(true))
+    yield put(setRemoveSuccessFull(true))
 
   } catch (error) {
     yield put(setOpenDeleteModal(false))

@@ -26,16 +26,16 @@ interface Songs {
   songCreatedSuccessfully: boolean;
   isEditSongCausingError: boolean;
   EditSongButtonLoading: boolean;
-  isSongtoBeDeletedMarked: boolean;
   isDeleteSongCausingError: boolean;
   showSuccessToast: boolean;
   showFailedToast: boolean;
   showOpenDeleteModal: boolean;
-  markDeletedItem: boolean;
+  isRemoveSuccessFull: boolean;
   imageProgress: number;
   audioProgress: number;
   imageFile: File | undefined;
   audioFile: File | undefined;
+  search: string;
 }
 
 const initialState: Songs = {
@@ -65,9 +65,8 @@ const initialState: Songs = {
   isEditSongCausingError: false,
   EditSongButtonLoading: false,
   // for deleting purpose
-  isSongtoBeDeletedMarked: false,
   isDeleteSongCausingError: false,
-  markDeletedItem: false,
+  isRemoveSuccessFull: false,
   // for toast
   showSuccessToast: false,
   showFailedToast: false,
@@ -77,7 +76,8 @@ const initialState: Songs = {
   imageProgress: 0,
   audioProgress: 0,
   imageFile: undefined,
-  audioFile: undefined
+  audioFile: undefined,
+  search: ""
 };
 
 const songsSlice = createSlice({
@@ -115,11 +115,11 @@ const songsSlice = createSlice({
     setShowFailedToast: (state, action: PayloadAction<boolean>) => {
       state.showFailedToast = action.payload
     },
+    setRemoveSuccessFull: (state, action: PayloadAction<boolean>) => {
+      state.isRemoveSuccessFull = action.payload
+    },
     setOpenDeleteModal: (state, action: PayloadAction<boolean>) => {
       state.showOpenDeleteModal = action.payload
-    },
-    setmarkDeletedItem: (state, action: PayloadAction<boolean>) => {
-      state.markDeletedItem = action.payload
     },
     setImageProgress: (state, action: PayloadAction<number>) => {
       state.imageProgress = action.payload
@@ -135,6 +135,9 @@ const songsSlice = createSlice({
     },
     setSongCreatedSuccessfully: (state, action: PayloadAction<boolean>) => {
       state.songCreatedSuccessfully = action.payload
+    },
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload
     }
   },
 });
@@ -150,12 +153,13 @@ export const {
   setShowSuccessToast,
   setShowFailedToast,
   setOpenDeleteModal,
-  setmarkDeletedItem,
   setImageProgress,
   setAudioProgress,
   setImageFile,
   setAudioFile,
-  setSongCreatedSuccessfully
+  setSongCreatedSuccessfully,
+  setRemoveSuccessFull,
+  setSearch
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

@@ -4,15 +4,17 @@ import React from "react";
 
 type reactProps = {
   name: string;
-  totalAlbums: number;
+  albums: [string];
   totalSongs: number;
 };
 
 const ArtistsStatus: React.FC<reactProps> = ({
   name,
-  totalAlbums,
+  albums,
   totalSongs,
 }) => {
+
+  const albumCount = albums.filter(album => album !== null).length
   const tabularStyle = css`
     margin-top: 10px;
     width: 100%;
@@ -42,7 +44,7 @@ const ArtistsStatus: React.FC<reactProps> = ({
         <Box flex={1}>
           <Flex justifyContent={"center"}>
             <Box>
-              <Text fontSize={[2, 3, 4]}>{totalAlbums}</Text>
+              <Text fontSize={[2, 3, 4]}>{albumCount}</Text>
             </Box>
           </Flex>
         </Box>

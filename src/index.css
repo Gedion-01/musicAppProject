@@ -67,6 +67,7 @@
     width: 100%;
   }
   .text-container .title {
+    color: white;
     font-size: small;
     font-weight: bold;
   }
@@ -88,3 +89,5 @@
       display: none
     };
   }
+
+/*  */

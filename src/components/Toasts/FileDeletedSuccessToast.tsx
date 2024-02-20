@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Flex, Text } from "rebass";
 
 import { FaRegCircleCheck } from "react-icons/fa6";
-import { setAudioProgress, setImageProgress, setShowSuccessToast } from "../../state/songs/songsSlice";
+import { setRemoveSuccessFull } from "../../state/songs/songsSlice";
 import { useDispatch } from "react-redux";
 
 type myComponentProp = {
@@ -13,22 +13,17 @@ type myComponentProp = {
   message: string;
 };
 
-const SuccessToast: React.FC<myComponentProp> = ({
+const FileDeletedSuccessToast: React.FC<myComponentProp> = ({
   isToastVisible,
   message,
   light,
 }) => {
-
   //console.log('sds')
   const dispach = useDispatch();
   useEffect(() => {
-    if(isToastVisible === true) {
     setTimeout(() => {
-      dispach(setShowSuccessToast(false));
-      dispach(setAudioProgress(0))
-      dispach(setImageProgress(0))
+      dispach(setRemoveSuccessFull(false));
     }, 3000);
-  }
   }, [isToastVisible]);
 
   // Define keyframes for slide animation
@@ -93,4 +88,4 @@ to {
   );
 };
 
-export default SuccessToast;
+export default FileDeletedSuccessToast;

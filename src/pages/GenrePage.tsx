@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Flex, Box, Text } from "rebass";
+import { Flex } from "rebass";
 import Genre from "../components/Genre";
 
 import { Link } from "react-router-dom";
@@ -60,12 +60,6 @@ const genres: genre[] = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyot4VuCZXxiGKXKgys1K-Oqedl6O-DO5paw&usqp=CAU",
     genre: "Workout"
   },
-  {
-    name: "TV & Movies",
-    imgUrl:
-      "https://prd-rteditorial.s3.us-west-2.amazonaws.com/wp-content/uploads/2021/11/01193326/Apple_TV_Finch_key_art_700x250.jpg",
-      genre: "TV-&-Movies"
-  },
 ];
 
 export default function GenrePage() {
@@ -82,7 +76,7 @@ export default function GenrePage() {
       <Flex flexDirection={"row"} css={genreStyles.styles} mt={2}>
         {genres.map((data, i) => {
           return (
-            <Link to={data.name} key={i} style={{textDecoration: "none", color: "#1f3044"}}>
+            <Link to={data.genre} key={i} style={{textDecoration: "none", color: "#1f3044"}}>
               <Genre name={data.name} imgUrl={data.imgUrl} />
             </Link>
           );

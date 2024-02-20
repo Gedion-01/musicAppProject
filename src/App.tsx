@@ -27,7 +27,7 @@ function App() {
           </Routes>
         </Suspense>
       </Main>
-      <Analytics />
+    <Analytics />
     </>
   );
 }

@@ -177,7 +177,7 @@ function EditSongPage() {
   const buttonIsLoading = useSelector(
     (state: RootState) => state.songs.EditSongButtonLoading
   );
-  console.log(searchedSong);
+  //console.log(searchedSong);
 
   const [formData, setFormData] = useState({
     songid: id,
@@ -292,7 +292,8 @@ function EditSongPage() {
       setTimeout(() => {
         navigate("/");
       }, 3000);
-
+      return () => {
+      };
     }
   }, [showSuccessToast]);
 
@@ -329,15 +330,15 @@ function EditSongPage() {
 
     outline: none;
     box-shadow: 0 0 2px rgba(0, 0, 255, 0.1);
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 5px; /* Rounded corners */
   `;
   return (
     <>
-      <SuccessToast
+      {showSuccessToast === true ? <SuccessToast
         isToastVisible={showSuccessToast}
         light={true}
         message="Song Edited successfully"
-      />
+      /> : ""}
       <Flex flexDirection={"column"}>
         {EditSongCauseAnError && showErrorMessage && !buttonIsLoading ? (
           <FailedToast isToastVisible={showErrorMessage} light={true} message="Error while Editing the song. Please try again."/>
@@ -374,7 +375,6 @@ function EditSongPage() {
               Album Name
             </Text>
             <StyledInput
-              required
               type="text"
               placeholder="Album Name"
               name="album"
@@ -395,7 +395,7 @@ function EditSongPage() {
             {/* warining if image file is missing */}
             {imageFileIsMissing ? (
               <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
-                <Text>Image file is required</Text>
+                <Text>Inorder to save, a new Image file is required</Text>
                 <Warningcon />
               </Flex>
             ) : (
@@ -441,9 +441,9 @@ function EditSongPage() {
                         (searchedSong.coverImageUrl as string)
                       }
                       style={{
-                        width: "150px",
-                        height: "150px",
-                        borderRadius: "10px",
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "5px",
                       }}
                     />
                   </Text>
@@ -465,7 +465,7 @@ function EditSongPage() {
             {/* warining if audio file is missing */}
             {audioFileIsMissing ? (
               <Flex alignItems={"center"} css={"color: red; gap: 10px;"}>
-                <Text>Audio file is required</Text>
+                <Text>Inorder to save, a new Audio file is required</Text>
                 <Warningcon />
               </Flex>
             ) : (

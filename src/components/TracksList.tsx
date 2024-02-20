@@ -23,6 +23,10 @@ const TracksList: React.FC<data> = ({ data }) => {
   const isPlaying = useSelector(
     (state: RootState) => state.playerData.isPlaying
   );
+  const search = useSelector(
+    (state: RootState) => state.songs.search
+  );
+  
   const currentData: any = useSelector(
     (state: RootState) => state.playerData.currentData
   );
@@ -30,7 +34,10 @@ const TracksList: React.FC<data> = ({ data }) => {
   return (
     <div>
       {
-        data.map((song, index) => (
+        data.filter((song) => {
+          return search === '' ? song :
+          song.title.toLowerCase().includes(search.toLowerCase())
+        }).map((song, index) => (
           <Music
             key={song._id}
             _id={song._id}

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 
-import { Flex, Box, Text } from "rebass";
+import { Flex } from "rebass";
 import StatusCard from "../components/StatusCard";
 
 import GenreStatus from "../components/GenreStatus";
@@ -15,6 +15,10 @@ import AllGenresTitle from "../components/AllGenresTitle";
 import SongsAndAlbumsperArtistTitle from "../components/SongsAndAlbumsperArtistTitle";
 import AlbumStatusTitle from "../components/AlbumStatusTitle";
 import Loading from "../components/Animation/Loading";
+
+const StyledDiv = styled.div`
+max-width: 900px;
+`
 
 const Datacontainer = styled.div``;
 const WrapperStyle = styled.div`
@@ -72,7 +76,10 @@ export default function StatisticsPage() {
   }, []);
 
   return (
-    <>
+
+    
+    <StyledDiv>
+  
     {
       isDataLoading ? <Loading /> :
       <Flex
@@ -80,7 +87,7 @@ export default function StatisticsPage() {
         justifyContent={"center"}
         alignContent={"center"}
       >
-
+        
         <Flex css={overViewContainerStyle.styles} flexDirection={"row"} mb={4}>
 
           <StatusCard title="Total Songs" data={totalNumberOfSongs} />
@@ -117,7 +124,7 @@ export default function StatisticsPage() {
                     <ArtistsStatus
                       key={index}
                       name={data.artist}
-                      totalAlbums={data.albums.length}
+                      albums={data.albums}
                       totalSongs={data.totalSongs}
                     />
                   );
@@ -136,8 +143,9 @@ export default function StatisticsPage() {
           </Datacontainer>
         </WrapperStyle>
       </Flex>
-}
-    </>
+      
+    }
+    </StyledDiv>
     
   );
 }

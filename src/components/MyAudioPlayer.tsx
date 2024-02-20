@@ -83,7 +83,7 @@ const MyAudioPlayer: React.FC = () => {
   // const audioPlayer = useRef<HTMLAudioElement>(null!)
   const progressBar = useRef<any>(null!);
   // const animationRef = useRef<number>(null!)
-    console.log(duration)
+  // console.log(duration)
   useEffect(() => {
     const seconds = Math.floor(audioPlayer?.current?.duration);
 
@@ -107,12 +107,14 @@ const MyAudioPlayer: React.FC = () => {
       "--seek-before-width",
       `${(Number(progressBar.current.value) / Math.floor(audioPlayer?.current?.duration)) * 100}%`
     );
-    console.log(Number(progressBar.current.value), Math.floor(audioPlayer?.current?.duration))
+    // console.log(Number(progressBar.current.value), Math.floor(audioPlayer?.current?.duration))
     setCurrentTime(progressBar.current.value);
   };
 
   // initiate playing animation
   function whilePlaying() {
+    //console.log('playing');
+    
     progressBar.current.value = audioPlayer.current.currentTime;
 
     changePlayerCurrentTime()
@@ -120,6 +122,8 @@ const MyAudioPlayer: React.FC = () => {
 
     if (audioPlayer.current && audioPlayer.current.ended) {
       cancelAnimationFrame(animationRef.current);
+      dispatch(setPlayNext(true))
+      dispatch(setIsPlaying(false))
     }
   }
 
@@ -141,7 +145,7 @@ const MyAudioPlayer: React.FC = () => {
         audioPlayer.current.play();
       }
     }
-  }, [currentData._id, isPlaying]);
+  }, [currentData._id, isPlaying, playNext]);
 
   // play pause for the player
   const handlePlayPause = () => {
@@ -244,7 +248,7 @@ const MyAudioPlayer: React.FC = () => {
             type="range"
             className={styles.progressBar}
             defaultValue="0"
-            max={duration}
+            max={String(duration)}
             onChange={changeRange}
           />
           <div className="time">

@@ -11,7 +11,7 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
-import SuccessToast from "./Toasts/SuccessToast";
+
 import {
   setCurrentData,
   setCurrentTrackIndex,
@@ -23,6 +23,7 @@ import {
 import FailedToast from "./Toasts/FailedToast";
 // import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { audioPlayer } from "../hooks/audioPlayerRefs";
+
 const StyledOption = styled(SlOptionsVertical)`
   position: relative;
   z-index: 1;
@@ -96,9 +97,6 @@ const Music: React.FC<myComponentProp & Song> = ({
   const [markedItem, setMarkedItem] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const showSuccessToast = useSelector(
-    (state: RootState) => state.songs.showSuccessToast
-  );
   const showFailedToast = useSelector(
     (state: RootState) => state.songs.showFailedToast
   );
@@ -214,7 +212,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     min-width: 100px;
     background-color: #d0e3f0;
     box-shadow: 2px 2px 5px rgba(0, 0, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 5px;
     margin-right: 5px;
     display: ${optionIsOpened ? "block" : "none"};
 
@@ -243,7 +241,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     `;
   }, [optionIsOpened, isPlaying, isCurrent, markedItem]);
   const playTitle = css`
-    gap: 20px;
+    gap: 10px;
   `;
 
   const boxStyle = css`
@@ -271,7 +269,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     &:hover {
       color: #2947CF;
     }
-    font-weight: bold;
+    
     transition: 0.4s;
   `;
   // Define animation keyframes
@@ -339,11 +337,15 @@ to {
 
   return (
     <>
-      <SuccessToast
+      {/* <SuccessToast
         isToastVisible={showSuccessToast}
         light={true}
         message="Song deleted successfully."
-      />
+      /> */}
+      {/* <FileDeletedSuccessToast 
+        isToastVisible={isRemoveSuccessFull}
+        light={true}
+        message="Song deleted successfully." /> */}
       <FailedToast
         isToastVisible={showFailedToast}
         message="Failed to remove song."
@@ -415,7 +417,8 @@ to {
                 fontSize={16}
                 fontWeight="bold"
                 style={{
-                  overflow: "hidden",
+                  maxWidth: "200px", 
+                  overflow: "hidden]",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                 }}
@@ -445,6 +448,7 @@ to {
           <Text
             fontSize={14}
             style={{
+              textAlign: "center",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",

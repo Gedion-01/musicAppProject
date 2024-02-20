@@ -23,7 +23,7 @@ function FilteredSongsPage() {
   return (
     <Flex flexDirection={"column"}>
       <Box>
-        <Text fontSize={6} fontWeight="bold" mb={2}>
+        <Text fontSize={5} fontWeight="bold" mb={2}>
           {genre}
         </Text>
       </Box>

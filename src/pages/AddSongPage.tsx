@@ -171,7 +171,7 @@ function AddSongPage() {
     title: "",
     artist: "",
     album: "",
-    genre: "",
+    genre: "R&B",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -285,7 +285,8 @@ function AddSongPage() {
       [name]: value,
     });
   }
-
+  console.log(audioFile, imageFile);
+  
   // when submit
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -319,7 +320,7 @@ function AddSongPage() {
     if (showSuccessToast) {
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 4000);
       return () => {
       };
     }
@@ -361,7 +362,7 @@ function AddSongPage() {
               onChange={handleInputChange}
             />
             <StyledInput
-              required
+              
               type="text"
               placeholder="Album Name"
               name="album"

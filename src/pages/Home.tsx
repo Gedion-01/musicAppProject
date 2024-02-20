@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Flex, Box, Text } from "rebass";
+import { Flex } from "rebass";
 import { css } from "@emotion/react";
 //
 import { useDispatch, useSelector } from "react-redux";
