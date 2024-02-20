@@ -68,11 +68,6 @@ export default function SideBar() {
     transition: 0.4s;
   `;
 
-  const header = css`
-    font-size: 22px;
-    color: #e1e2e2;
-    text-align: center;
-  `;
   const menu = css`
     padding: 0px 10px;
   `;
