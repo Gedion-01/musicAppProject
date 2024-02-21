@@ -14,6 +14,7 @@ import {
   setImageProgress,
   setAudioProgress,
   setRemoveSuccessFull,
+  setSongsByGenreLoading,
 } from "./songs/songsSlice";
 
 import axios, { AxiosResponse } from "axios";
@@ -32,6 +33,7 @@ function* fetchSongs() {
   }
 }
 function* fetchSongsByGenre(action: any) {
+  yield put(setSongsByGenreLoading(true))
   const { genre }: { genre: string } = action.payload;
   try {
     const response: AxiosResponse = yield call(() =>
@@ -41,6 +43,7 @@ function* fetchSongsByGenre(action: any) {
     yield put(setSongsByGenre(response.data.songs));
   } catch (error) {
     console.log(error);
+    yield put(setSongsByGenreLoading(false))
   }
 }
 

@@ -92,6 +92,9 @@ const songsSlice = createSlice({
       state.songsByGenreLoading = false;
       state.songsByGenre = action.payload;
     },
+    setSongsByGenreLoading:(state, action: PayloadAction<boolean>) => {
+      state.songsByGenreLoading = action.payload
+    },
     setSearchSong: (state, action: PayloadAction<Song>) => {
       state.searchedSongLoading = false;
       state.searchedSong = action.payload;
@@ -159,7 +162,8 @@ export const {
   setAudioFile,
   setSongCreatedSuccessfully,
   setRemoveSuccessFull,
-  setSearch
+  setSearch,
+  setSongsByGenreLoading
 } = songsSlice.actions;
 
 export default songsSlice.reducer;
