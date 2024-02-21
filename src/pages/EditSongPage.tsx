@@ -60,8 +60,7 @@ const Categories = [
   "Pop",
   "Hip-Hop",
   "Latin",
-  "Workout",
-  "TV-&-Movies"
+  "Workout"
 ];
 
 const StyledSelect = styled.select`
