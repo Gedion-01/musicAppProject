@@ -33,6 +33,6 @@ A web application for streaming and enjoying music it have an amazing and easy t
 - You can edit your uploaded musics/songs
 - you can get songs by genre
 - You can Remove songs
-- It has custom build player which loads your required music it keeps track of your selected songs, plays the next song if the current one end
+- It has custom build player which loads your required music it keeps track of your selected songs, plays the next song if the current one end, it also has previous and next buttons
 - It has progress bar to change time for the current playing music/audio, also you can freely navigate to any page while the current song/music is playing and more...
-- It shows statistical data about your music back-end like number of songs, artists, genres ETC..
+- It shows statistical data about your music based on the data the back-end provides like number of songs, artists, genres ETC..
