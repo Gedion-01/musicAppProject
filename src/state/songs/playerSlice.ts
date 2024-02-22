@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createRef } from 'react';
 
-export const animationRef: any = createRef();
-export const audioRef: any = createRef();
-export const progressBarRef: any = createRef()
 interface Song {
     _id: string;
     title: string;
@@ -23,7 +19,6 @@ interface Player {
     currentTrackIndex: number;
     playerQueue: Song[];
     playerQueueLength: number;
-    currentPlayerTime: any;
 }
 
 const initialState: Player = {
@@ -44,7 +39,6 @@ const initialState: Player = {
     currentTrackIndex: 0,
     playerQueue: [],
     playerQueueLength: 0,
-    currentPlayerTime: 0
 }
 
 const playerSlice = createSlice({

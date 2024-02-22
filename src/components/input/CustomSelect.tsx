@@ -45,16 +45,12 @@ const StyledOption = styled.option`
   }
 `;
 
-type reactProps = {
-  myRef: any;
-  title: string
-}
 
-const CustomSelect: React.FC<reactProps> = ({myRef}) => {
+const CustomSelect: React.FC = () => {
   return (
     <>
     <Text fontSize={2} fontWeight="bold" mb={0}>Select Song Genre</Text>
-    <StyledSelect ref={myRef}>
+    <StyledSelect>
       {Categories.map((category, index) => (
         <StyledOption key={index} value={category}>
           {category}

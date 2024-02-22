@@ -26,7 +26,6 @@ import { audioPlayer } from "../hooks/audioPlayerRefs";
 
 const StyledOption = styled(SlOptionsVertical)`
   position: relative;
-  z-index: 1;
   margin-right: 10px;
   font-size: 20px;
 `;
@@ -56,7 +55,7 @@ const StyledImage = styled.img`
   height: 45px;
   object-fit: cover;
   border-radius: 5px;
-`
+`;
 interface Song {
   _id: string;
   title: string;
@@ -101,11 +100,11 @@ const Music: React.FC<myComponentProp & Song> = ({
     (state: RootState) => state.songs.showFailedToast
   );
   //
-  const currentData: any = useSelector(
+  const currentData = useSelector(
     (state: RootState) => state.playerData.currentData
   );
 
-  function play(event: any) {
+  function play(event: React.MouseEvent<SVGElement, MouseEvent>) {
     event.preventDefault();
 
     dispatch(setCurrentTrackIndex(index));
@@ -139,7 +138,9 @@ const Music: React.FC<myComponentProp & Song> = ({
     //cancelAnimationFrame(animationRef.current);
   }
   // to open option
-  const handleOptionClick = (e: any) => {
+  const handleOptionClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     e.stopPropagation();
     setOptionIsOpened((prev) => !prev);
   };
@@ -168,6 +169,7 @@ const Music: React.FC<myComponentProp & Song> = ({
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 20;
     display: ${optionIsOpened ? "block" : "none"};
     height: 100vh;
     width: 100%;
@@ -190,7 +192,7 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
   const Button2 = styled.button`
     padding: 15px 30px;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
 
     border: none;
     border-radius: 5px;
@@ -206,7 +208,7 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
 
   const StyledContent = styled.div`
-    z-index: 10;
+    z-index: 20;
     font-size: 17px;
     position: absolute;
     min-width: 100px;
@@ -235,7 +237,7 @@ const Music: React.FC<myComponentProp & Song> = ({
       background-color: ${markedItem ? "#7DA2A9" : ""};
       max-width: 850px;
       &: hover {
-        background-color: #7DA2A9;
+        background-color: #7da2a9;
         transition: all 0.2s ease-out;
       }
     `;
@@ -265,9 +267,9 @@ const Music: React.FC<myComponentProp & Song> = ({
   `;
   const StyledlementsMenuebarContent = css`
     &:hover {
-      color: #2947CF;
+      color: #2947cf;
     }
-    
+
     transition: 0.4s;
   `;
   // Define animation keyframes
@@ -297,7 +299,7 @@ to {
   const modalStyles = css`
     display: flex;
     flex-direction: column;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
     gap: 10px;
     padding: 20px;
     border-radius: 8px;
@@ -317,7 +319,7 @@ to {
     @media (max-width: 300px) {
       max-width: 100px;
     }
-  `
+  `;
 
   const Overlay = styled.div`
     ${overlayStyles}
@@ -388,7 +390,9 @@ to {
         </Overlay>
       )}
       {/* backdrop for option */}
-      <StyledBackGround onClick={handleOptionClick}></StyledBackGround>
+      <StyledBackGround
+        onClick={(e) => handleOptionClick(e)}
+      ></StyledBackGround>
       <Flex
         flexDirection="row"
         alignItems="center"
@@ -405,41 +409,24 @@ to {
             {isPlaying && isCurrent ? (
               <PauseIcon onClick={pause} />
             ) : (
-              <PlayIcon
-                onClick={(event) => {
-                  event.preventDefault(); // Prevent default action
-                  play(event);
-                }}
-              />
+              <PlayIcon onClick={(e) => play(e)} />
             )}
           </Box>
           <Box>
-            <StyledImage
-              src={coverImageUrl}
-            />
+            <StyledImage src={coverImageUrl} />
           </Box>
           <Flex
             flexDirection={"column"}
             justifyContent={"space-between"}
             css={textContainer.styles}
           >
-            
-              <Text
-                fontSize={16}
-                fontWeight="bold"
-                css={textContainer.styles}
-              >
-                {title}
-              </Text>
-            
-            
-              <Text
-                fontSize={14}
-                css={textContainer.styles}
-              >
-                {artist}
-              </Text>
-            
+            <Text fontSize={16} fontWeight="bold" css={textContainer.styles}>
+              {title}
+            </Text>
+
+            <Text fontSize={14} css={textContainer.styles}>
+              {artist}
+            </Text>
           </Flex>
         </Flex>
         <Box
@@ -463,7 +450,7 @@ to {
           <Text fontSize={14}>{formatDate(updatedAt)}</Text>
         </Box>
         <Box css={StyledOptionContainer.styles}>
-          <StyledOption onClick={handleOptionClick} />
+          <StyledOption onClick={(e) => handleOptionClick(e as any)} />
           {optionIsOpened === true ? (
             <StyledContent onClick={(e) => e.stopPropagation()}>
               <Link
@@ -489,20 +476,31 @@ to {
                 flexDirection={"row"}
                 alignItems={"center"}
                 p={2}
-                css={[StyledlementsMenuebarContent.styles, `&:hover {
+                css={[
+                  StyledlementsMenuebarContent.styles,
+                  `&:hover {
                   color: red;
-                        }`]}
+                        }`,
+                ]}
                 onClick={() => openModal()}
               >
-                <Box css={`&:hover {
-                    color: red;
-                          }`}>
+                <Box
+                  css={`
+                    &:hover {
+                      color: red;
+                    }
+                  `}
+                >
                   <StyledRemoveIcon />
                 </Box>
-                <Box css={`&:hover {
-                    color: red;
-                    transition: 0.4s;
-                          }`}>
+                <Box
+                  css={`
+                    &:hover {
+                      color: red;
+                      transition: 0.4s;
+                    }
+                  `}
+                >
                   <StyledButton>Remove</StyledButton>
                 </Box>
               </Flex>

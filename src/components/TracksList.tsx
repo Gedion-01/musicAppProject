@@ -27,7 +27,7 @@ const TracksList: React.FC<data> = ({ data }) => {
     (state: RootState) => state.songs.search
   );
   
-  const currentData: any = useSelector(
+  const currentData = useSelector(
     (state: RootState) => state.playerData.currentData
   );
 

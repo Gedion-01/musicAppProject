@@ -427,7 +427,7 @@ function AddSongPage() {
                       style={{
                         width: "150px",
                         height: "150px",
-                        borderRadius: "10px",
+                        borderRadius: "5px",
                       }}
                     />
                   </Text>
