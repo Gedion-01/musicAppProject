@@ -1,5 +1,7 @@
 # Music App Front End
 
+![image](https://github.com/Gedion-01/musicAppProject/assets/117908662/f6a0650f-097d-4466-a795-0c140171a374)
+
 A web application for streaming and enjoying music it have an amazing and easy to use interface.
 
 ## Installation
